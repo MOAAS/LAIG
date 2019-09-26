@@ -222,7 +222,7 @@ class MySceneGraph {
         return null;
     }
 
-    /**
+    /** TODO
      * Parses the <views> block.
      * @param {view block element} viewsNode
      */
@@ -295,8 +295,8 @@ class MySceneGraph {
                 continue;
             }
             else {
-                attributeNames.push(...["location", "ambient", "diffuse", "specular"]);
-                attributeTypes.push(...["position", "color", "color", "color"]);
+                attributeNames.push(...["location", "ambient", "diffuse", "specular", "attenuation"]);
+                attributeTypes.push(...["position", "color", "color", "color", "vec3"]);
             }
 
             // Get id of the current light.
@@ -330,20 +330,20 @@ class MySceneGraph {
 
             for (var j = 0; j < attributeNames.length; j++) {
                 var attributeIndex = nodeNames.indexOf(attributeNames[j]);
-
+                var attribute;
                 if (attributeIndex != -1) {
                     if (attributeTypes[j] == "position")
-                        var aux = this.parseCoordinates4D(grandChildren[attributeIndex], "light position for ID" + lightId);
-                    else
-                        var aux = this.parseColor(grandChildren[attributeIndex], attributeNames[j] + " illumination for ID" + lightId);
+                        attribute = this.parseCoordinates4D(grandChildren[attributeIndex], "light position for ID" + lightId);
+                    else if (attributeTypes[j] == "vec3")
+                        attribute = this.parseAttenuation(grandChildren[attributeIndex], "light attenuation for ID" + lightId);
+                    else attribute = this.parseColor(grandChildren[attributeIndex], attributeNames[j] + " illumination for ID" + lightId);
+ 
+                    if (!Array.isArray(attribute))
+                        return attribute;
 
-                    if (!Array.isArray(aux))
-                        return aux;
-
-                    global.push(aux);
+                    global.push(attribute);
                 }
-                else
-                    return "light " + attributeNames[i] + " undefined for ID = " + lightId;
+                else return "light " + attributeNames[j] + " undefined for ID = " + lightId;
             }
 
             // Gets the additional attributes of the spot light
@@ -386,7 +386,7 @@ class MySceneGraph {
         return null;
     }
 
-    /**
+    /** TODO
      * Parses the <textures> block. 
      * @param {textures block element} texturesNode
      */
@@ -397,7 +397,7 @@ class MySceneGraph {
         return null;
     }
 
-    /**
+    /** TODO
      * Parses the <materials> node.
      * @param {materials block element} materialsNode
      */
@@ -445,6 +445,7 @@ class MySceneGraph {
 
         var grandChildren = [];
 
+        var numTransformations = 0;
         // Any number of transformations.
         for (var i = 0; i < children.length; i++) {
 
@@ -476,23 +477,44 @@ class MySceneGraph {
 
                         transfMatrix = mat4.translate(transfMatrix, transfMatrix, coordinates);
                         break;
-                    case 'scale':                        
-                        this.onXMLMinorError("To do: Parse scale transformations.");
+                    case 'scale':                      
+                        var vector = this.parseCoordinates3D(grandChildren[j], "scale transformation for ID " + transformationID);
+                        if (!Array.isArray(vector))
+                            return vector;
+
+                        transfMatrix = mat4.scale(transfMatrix, transfMatrix, vector);
                         break;
                     case 'rotate':
-                        // angle
-                        this.onXMLMinorError("To do: Parse rotate transformations.");
+                        // getting angle
+                        var angle = this.reader.getFloat(grandChildren[j], "angle");
+                        if (angle == null || isNaN(angle))
+                            return "unable to parse angle of rotate transformation for ID " + transformationID;
+
+                        // getting axis and applying transformation to matrix
+                        var axis = this.reader.getString(grandChildren[j], "axis");
+
+                        if (axis == 'x')
+                            transfMatrix = mat4.rotate(transfMatrix, transfMatrix, angle * Math.PI / 180, [1, 0, 0]);
+                        else if (axis == 'y')
+                            transfMatrix = mat4.rotate(transfMatrix, transfMatrix, angle * Math.PI / 180, [0, 1, 0]);
+                        else if (axis == 'z')
+                            transfMatrix = mat4.rotate(transfMatrix, transfMatrix, angle * Math.PI / 180, [0, 0, 1]);
+                        else return "unable to parse axis for rotate transformation for ID" + transformationID;
+
                         break;
                 }
             }
             this.transformations[transformationID] = transfMatrix;
+            numTransformations++;
         }
 
+        if (numTransformations == 0)
+            return "at least one transformation must be defined";
         this.log("Parsed transformations");
         return null;
     }
 
-    /**
+    /** TODO
      * Parses the <primitives> block.
      * @param {primitives block element} primitivesNode
      */
@@ -568,7 +590,7 @@ class MySceneGraph {
         return null;
     }
 
-    /**
+    /** TODO
    * Parses the <components> block.
    * @param {components block element} componentsNode
    */
@@ -648,6 +670,34 @@ class MySceneGraph {
         position.push(...[x, y, z]);
 
         return position;
+    }
+
+    /**
+     * Parse the constant, linear, quadratic attenuation from a node with ID = id
+     * @param {block element} node
+     * @param {message to be displayed in case of error} messageError
+     */
+    parseAttenuation(node, messageError) {
+        var attenuation = [];
+
+        // constant
+        var constant = this.reader.getFloat(node, 'constant');
+        if (!(constant != null && !isNaN(constant)))
+            return "unable to parse constant attenuation of the " + messageError;
+
+        // linear
+        var linear = this.reader.getFloat(node, 'linear');
+        if (!(linear != null && !isNaN(linear)))
+            return "unable to parse linear attenuation of the " + messageError;
+
+        // quadratic
+        var quadratic = this.reader.getFloat(node, 'quadratic');
+        if (!(quadratic != null && !isNaN(quadratic)))
+            return "unable to parse quadratic attenuation of the " + messageError;
+
+        attenuation.push(...[constant, linear, quadratic]);
+
+        return attenuation;
     }
 
     /**
@@ -737,9 +787,14 @@ class MySceneGraph {
      * Displays the scene, processing each node, starting in the root node.
      */
     displayScene() {
+        this.scene.pushMatrix();
+        this.scene.multMatrix(this.transformations["demoTransform"])
         //To do: Create display loop for transversing the scene graph
+
+        new Material(this.scene, [0,0,0,0], [0.5,0.5,0.5,0.5], [0.5,0.5,0.5,0.5], [0.5,0.5,0.5,0.5], 10).apply();
 
         //To test the parsing/creation of the primitives, call the display function directly
         this.primitives['demoRectangle'].display();
+        this.scene.popMatrix();
     }
 }

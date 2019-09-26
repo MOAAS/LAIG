@@ -15,10 +15,11 @@
 
     <lights>
         <omni id="demoLight" enabled="1">
-            <location x="9.8" y="11.9" z="10" w="1.0" />
+            <location x="5" y="5" z="5" w="1.0" />
             <ambient r="0" g="0" b="0" a="1.0" />
             <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
             <specular r="1.0" g="1.0" b="1.0" a="1.0" />
+            <attenuation constant="1.0" linear="0.1" quadratic="0.01" />
         </omni>
     </lights>
 
@@ -37,9 +38,11 @@
 
     <transformations>
         <transformation id="demoTransform">
-            <scale x="5" y="1" z="5" />
-            <rotate axis="x" angle="-45" />
-            <rotate axis="z" angle="-45" />
+            <scale x="0.2" y="1" z="1"/>
+            <rotate angle="-45" axis="x"/>
+            <scale x="1" y="2" z="1"/>
+            <translate x="2" y="0" z="1" />
+            <scale x="4" y="1" z="1"/>
         </transformation>
     </transformations>
 
