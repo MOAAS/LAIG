@@ -464,45 +464,15 @@ class MySceneGraph {
                 return "ID must be unique for each transformation (conflict: ID = " + transformationID + ")";
 
             grandChildren = children[i].children;
-            // Specifications for the current transformation.
 
+            // Specifications for the current transformation.      
             var transfMatrix = mat4.create();
 
             for (var j = 0; j < grandChildren.length; j++) {
-                switch (grandChildren[j].nodeName) {
-                    case 'translate':
-                        var coordinates = this.parseCoordinates3D(grandChildren[j], "translate transformation for ID " + transformationID);
-                        if (!Array.isArray(coordinates))
-                            return coordinates;
-
-                        transfMatrix = mat4.translate(transfMatrix, transfMatrix, coordinates);
-                        break;
-                    case 'scale':                      
-                        var vector = this.parseCoordinates3D(grandChildren[j], "scale transformation for ID " + transformationID);
-                        if (!Array.isArray(vector))
-                            return vector;
-
-                        transfMatrix = mat4.scale(transfMatrix, transfMatrix, vector);
-                        break;
-                    case 'rotate':
-                        // getting angle
-                        var angle = this.reader.getFloat(grandChildren[j], "angle");
-                        if (angle == null || isNaN(angle))
-                            return "unable to parse angle of rotate transformation for ID " + transformationID;
-
-                        // getting axis and applying transformation to matrix
-                        var axis = this.reader.getString(grandChildren[j], "axis");
-
-                        if (axis == 'x')
-                            transfMatrix = mat4.rotate(transfMatrix, transfMatrix, angle * Math.PI / 180, [1, 0, 0]);
-                        else if (axis == 'y')
-                            transfMatrix = mat4.rotate(transfMatrix, transfMatrix, angle * Math.PI / 180, [0, 1, 0]);
-                        else if (axis == 'z')
-                            transfMatrix = mat4.rotate(transfMatrix, transfMatrix, angle * Math.PI / 180, [0, 0, 1]);
-                        else return "unable to parse axis for rotate transformation for ID" + transformationID;
-
-                        break;
-                }
+                // parses primitive transformation to transfMatrix
+                var error = this.parsePrimitiveTransformation(grandChildren[j], transfMatrix, "with ID " + transformationID)
+                if (error != null)
+                    return error;
             }
             this.transformations[transformationID] = transfMatrix;
             numTransformations++;
@@ -600,7 +570,6 @@ class MySceneGraph {
         this.components = [];
 
         var grandChildren = [];
-        var grandgrandChildren = [];
         var nodeNames = [];
 
         // Any number of components.
@@ -632,45 +601,142 @@ class MySceneGraph {
             var textureIndex = nodeNames.indexOf("texture");
             var childrenIndex = nodeNames.indexOf("children");
 
-            this.onXMLMinorError("To do: Parse components.");
             // Transformations
+            var transformation = this.parseComponentTransformation(grandChildren[transformationIndex], componentID);
+            if (transformation == null)
+                return "error parsing transformations for component " + componentID;
+
+            continue;
 
             // Materials
+            var materials = this.parseComponentMaterials(grandChildren[materialsIndex], componentID);
+            if (materials == null)
+                return "error parsing materials for component " + componentID;
 
             // Texture
+            var compTexture = this.parseComponentTexture(grandChildren[textureIndex], componentID);
+            if (compTexture == null)
+                return "error parsing texture for component " + componentID;
 
             // Children
+            var children = this.parseComponentChildren(grandChildren[childrenIndex], componentID);
+            if (children == null)
+                return "error parsing children for component " + componentID;
         }
     }
 
+    /**
+     * Parse a transformation node for a component
+     * @param {transformation node} node 
+     * @param {component id} id 
+     */
+    parseComponentTransformation(node, id) {
+        var transformation = mat4.create();
+
+        var children = node.children;
+
+        // Any number of transformations
+        for (var i = 0; i < children.length; i++) {
+            // Retrieves existing transformation and multiplies it to current matrix
+            if (children[i].nodeName == 'transformationref') {
+                var transfID = this.reader.getString(children[i], 'id');
+                var transfRef = this.transformations[transfID];
+                if (transfRef == null) {
+                    this.onXMLError("couldn't find transformation with ID " + transfID + " for component with ID " + id);
+                    return null;
+                }
+                mat4.multiply(transformation, transformation, transfRef);
+            }
+            else {
+                // parses translation / rotation / scaling and returns if error shows up
+                var error = this.parsePrimitiveTransformation(children[i], transformation, "for component with ID " + id)
+                if (error != null) {
+                    this.onXMLError(error);
+                    return null;
+                }                
+            }
+        }
+        return transformation;
+    }
+
+    
+    /** TODO
+     * Parse a material node for a component
+     * @param {material node} node 
+     * @param {component id} id 
+     */
+    parseComponentMaterials(node, id) {
+
+    }
+
+    /** TODO
+     * Parse a texture node for a component
+     * @param {texture node} node 
+     * @param {component id} id 
+     */
+    parseComponentTexture(node, id) {
+
+    }
+
+    /** TODO
+     * Parse a children node for a component
+     * @param {children node} node 
+     * @param {component id} id 
+     */
+    parseComponentChildren(node, id) {
+
+    }
 
     /**
-     * Parse the coordinates from a node with ID = id
-     * @param {block element} node
-     * @param {message to be displayed in case of error} messageError
+     * Parses a translation, scaling or rotation
+     * @param {Primitive transformation node} node 
+     * @param {Current transformation matrix (to be multiplied to)} currMatrix 
+     * @param {Message to show along the error info, if there's one} errorMSG 
      */
-    parseCoordinates3D(node, messageError) {
-        var position = [];
+    parsePrimitiveTransformation(node, currMatrix, errorMSG) {
+        switch (node.nodeName) {
+            // Translation: gets x y z and returns if error occurs
+            case 'translate':
+                var coordinates = this.parseCoordinates3D(node, "translate transformation " + errorMSG);
+                if (!Array.isArray(coordinates))
+                    return coordinates;
 
-        // x
-        var x = this.reader.getFloat(node, 'x');
-        if (!(x != null && !isNaN(x)))
-            return "unable to parse x-coordinate of the " + messageError;
+                mat4.translate(currMatrix, currMatrix, coordinates);
+                break;
+            // Scaling: gets x y z scale and returns if error occurs
+            case 'scale':                      
+                var vector = this.parseCoordinates3D(node, "scale transformation " + errorMSG);
+                if (!Array.isArray(vector))
+                    return vector;
 
-        // y
-        var y = this.reader.getFloat(node, 'y');
-        if (!(y != null && !isNaN(y)))
-            return "unable to parse y-coordinate of the " + messageError;
+                mat4.scale(currMatrix, currMatrix, vector);
+                break;
+            // Rotation: gets axis and angle, returns if error occurs
+            case 'rotate':
+                // getting angle
+                var angle = this.reader.getFloat(node, "angle");
+                if (angle == null || isNaN(angle))
+                    return "unable to parse angle of rotate transformation " + errorMSG;
 
-        // z
-        var z = this.reader.getFloat(node, 'z');
-        if (!(z != null && !isNaN(z)))
-            return "unable to parse z-coordinate of the " + messageError;
+                // getting axis and applying transformation to matrix
+                var axis = this.reader.getString(node, "axis");
 
-        position.push(...[x, y, z]);
+                if (axis == 'x')
+                    mat4.rotate(currMatrix, currMatrix, angle * DEGREE_TO_RAD, [1, 0, 0]);
+                else if (axis == 'y')
+                    mat4.rotate(currMatrix, currMatrix, angle * DEGREE_TO_RAD, [0, 1, 0]);
+                else if (axis == 'z')
+                    mat4.rotate(currMatrix, currMatrix, angle * DEGREE_TO_RAD, [0, 0, 1]);
+                else return "unable to parse axis for rotate transformation " + errorMSG;
 
-        return position;
+                break;
+            default: 
+                this.onXMLMinorError("Unknown transformation type: " + node.nodeName + ", ignoring");
+                break;
+        }
+        return null;
     }
+
 
     /**
      * Parse the constant, linear, quadratic attenuation from a node with ID = id
@@ -699,6 +765,35 @@ class MySceneGraph {
 
         return attenuation;
     }
+
+        /**
+     * Parse the coordinates from a node with ID = id
+     * @param {block element} node
+     * @param {message to be displayed in case of error} messageError
+     */
+    parseCoordinates3D(node, messageError) {
+        var position = [];
+
+        // x
+        var x = this.reader.getFloat(node, 'x');
+        if (!(x != null && !isNaN(x)))
+            return "unable to parse x-coordinate of the " + messageError;
+
+        // y
+        var y = this.reader.getFloat(node, 'y');
+        if (!(y != null && !isNaN(y)))
+            return "unable to parse y-coordinate of the " + messageError;
+
+        // z
+        var z = this.reader.getFloat(node, 'z');
+        if (!(z != null && !isNaN(z)))
+            return "unable to parse z-coordinate of the " + messageError;
+
+        position.push(...[x, y, z]);
+
+        return position;
+    }
+
 
     /**
      * Parse the coordinates from a node with ID = id
