@@ -17,5 +17,16 @@ class ComponentTexture {
         this.texture = texture;
         this.length_s = length_s;
         this.length_t = length_t;
+        this.enabled = true;
+        this.inherit = (this.texture == null);
+    }
+
+
+}
+
+class EmptyTexture extends ComponentTexture {
+    constructor() {
+        super()
+        this.enabled = false;
     }
 }

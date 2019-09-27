@@ -227,8 +227,14 @@ class MySceneGraph {
      * @param {view block element} viewsNode
      */
     parseView(viewsNode) {
+        this.views = [];
         this.onXMLMinorError("To do: Parse views and create cameras.");
 
+        // views e array de CGFCamera / CGFCameraOrtho
+        // tem de ter id
+        // ids nao podem ser repetidos
+        // se um dos floats nao tiver la poe-se default a 0 ou uma cena assim? ou da-se erro nao interessa é igual
+        // views.length tem de ser > 0
         return null;
     }
 
@@ -391,8 +397,15 @@ class MySceneGraph {
      * @param {textures block element} texturesNode
      */
     parseTextures(texturesNode) {
-
+        this.textures = []; 
         //For each texture in textures block, check ID and file URL
+
+        // textures e array de CGFTexture
+        // tem de ter id e file
+        // ids nao podem ser repetidos
+        // tem de ser jpg png
+        // dar warning se dimensoes nao forem potencia de 2?
+        // verificar que textures tem length > 0!
         this.onXMLMinorError("To do: Parse textures.");
         return null;
     }
@@ -427,10 +440,14 @@ class MySceneGraph {
                 return "ID must be unique for each light (conflict: ID = " + materialID + ")";
 
             //Continue here
+
+            // basta fazer parse de children[i] nao sei pq e que chamam children e nao materialNodes ou uma cena do genero xd nomes descritivos
             this.onXMLMinorError("To do: Parse materials.");
         }
 
-        //this.log("Parsed materials");
+        // materials e array de Material ( a nossa class fixe)
+        // verificar que materials tem length > 0!
+        this.log("Parsed materials");
         return null;
     }
 
@@ -560,7 +577,7 @@ class MySceneGraph {
         return null;
     }
 
-    /** TODO
+    /**
    * Parses the <components> block.
    * @param {components block element} componentsNode
    */
@@ -601,27 +618,38 @@ class MySceneGraph {
             var textureIndex = nodeNames.indexOf("texture");
             var childrenIndex = nodeNames.indexOf("children");
 
+            // Verify if blocks exist
+            if (transformationIndex == -1)
+                return "No transformation block for component with ID = " + componentID;
+            if (materialsIndex == -1)
+                return "No materials block for component with ID = " + componentID;
+            if (textureIndex == -1)
+                return "No texture block for component with ID = " + componentID;
+            if (childrenIndex == -1)
+                return "No children block for component with ID = " + componentID;
+
             // Transformations
-            var transformation = this.parseComponentTransformation(grandChildren[transformationIndex], componentID);
+            var transformation = this.parseComponentTransformation(grandChildren[transformationIndex]);
             if (transformation == null)
-                return "error parsing transformations for component " + componentID;
-
-            continue;
-
+                return "Couldn't parse transformations for component with ID = " + componentID;
+                
+            continue; // temporario pa n dar erro
             // Materials
-            var materials = this.parseComponentMaterials(grandChildren[materialsIndex], componentID);
+            var materials = this.parseComponentMaterials(grandChildren[materialsIndex]);
             if (materials == null)
-                return "error parsing materials for component " + componentID;
-
+                return "Couldn't parse materials for component with ID = " + componentID;
+                
             // Texture
-            var compTexture = this.parseComponentTexture(grandChildren[textureIndex], componentID);
+            var compTexture = this.parseComponentTexture(grandChildren[textureIndex]);
             if (compTexture == null)
-                return "error parsing texture for component " + componentID;
+                return "Couldn't parse texture for component with ID = " + componentID;
 
             // Children
-            var children = this.parseComponentChildren(grandChildren[childrenIndex], componentID);
+            var children = this.parseComponentChildren(grandChildren[childrenIndex]);
             if (children == null)
-                return "error parsing children for component " + componentID;
+                return "Couldn't parse children for component with ID = " + componentID;
+
+            this.components.push(transformation, materials, compTexture, children);
         }
     }
 
@@ -630,26 +658,28 @@ class MySceneGraph {
      * @param {transformation node} node 
      * @param {component id} id 
      */
-    parseComponentTransformation(node, id) {
+    parseComponentTransformation(node) {
         var transformation = mat4.create();
 
         var children = node.children;
 
         // Any number of transformations
         for (var i = 0; i < children.length; i++) {
-            // Retrieves existing transformation and multiplies it to current matrix
             if (children[i].nodeName == 'transformationref') {
+                // Finds transformation with given ID
                 var transfID = this.reader.getString(children[i], 'id');
                 var transfRef = this.transformations[transfID];
                 if (transfRef == null) {
-                    this.onXMLError("couldn't find transformation with ID " + transfID + " for component with ID " + id);
+                    this.onXMLError("couldn't find transformation with ID " + transfID + " for component");
                     return null;
                 }
+
+                // Multiplies to current matrix
                 mat4.multiply(transformation, transformation, transfRef);
             }
             else {
                 // parses translation / rotation / scaling and returns if error shows up
-                var error = this.parsePrimitiveTransformation(children[i], transformation, "for component with ID " + id)
+                var error = this.parsePrimitiveTransformation(children[i], transformation, "for component");
                 if (error != null) {
                     this.onXMLError(error);
                     return null;
@@ -660,31 +690,144 @@ class MySceneGraph {
     }
 
     
-    /** TODO
+    /**
      * Parse a material node for a component
      * @param {material node} node 
      * @param {component id} id 
      */
-    parseComponentMaterials(node, id) {
+    parseComponentMaterials(node) {
+        var children = node.children;
+        
+        var materials = [];
+        for (var i = 0; i < children.length; i++) {
+            if (children[i].nodeName == 'material') {
+                // Gets the ID attribute from the material, returning an error if it does not exist
+                var ID = this.reader.getString(children[i], 'id');
+                if (ID == null) {
+                    this.onXMLError("No ID found for component material");
+                    return null;
+                }
 
+                // Null material will be considered as inherited
+                if (ID == "inherit") {
+                    materials.push(null);
+                    continue;
+                }
+
+                // Searches for material with given ID
+                // In this case, null means it's not present
+                var material = this.materials[ID];
+                if (material == null) {
+                    this.onXMLError("Couldn't find material with ID " + ID + " for component");
+                    return null;
+                }
+
+                materials.push(material);
+            }
+            else this.onXMLMinorError("Expected <material> tag, found <" + children[i].nodeName + ">, ignoring");
+        }
+
+        // Minimum of 1 material
+        if (materials.length == 0) {
+            this.onXMLError("No materials found for component");
+            return null;
+        }
+        return materials;
     }
 
-    /** TODO
+    /**
      * Parse a texture node for a component
      * @param {texture node} node 
      * @param {component id} id 
      */
-    parseComponentTexture(node, id) {
+    parseComponentTexture(node) {
+        // Gets XML attributes and looks up texture
+        var ID = this.reader.getString(node, 'id');
+        var length_s = this.reader.getFloat(node, 'length_s');
+        var length_t = this.reader.getFloat(node, 'length_t');
+        var texture = this.textures[ID];
 
+        // Verifies if attributes exist, defaulting / returning if not
+        if (ID == null) {
+            this.onXMLError("No ID found for component texture");
+            return null;
+        }
+        
+        if (length_s == null) {
+            this.onXMLMinorError("Couldn't parse length_s for component texture, defaulting to 1");
+            length_s = 1;
+        }
+        
+        if (length_t == null) {
+            this.onXMLMinorError("Couldn't parse length_t for component texture, defaulting to 1");
+            length_t = 1;
+        }
+
+        // Passes no texture for inherit
+        if (ID == 'inherit')
+            return new ComponentTexture(null, length_s, length_t);
+
+        // Makes no texture for none
+        if (ID == 'none')
+            return new EmptyTexture();   
+
+        if (texture == null) {
+            this.onXMLError("Couldn't find texture with ID " + ID + " for component");
+            return null;
+        }
+
+        // If ID was found, returns proper texture
+        return new ComponentTexture(texture, length_s, length_t);        
     }
 
-    /** TODO
+    /**
      * Parse a children node for a component
      * @param {children node} node 
      * @param {component id} id 
      */
-    parseComponentChildren(node, id) {
+    parseComponentChildren(node) {
+        var children = node.children;
+        
+        var componentChildren = [];
+        for (var i = 0; i < children.length; i++) {
+            // Gets the ID attribute from the child, returning an error if it does not exist
+            var ID = this.reader.getString(children[i], 'id');
+            if (ID == null) {
+                this.onXMLError("No ID found for component child");
+                return null;
+            }
+            switch (children[i].nodeName) {
+                case 'componentref':
+                    // Searches for component with given ID, with null meaning it's not present
+                    var component = this.components[ID];
+                    if (component == null) {
+                        this.onXMLError("Couldn't find component child with ID " + ID);
+                        return null;
+                    }
+                    componentChildren.push(component);
+                    break;
+                case 'primitiveref':
+                    // Searches for primitive with given ID, with null meaning it's not present
+                    var primitive = this.primitives[ID];
+                    if (primitive == null) {
+                        this.onXMLError("Couldn't find primitive child with ID " + ID);
+                        return null;
+                    }
+                    componentChildren.push(primitive);
+                    break;
+                default:
+                    // Not a valid tag
+                    this.onXMLMinorError("Expected <componentref> or <primitiveref> tag, found <" + children[i].nodeName + ">, ignoring");
+                    break;
+            }
+        }
 
+        // Minimum of 1 children
+        if (componentChildren.length == 0) {
+            this.onXMLError("No children found for component");
+            return null;
+        }
+        return componentChildren;
     }
 
     /**

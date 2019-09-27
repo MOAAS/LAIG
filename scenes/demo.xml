@@ -61,6 +61,7 @@
             </transformation>
             <materials>
                 <material id="demoMaterial" />
+                <material id="inherit" />
             </materials>
             <texture id="demoTexture"/>
             <children>
