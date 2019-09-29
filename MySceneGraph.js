@@ -227,15 +227,111 @@ class MySceneGraph {
      * @param {view block element} viewsNode
      */
     parseView(viewsNode) {
-        this.views = [];
-        this.onXMLMinorError("To do: Parse views and create cameras.");
+        var children = viewsNode.children;
 
+        this.views = [];
+        var numViews = 0;
+
+        var grandChildren = [];
+        var nodeNames = [];
+
+        var defaultIdChosen = false;
+        var defaultId = this.reader.getString(viewsNode, 'default');
+        if (defaultId == null)
+             return "no defaul ID defined for views";
+
+
+        for (var i = 0; i < children.length; i++) {
+
+            // Storing light information
+            var global = [];
+
+            //Check type of light
+            if (children[i].nodeName != "perspective" && children[i].nodeName != "ortho") {
+                this.onXMLMinorError("unknown tag <" + children[i].nodeName + ">");
+                continue;
+            }
+
+            // Get id of the current view
+            var viewId = this.reader.getString(children[i], 'id');
+            if (viewId == null)
+                 return "no ID defined for view";
+            // Checks for repeated IDs.
+            if (this.views[viewId] != null)
+                return "ID must be unique for each view (conflict: ID = " + viewId + ")";
+
+            // Check if its default view
+            var defaultView = false;
+            if(viewId = defaultId){
+                defaultView = true;
+                defaultIdChosen = true;
+            }
+            var viewParams= [];
+
+            var viewNear = this.reader.getString(children[i], 'near');
+                if (viewNear == null)
+                    return "no near defined for view";
+
+            var viewFar= this.reader.getString(children[i], 'far');
+                if (viewFar == null)
+                    return "no far defined for view";
+
+            if(children[i].nodeName == "perspective"){
+                var viewAngle= this.reader.getString(children[i], 'angle');
+                    if (viewAngle == null)
+                        return "no angle defined for view";
+                viewParams.push(...[viewNear,viewFar,viewAngle]);
+            } else {
+                var viewLeft= this.reader.getString(children[i], 'left');
+                    if (viewLeft == null)
+                        return "no angle defined for left";
+                var viewRight= this.reader.getString(children[i], 'right');
+                    if (viewRight == null)
+                        return "no right defined for view";
+                var viewTop= this.reader.getString(children[i], 'top');
+                    if (viewTop == null)
+                        return "no top defined for view";
+                var viewBottom= this.reader.getString(children[i], 'bottom');
+                    if (viewBottom == null)
+                        return "no bottom defined for view";
+
+                viewParams.push(...[viewNear,viewFar,viewLeft,viewRight,viewTop,viewBottom]);
+            }
+        
+
+            //Add 
+            global.push(defaultView);
+            global.push(children[i].nodeName);
+
+            grandChildren = children[i].children;
+            // Specifications for the current view
+            var attributeFrom = this.parseCoordinates3D(grandChildren[0],"view FROM position for ID"+viewId)
+            var attributeTo = this.parseCoordinates3D(grandChildren[1],"view To position for ID"+viewId)
+
+            global.push(attributeFrom);
+            global.push(attributeTo);
+
+            if (children[i].nodeName == "ortho") {
+                var attributeUp;
+                if(grandChildren.length >2)
+                    attributeUp = this.parseCoordinates3D(grandChildren[1],"view Up position for ID"+viewId)
+                else attributeUp = [0,1,0];
+                global.push(attributeUp);
+            }
+            this.views[viewId] = global;
+            numViews++;
+        }
+        if(numViews == 0)
+            return "at least one light must be defined";
+        if(!defualtIdChosen)
+            return "default view not defined";
+        this.log("Parsed lights");
+        return null;
         // views e array de CGFCamera / CGFCameraOrtho
         // tem de ter id
         // ids nao podem ser repetidos
         // se um dos floats nao tiver la poe-se default a 0 ou uma cena assim? ou da-se erro nao interessa é igual
         // views.length tem de ser > 0
-        return null;
     }
 
     /**
@@ -400,14 +496,59 @@ class MySceneGraph {
         this.textures = []; 
         //For each texture in textures block, check ID and file URL
 
+        var children = texturesNode.children;
+        var numTextures=0;
+        for (var i = 0; i < children.length; i++) {
+            var global = [];
+            if (children[i].nodeName != "texture") {
+                this.onXMLMinorError("unknown tag <" + children[i].nodeName + ">");
+                continue;
+            }
+
+            //Get Texture ID
+            var textureId = this.reader.getString(children[i], 'id');
+            if (textureId == null)
+                return "no ID defined for texture";
+
+            // Checks for repeated IDs.
+            if (this.textures[textureId] != null)
+                return "ID must be unique for each texture (conflict: ID = " + textureId + ")";
+
+            //Get Texture File
+            var textureFile = this.reader.getString(children[i], 'file');
+            if (textureFile == null)
+                return "no File defined for texture";
+
+            //Check if texture is png/jpg
+            if(!(textureFile.endsWith(".png") || textureFile.endsWith(".jpg")))
+                return "File is not a compatible image";
+           
+            
+            //Check img Width/Height
+            /*
+            var texWidth,texHeight;
+            var img = new Image();
+            img.onload = function() {
+                  textWidth = img.width;
+                  texHeight = img.height;
+                }
+            img.src = textureFile;*/
+
+
+            global.push(textureFile);
+            this.textures[textureId] = global;
+
+            numTextures++;
+        }
+        if (numTextures == 0)
+            return "at least one texture must be defined";
+        return null;
         // textures e array de CGFTexture
         // tem de ter id e file
         // ids nao podem ser repetidos
         // tem de ser jpg png
         // dar warning se dimensoes nao forem potencia de 2?
         // verificar que textures tem length > 0!
-        this.onXMLMinorError("To do: Parse textures.");
-        return null;
     }
 
     /** TODO
@@ -422,32 +563,63 @@ class MySceneGraph {
         var grandChildren = [];
         var nodeNames = [];
 
+        var numMaterials = 0;
+
         // Any number of materials.
         for (var i = 0; i < children.length; i++) {
+            var global = [];
+            var attributeNames = [];
 
             if (children[i].nodeName != "material") {
                 this.onXMLMinorError("unknown tag <" + children[i].nodeName + ">");
                 continue;
+            }else {
+                attributeNames.push(...["emission", "ambient", "diffuse", "specular"]);
             }
 
             // Get id of the current material.
-            var materialID = this.reader.getString(children[i], 'id');
-            if (materialID == null)
+            var materialId = this.reader.getString(children[i], 'id');
+            if (materialId == null)
                 return "no ID defined for material";
 
             // Checks for repeated IDs.
-            if (this.materials[materialID] != null)
-                return "ID must be unique for each light (conflict: ID = " + materialID + ")";
+            if (this.materials[materialId] != null)
+                return "ID must be unique for each light (conflict: ID = " + materialId + ")";
 
-            //Continue here
+            var materialShine = this.reader.getString(children[i], 'shininess');
+                if (materialShine == null)
+                    return "no Shininess defined for material";
 
-            // basta fazer parse de children[i] nao sei pq e que chamam children e nao materialNodes ou uma cena do genero xd nomes descritivos
-            this.onXMLMinorError("To do: Parse materials.");
+            global.push(materialShine);
+
+            grandChildren = children[i].children;
+            // Specifications for the current material
+        
+            nodeNames = [];
+            for (var j = 0; j < grandChildren.length; j++) {
+                nodeNames.push(grandChildren[j].nodeName);
+            }
+
+
+            for (var j = 0; j < attributeNames.length; j++) {
+                    var attributeIndex = nodeNames.indexOf(attributeNames[j]);
+                    var attribute;
+                    if (attributeIndex != -1) {
+                            attribute = this.parseColor(grandChildren[attributeIndex], "!!! for ID" + materialId);
+                    if (!Array.isArray(attribute))
+                        return attribute;
+                    global.push(attribute);
+                    }
+                    else return "material " + attributeNames[j] + " undefined for ID  " + materialId;
+                }
+                this.materials[materialId] = global;
+                numMaterials++;    
         }
 
+        if (numMaterials== 0)
+            return "at least one light must be defined";
         // materials e array de Material ( a nossa class fixe)
         // verificar que materials tem length > 0!
-        this.log("Parsed materials");
         return null;
     }
 
