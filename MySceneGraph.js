@@ -194,6 +194,9 @@ class MySceneGraph {
             if ((error = this.parseComponents(nodes[index])) != null)
                 return error;
         }
+
+        if (this.components[this.idRoot] == null)
+            return "Didn't find any component for Root ID = " + this.idRoot;
         this.log("all parsed");
     }
 
@@ -222,7 +225,7 @@ class MySceneGraph {
         return null;
     }
 
-    /** TODO
+    /**
      * Parses the <views> block.
      * @param {view block element} viewsNode
      */
@@ -756,6 +759,8 @@ class MySceneGraph {
         var grandChildren = [];
         var nodeNames = [];
 
+        var numComponents = 0;
+
         // Any number of components.
         for (var i = 0; i < children.length; i++) {
 
@@ -800,7 +805,6 @@ class MySceneGraph {
             if (transformation == null)
                 return "Couldn't parse transformations for component with ID = " + componentID;
                 
-            continue; // temporario pa n dar erro
             // Materials
             var materials = this.parseComponentMaterials(grandChildren[materialsIndex]);
             if (materials == null)
@@ -816,8 +820,12 @@ class MySceneGraph {
             if (children == null)
                 return "Couldn't parse children for component with ID = " + componentID;
 
-            this.components.push(transformation, materials, compTexture, children);
+            this.components[componentID] = new Component(transformation, materials, compTexture, children);
+            numComponents++;
         }
+
+        if (numComponents == 0)
+            return "No components defined"
     }
 
     /**
@@ -1192,6 +1200,9 @@ class MySceneGraph {
      * Displays the scene, processing each node, starting in the root node.
      */
     displayScene() {
+        this.components[this.idRoot].display(this.scene);
+
+        /*
         this.scene.pushMatrix();
         this.scene.multMatrix(this.transformations["demoTransform"])
         //To do: Create display loop for transversing the scene graph
@@ -1201,5 +1212,6 @@ class MySceneGraph {
         //To test the parsing/creation of the primitives, call the display function directly
         this.primitives['demoRectangle'].display();
         this.scene.popMatrix();
+        */
     }
 }
