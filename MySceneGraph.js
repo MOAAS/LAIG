@@ -415,12 +415,9 @@ class MySceneGraph {
                 return "ID must be unique for each light (conflict: ID = " + lightId + ")";
 
             // Light enable/disable
-            var enableLight = true;
-            var aux = this.reader.getBoolean(children[i], 'enabled');
-            if (!(aux != null && !isNaN(aux) && (aux == true || aux == false)))
+            var enableLight = this.reader.getBoolean(children[i], 'enabled');
+            if (enableLight == null || !(enableLight == true || enableLight == false))
                 this.onXMLMinorError("unable to parse value component of the 'enable light' field for ID = " + lightId + "; assuming 'value = 1'");
-
-            enableLight = aux || 1;
 
             //Add enabled boolean and type name to light info
             global.push(enableLight);
@@ -816,11 +813,11 @@ class MySceneGraph {
                 return "Couldn't parse texture for component with ID = " + componentID;
 
             // Children
-            var children = this.parseComponentChildren(grandChildren[childrenIndex]);
-            if (children == null)
+            var compChildren = this.parseComponentChildren(grandChildren[childrenIndex]);
+            if (compChildren == null)
                 return "Couldn't parse children for component with ID = " + componentID;
 
-            this.components[componentID] = new Component(transformation, materials, compTexture, children);
+            this.components[componentID] = new Component(transformation, materials, compTexture, compChildren);
             numComponents++;
         }
 
@@ -1200,7 +1197,11 @@ class MySceneGraph {
      * Displays the scene, processing each node, starting in the root node.
      */
     displayScene() {
-        this.components[this.idRoot].display(this.scene);
+        var defaultTrans = mat4.create();
+        var defaultMaterial = new CGFappearance(this.scene)
+        var defaultTexture = new EmptyTexture();
+        this.components[this.idRoot].display(this.scene, defaultTrans, defaultMaterial, defaultTexture);
+
 
         /*
         this.scene.pushMatrix();
