@@ -230,17 +230,11 @@ class MySceneGraph {
         var children = viewsNode.children;
 
         this.views = [];
-        this. CGFCameras=[];
-        this. CGFCamerasOrtho=[];
         var numViews = 0;
 
-        var grandChildren = [];
-        var nodeNames = [];
-
-        var defaultIdChosen = false;
         var defaultId = this.reader.getString(viewsNode, 'default');
         if (defaultId == null)
-             return "no defaul ID defined for views";
+             return "no default ID defined for views";
 
 
         for (var i = 0; i < children.length; i++) {
@@ -260,69 +254,85 @@ class MySceneGraph {
                 return "ID must be unique for each view (conflict: ID = " + viewId + ")";
 
             // Check if its default view
-            var defaultView = false;
-            if(viewId = defaultId){
-                defaultView = true;
-                defaultIdChosen = true;
-            }
+            viewNear = this.reader.getFloat(children[i], 'near');
+            if (viewNear == null || isNaN(viewNear))
+                return "no near defined for view with ID " + viewId;
 
-            viewNear = this.reader.getString(children[i], 'near');
-                if (viewNear == null)
-                    return "no near defined for view";
+            // Get the far value
+            viewFar= this.reader.getFloat(children[i], 'far');
+            if (viewFar == null || isNaN(viewFar))
+                return "no far defined for view with ID " + viewId;
 
-            viewFar= this.reader.getString(children[i], 'far');
-                if (viewFar == null)
-                    return "no far defined for view";
-
+            
             if(children[i].nodeName == "perspective"){
-                viewAngle= this.reader.getString(children[i], 'angle');
-                    if (viewAngle == null)
-                        return "no angle defined for view";
+                // Get the angle value for PERSPECTIVE view
+                viewAngle= this.reader.getFloat(children[i], 'angle');
+                if (viewAngle == null || isNaN(viewAngle))
+                    return "no angle defined for view with ID " + viewId;
             } else {
-                viewLeft= this.reader.getString(children[i], 'left');
-                    if (viewLeft == null)
-                        return "no angle defined for left";
-                viewRight= this.reader.getString(children[i], 'right');
-                    if (viewRight == null)
-                        return "no right defined for view";
-                viewTop= this.reader.getString(children[i], 'top');
-                    if (viewTop == null)
-                        return "no top defined for view";
-                viewBottom= this.reader.getString(children[i], 'bottom');
-                    if (viewBottom == null)
-                        return "no bottom defined for view";
+                // Get the left right top and bottom value for ORTHO view
+                viewLeft= this.reader.getFloat(children[i], 'left');
+                if (viewLeft == null || isNaN(viewLeft))
+                    return "no left defined for view with ID " + viewId;
+                viewRight= this.reader.getFloat(children[i], 'right');
+                if (viewRight == null || isNaN(viewRight))
+                    return "no right defined for view with ID " + viewId;
+                viewTop= this.reader.getFloat(children[i], 'top');
+                if (viewTop == null || isNaN(viewTop))
+                    return "no top defined for view with ID " + viewId;
+                viewBottom= this.reader.getFloat(children[i], 'bottom');
+                if (viewBottom == null || isNaN(viewBottom))
+                    return "no bottom defined for view with ID " + viewId;
             }
         
 
-            grandChildren = children[i].children;
-            // Specifications for the current view
-            var attributeFrom = this.parseCoordinates3D(grandChildren[0],"view FROM position for ID"+viewId)
-            var attributeTo = this.parseCoordinates3D(grandChildren[1],"view To position for ID"+viewId)
+            // Get up, to, from nodes, if they exist
+            // If they dont exist, they'll be set to null/undefined
+            var grandChildren = children[i].children;
+            var nodeNames = []
+            for (var j = 0; j < grandChildren.length; j++)
+                nodeNames.push(grandChildren[j].nodeName)
 
-            if(children[i].nodeName == "prespective"){
-                this.CGFCameras[viewId] = new CGFcamera(viewAngle, viewNear, viewAngle, attributeFrom, attributeTo);
+            var fromNode = grandChildren[nodeNames.indexOf("from")];
+            var toNode = grandChildren[nodeNames.indexOf("to")];
+            var upNode = grandChildren[nodeNames.indexOf("up")];
+
+            if (fromNode == null)
+                return "FROM element is undefined for view with ID " + viewId;
+
+            if (toNode == null)
+                return "TO element is undefined for view with ID " + viewId;
+
+            // Parses the from / to nodes for any view
+            var attributeFrom = this.parseCoordinates3D(fromNode,"view FROM position for ID "+ viewId)
+            var attributeTo = this.parseCoordinates3D(toNode,"view TO position for ID "+ viewId)
+            if (!Array.isArray(attributeFrom))
+                return attributeFrom;
+            if (!Array.isArray(attributeTo))
+                return attributeTo;
+
+            // Adds the camera to the array, depending if ortho or perspective
+            if(children[i].nodeName == "perspective"){
+                this.views[viewId] = new CGFcamera(viewAngle * DEGREE_TO_RAD, viewNear, viewFar, attributeFrom, attributeTo);
             }
             else {
-                var attributeUp;
-                if(grandChildren.length >2)
-                    attributeUp = this.parseCoordinates3D(grandChildren[1],"view Up position for ID"+viewId)
-                else attributeUp = [0,1,0];
-               this. CGFCamerasOrtho[viewId] = new CGFcameraOrtho(viewLeft, viewRight, viewBottom, viewTop, viewNear, viewFar, attributeFrom, attributeTo, attributeUp);
+                // Parses the up node for ortho view, default is [0,1,0]
+                var attributeUp = this.parseCoordinates3D(upNode);
+                if (!Array.isArray(attributeUp))
+                    attributeUp = [0,1,0];
+                this.views[viewId] = new CGFcameraOrtho(viewLeft, viewRight, viewBottom, viewTop, viewNear, viewFar, attributeFrom, attributeTo, attributeUp);
             }
-           // this.views[viewId] = global;
             numViews++;
         }
         if(numViews == 0)
-            return "at least one light must be defined";
-        if(!defaultIdChosen)
-            return "default view not defined";
+            return "at least one view must be defined";
+        
+        this.defaultView = this.views[defaultId];
+        if (this.defaultView == null)
+            return "default view not defined, ID = " + defaultId;
+            
         this.log("Parsed lights");
         return null;
-        // views e array de CGFCamera / CGFCameraOrtho
-        // tem de ter id
-        // ids nao podem ser repetidos
-        // se um dos floats nao tiver la poe-se default a 0 ou uma cena assim? ou da-se erro nao interessa é igual
-        // views.length tem de ser > 0
     }
 
     /**
@@ -479,7 +489,7 @@ class MySceneGraph {
         return null;
     }
 
-    /** TODO
+    /**
      * Parses the <textures> block. 
      * @param {textures block element} texturesNode
      */
@@ -490,7 +500,7 @@ class MySceneGraph {
         var children = texturesNode.children;
         var numTextures=0;
         for (var i = 0; i < children.length; i++) {
-            var global = [];
+            // Ignores any tag that's not <texture>
             if (children[i].nodeName != "texture") {
                 this.onXMLMinorError("unknown tag <" + children[i].nodeName + ">");
                 continue;
@@ -508,11 +518,11 @@ class MySceneGraph {
             //Get Texture File
             var textureFile = this.reader.getString(children[i], 'file');
             if (textureFile == null)
-                return "no File defined for texture";
+                return "no File defined for texture with ID " + textureId;
 
             //Check if texture is png/jpg
             if(!(textureFile.endsWith(".png") || textureFile.endsWith(".jpg")))
-                return "File is not a compatible image";
+                return "File " + textureFile + " is not a compatible image";
            
             
             //Check img Width/Height
@@ -526,23 +536,18 @@ class MySceneGraph {
             img.src = textureFile;*/
 
 
-            //global.push(textureFile);
-            this.textures[textureId] = new CGFtexture(this.scene,textureFile);
-
+            // verificar se ficheiro existe
+            var texture = new CGFtexture(this.scene,textureFile);
+            
+            this.textures[textureId] = texture;
             numTextures++;
         }
         if (numTextures == 0)
             return "at least one texture must be defined";
         return null;
-        // textures e array de CGFTexture
-        // tem de ter id e file
-        // ids nao podem ser repetidos
-        // tem de ser jpg png
-        // dar warning se dimensoes nao forem potencia de 2?
-        // verificar que textures tem length > 0!
     }
 
-    /** TODO
+    /**
      * Parses the <materials> node.
      * @param {materials block element} materialsNode
      */
@@ -558,13 +563,13 @@ class MySceneGraph {
 
         // Any number of materials.
         for (var i = 0; i < children.length; i++) {
-           // var global = [];
             var attributeNames = [];
 
+            // Ignores any tag that's not <material>
             if (children[i].nodeName != "material") {
                 this.onXMLMinorError("unknown tag <" + children[i].nodeName + ">");
                 continue;
-            }else {
+            } else {
                 attributeNames.push(...["emission", "ambient", "diffuse", "specular"]);
             }
 
@@ -577,41 +582,39 @@ class MySceneGraph {
             if (this.materials[materialId] != null)
                 return "ID must be unique for each light (conflict: ID = " + materialId + ")";
 
-            var materialShine = this.reader.getString(children[i], 'shininess');
-                if (materialShine == null)
-                    return "no Shininess defined for material";
-
-           // global.push(materialShine);
+            // Parses shininess value
+            var materialShine = this.reader.getFloat(children[i], 'shininess');
+            if (materialShine == null || isNaN(materialShine))
+                return "no Shininess defined for material";
 
             grandChildren = children[i].children;
-            // Specifications for the current material
-        
+
+            // Specifications for the current material        
             nodeNames = [];
             for (var j = 0; j < grandChildren.length; j++) {
                 nodeNames.push(grandChildren[j].nodeName);
             }
 
+            // Creates array with attributes: [emission, ambient, diffuse, specular]
             var attributes=[];
             for (var j = 0; j < attributeNames.length; j++) {
-                    var attributeIndex = nodeNames.indexOf(attributeNames[j]);
-                    var attribute;
-                    if (attributeIndex != -1) {
-                            attribute = this.parseColor(grandChildren[attributeIndex], "!!! for ID" + materialId);
+                var attributeIndex = nodeNames.indexOf(attributeNames[j]);
+                if (attributeIndex != -1) {
+                    var attribute = this.parseColor(grandChildren[attributeIndex], attributeNames[j] + " property of the material with ID " + materialId);
                     if (!Array.isArray(attribute))
                         return attribute;
                     attributes.push(attribute);
-                    }
-                    else return "material " + attributeNames[j] + " undefined for ID  " + materialId;
                 }
+                else return "material " + attributeNames[j] + " undefined for ID  " + materialId;
+            }
 
-                this.materials[materialId] = new Material(this.scene, attributes[0], attributes[1], attributes[2], attributes[3], materialShine)
-                numMaterials++;    
+            // Adds to material array
+            this.materials[materialId] = new Material(this.scene, attributes[0], attributes[1], attributes[2], attributes[3], materialShine)
+            numMaterials++;    
         }
 
         if (numMaterials== 0)
-            return "at least one light must be defined";
-        // materials e array de Material ( a nossa class fixe)
-        // verificar que materials tem length > 0!
+            return "at least one material must be defined";
         return null;
     }
 
@@ -917,12 +920,12 @@ class MySceneGraph {
             return null;
         }
         
-        if (length_s == null) {
+        if (length_s == null || isNaN(length_s)) {
             this.onXMLMinorError("Couldn't parse length_s for component texture, defaulting to 1");
             length_s = 1;
         }
         
-        if (length_t == null) {
+        if (length_t == null || isNaN(length_t)) {
             this.onXMLMinorError("Couldn't parse length_t for component texture, defaulting to 1");
             length_t = 1;
         }

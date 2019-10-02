@@ -3,9 +3,14 @@
 
     <views default="defaultCamera">
         <perspective id="defaultCamera" near="0.1" far="500" angle="45">
-            <from x="30" y="15" z="30" />
             <to x="0" y="-2" z="0" />
+            <from x="30" y="15" z="30" />
         </perspective>
+        <ortho id="orthoCamera" near="0.1" far="200" left="45" right="-70" top="90" bottom="-80" >
+            <up x="0" y="1" z="1"/> 
+            <to x="0" y="0" z="-1" />
+            <from x="0" y="0" z="1" />
+        </ortho>
     </views>
 
     <ambient>
@@ -25,6 +30,7 @@
 
     <textures>
         <texture id="demoTexture" file="scenes/images/vidral.jpg" />
+        <texture id="texture2" file="scenes/images/leaves.jpg" />
     </textures>
 
     <materials>
@@ -33,6 +39,12 @@
             <ambient r="1.0" g="0.0" b="0.0" a="1.0" />
             <diffuse r="0.6" g="0.0" b="0.0" a="1.0" />
             <specular r="0.6" g="0.0" b="0.0" a="1.0" />
+        </material>
+        <material id="material2" shininess="20">
+            <specular r="0.2" g="0.5" b="0.6" a="0.4" />
+            <emission r="0.0" g="0.1" b="0.0" a="1.0" />
+            <diffuse r="0.8" g="0.3" b="0.1" a="0.6" />
+            <ambient r="0.0" g="0.2" b="0.3" a="0.8" />
         </material>
     </materials>
 
