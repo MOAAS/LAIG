@@ -915,8 +915,8 @@ class MySceneGraph {
     parseComponentTexture(node) {
         // Gets XML attributes and looks up texture
         var ID = this.reader.getString(node, 'id');
-        var length_s = this.reader.getFloat(node, 'length_s');
-        var length_t = this.reader.getFloat(node, 'length_t');
+        var length_s = this.reader.getFloat(node, 'length_s', false); // not required
+        var length_t = this.reader.getFloat(node, 'length_t', false); // not required
         var texture = this.textures[ID];
 
         // Verifies if attributes exist, defaulting / returning if not
