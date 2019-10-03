@@ -20,14 +20,14 @@ class Component {
         for (var i = 0; i < this.children.length; i++) {
             let child = this.children[i];
             if (child instanceof CGFobject) {
-                child.multTexCoords(this.texture.length_s, this.texture.length_t)
+                child.multTexCoords(currTexture.length_s, currTexture.length_t)
                 currMaterial.setTexture(currTexture.texture);        
                 currMaterial.apply();
                 scene.pushMatrix();
                 scene.multMatrix(currTrans);
                 child.display(scene);
                 scene.popMatrix();
-                child.multTexCoords(1.0 / this.texture.length_s, 1.0 / this.texture.length_t)
+                child.multTexCoords(1.0 / currTexture.length_s, 1.0 / currTexture.length_t)
             }
             else child.display(scene, currTrans, currMaterial, currTexture)
         }
