@@ -3,23 +3,25 @@ class Component {
         this.transformation = transformation;
         this.children = children;
         this.materials = materials;
-        this.currentMaterial = materials[0];
+        this.displayedMaterial = materials[0];
         this.texture = comptexture;
     }
 
     display(scene, currTrans, currMaterial, currTexture) {
         currTrans = mat4.clone(currTrans);
-        mat4.multiply(currTrans, this.transformation, currTrans)
+        mat4.multiply(currTrans, currTrans, this.transformation)
         // Not null -> not inherit
-        if (this.material != null) 
-            currMaterial = this.material;
+        if (this.displayedMaterial != null) 
+            currMaterial = this.displayedMaterial;
         if (!this.texture.inherit)
             currTexture = this.texture
+        //currMaterial.setTexture(currTexture.texture);        
+        // length_s, length_t...
         for (var i = 0; i < this.children.length; i++) {
             let child = this.children[i];
             if (child instanceof CGFobject) {
+                currMaterial.setTexture(currTexture.texture);        
                 currMaterial.apply();
-                currMaterial.setTexture(currTexture.texture);
                 scene.pushMatrix();
                 scene.multMatrix(currTrans);
                 child.display(scene);
