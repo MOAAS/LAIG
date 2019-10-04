@@ -39,6 +39,7 @@
     <textures>
         <texture id="vidral" file="scenes/images/vidral.jpg" />
         <texture id="leaves" file="scenes/images/leaves.jpg" />
+        <texture id="house" file="scenes/images/house.jpg" />
     </textures>
 
     <materials>
@@ -48,7 +49,7 @@
             <diffuse r="0.0" g="1.0" b="0.0" a="1.0" />
             <specular r="0.0" g="1.0" b="0.0" a="1.0" />
         </material>
-        <material id="blueSpecMaterial" shininess="20">
+        <material id="blueSpecMaterial" shininess="15">
             <specular r="0.0" g="0.0" b="1.0" a="1.0" />
             <diffuse r="0.0" g="0.0" b="0.0" a="1.0" />
             <ambient r="0.0" g="0.0" b="0.0" a="1.0" />
@@ -96,7 +97,7 @@
             <materials>
                 <material id="greenAmbMaterial" />
             </materials>
-            <texture id="none"/>
+            <texture id="vidral"/>
             <children>
                 <primitiveref id="basicrectangle" />
             </children>
@@ -202,13 +203,13 @@
         <component id="supercube">
             <transformation>
                 <translate x="3" y="0" z="0"/>
-                <scale x="2" y="2" z="2"/>            
+                <scale x="3" y="3" z="3"/>            
             </transformation>
             <materials>
                 <material id="orangeDiffSpecMaterial" />
                 <material id="blueSpecMaterial"/>
             </materials>
-            <texture id="leaves"/>
+            <texture id="house" length_s="3" length_t="3"/>
             <children>
                 <componentref id="cubeleft"/>
                 <componentref id="cuberight"/>

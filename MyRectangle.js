@@ -58,6 +58,14 @@ class MyRectangle extends CGFobject {
 		this.initGLBuffers();
 	}
 
+	multTexCoords(sFact, tFact) {
+		for (let i = 0; i < this.texCoords.length; i += 2) {
+			this.texCoords[i] *= sFact;
+			this.texCoords[i + 1] *= tFact;
+		}
+		this.updateTexCoordsGLBuffers();
+	}
+
 	/**
 	 * @method updateTexCoords
 	 * Updates the list of texture coordinates of the rectangle
