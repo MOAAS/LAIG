@@ -17,10 +17,10 @@ class MyTorus extends CGFobject {
         this.indices = [];
         this.normals = [];
         this.texCoords = [];
-
+/*
         var aaa = 2 * Math.PI / this.loops;
         var bbb = 2 * Math.PI / this.slices;
-/*
+
         for (let i = 0; i < 2 * Math.PI; i += aaa) {
             for (let j = 0; j < 2 * Math.PI; j += bbb) {
                 let x = (this.outterRadius + this.innerRadius * Math.cos(j) * Math.cos(i));
@@ -58,10 +58,18 @@ class MyTorus extends CGFobject {
           const z = this.innerRadius * sin_slices;
   
           this.vertices.push(x, y, z);
-          this.normals.push(
+          /*this.normals.push(
              cos_loops * sin_slices, 
              sin_loops * sin_slices, 
-             cos_slices);
+             cos_slices);*/
+             /* this.normals.push(
+             cos_loops * cos_slices, 
+             cos_loops * sin_slices, 
+             sin_slices);*/
+             this.normals.push(
+                 cos_slices*cos_loops,
+                 cos_slices*sin_loops,
+                 sin_slices);
   
           this.texCoords.push(u);
           this.texCoords.push(v);
@@ -89,6 +97,7 @@ class MyTorus extends CGFobject {
         this.primitiveType = this.scene.gl.TRIANGLES;
         this.initGLBuffers();
     }
+
     /*
  
     for (let latNumber = 0; latNumber <= this.horizontalSlices; ++latNumber) {

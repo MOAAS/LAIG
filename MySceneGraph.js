@@ -1200,9 +1200,11 @@ class MySceneGraph {
         var defaultTrans = mat4.create();
         var defaultMaterial = new CGFappearance(this.scene)
         var defaultTexture = new EmptyTexture();
-        this.components[this.idRoot].display(this.scene, defaultTrans, defaultMaterial, defaultTexture);
+       // this.components[this.idRoot].display(this.scene, defaultTrans, defaultMaterial, defaultTexture);
 
-
+        defaultMaterial.apply()
+        new MyTorus(this.scene,70,70,1,7).display();
+        new MySphere(this.scene,70,70,4).display();
         /*
         this.scene.pushMatrix();
         this.scene.multMatrix(this.transformations["demoTransform"])
