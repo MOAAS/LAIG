@@ -20,17 +20,25 @@ class Component {
         for (var i = 0; i < this.children.length; i++) {
             let child = this.children[i];
             if (child instanceof CGFobject) {
-                child.multTexCoords(currTexture.length_s, currTexture.length_t)
+                this.multTexCoords(child, currTexture.length_s, currTexture.length_t)
                 currMaterial.setTexture(currTexture.texture);        
                 currMaterial.apply();
                 scene.pushMatrix();
                 scene.multMatrix(currTrans);
                 child.display(scene);
                 scene.popMatrix();
-                child.multTexCoords(1.0 / currTexture.length_s, 1.0 / currTexture.length_t)
+                this.multTexCoords(child, 1.0 / currTexture.length_s, 1.0 / currTexture.length_t)
             }
             else child.display(scene, currTrans, currMaterial, currTexture)
         }
+    }
+
+    multTexCoords(primitive, sFact, tFact) {
+        for (let i = 0; i < primitive.texCoords.length; i += 2) {
+            primitive.texCoords[i] *= sFact;
+            primitive.texCoords[i + 1] *= tFact;
+        }
+        primitive.updateTexCoordsGLBuffers();    
     }
 }
 
