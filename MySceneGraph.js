@@ -1203,8 +1203,8 @@ class MySceneGraph {
        // this.components[this.idRoot].display(this.scene, defaultTrans, defaultMaterial, defaultTexture);
 
         defaultMaterial.apply()
-        new MyTorus(this.scene,70,70,1,7).display();
-        new MySphere(this.scene,70,70,4).display();
+       // new MyTorus(this.scene,70,70,1,7).display();
+        new MySphere(this.scene,5,20,4).display();
         /*
         this.scene.pushMatrix();
         this.scene.multMatrix(this.transformations["demoTransform"])
