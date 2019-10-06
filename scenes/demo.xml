@@ -86,6 +86,12 @@
             <diffuse r="0.9" g="0.25" b="0.25" a="1.0" />
             <specular r="0.45" g="0.125" b="0.125" a="1.0" />
         </material>
+        <material id="graySpec" shininess="20">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="0.25" g="0.25" b="0.25" a="1.0" />
+            <diffuse r="0.25" g="0.25" b="0.25" a="1.0" />
+            <specular r="0.6" g="0.6" b="0.6" a="1.0" />
+        </material>
         <material id="redemissor" shininess="20">
             <emission r="1" g="0.8" b="0.15" a="1.0" />
             <ambient r="0" g="0" b="0" a="1.0" />
@@ -121,7 +127,13 @@
                       x3="5" y3="-0.5" z3="0"/> 
         </primitive>
         <primitive id="cylinder1">
-            <cylinder base="8" top="0" height="5" slices="8" stacks="6" />
+            <cylinder base="2" top="2" height="6" slices="20" stacks="20" />
+        </primitive>
+        <primitive id="cylinder2">
+            <cylinder base="0.5" top="1.0" height="2" slices="15" stacks="6" />
+        </primitive>
+        <primitive id="cone1">
+            <cylinder base="2" top="0" height="4" slices="20" stacks="6" />
         </primitive>
         <primitive id="torusring">
             <torus inner="0.15" outer="1" slices="8" loops="32" />
@@ -148,6 +160,7 @@
                 <componentref id="planet6"/>
                 <componentref id="planet7"/>
                 <componentref id="earth"/>
+                <componentref id="rocket"/>
             </children>
         </component>
 
@@ -391,6 +404,183 @@
                 <primitiveref id="sphere"/>
             </children>
         </component>
+             
+        <component id="rocket">
+            <transformation>
+                <translate x="-10" y="3" z="-10"/>
+                <rotate axis="x" angle="20"/>
+                <rotate axis="y" angle="40"/>
+                <scale x="0.15" y="0.15" z="0.15"/>
+            </transformation>
+            <materials>
+                <material id="graySpec" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <componentref id="rocketbody"/>
+                <componentref id="rockettop"/>
+                <componentref id="rocketbooster"/>
+            </children>
+        </component>
+
+        <component id="rocketbody">
+            <transformation>
+                <scale x="2.5" y="2.5" z="2.5"/>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <componentref id="rocketrect1"/>
+                <componentref id="rocketrect2"/>
+                <componentref id="rocketrect3"/>
+                <componentref id="rocketrect4"/>
+                <componentref id="rocketrectbase"/>
+            </children>
+        </component>
+        <component id="rocketrect1">
+            <transformation>
+                <rotate axis="x" angle="0"/>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <componentref id="rocketrect"/>
+            </children>
+        </component>
+        <component id="rocketrect2">
+            <transformation>
+                <rotate axis="x" angle="90"/>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <componentref id="rocketrect"/>
+            </children>
+        </component>
+        <component id="rocketrect3">
+            <transformation>
+                <rotate axis="x" angle="180"/>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <componentref id="rocketrect"/>
+            </children>
+        </component>
+        <component id="rocketrect4">
+            <transformation>
+                <rotate axis="x" angle="270"/>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <componentref id="rocketrect"/>
+            </children>
+        </component>
+
+        <component id="rocketrectbase">
+            <transformation>
+                <translate x="-2.5" y="0" z="0"/>
+                <rotate axis="y" angle="270"/>
+                <scale x="2" y="2" z="1"/>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="unitsquare"/>
+            </children>
+        </component>
+
+        <component id="rocketrect">
+            <transformation>
+                <translate x="0" y="0" z="1"/>
+                <scale x="5" y="2" z="1"/>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="unitsquare"/>
+            </children>
+        </component>
+
+        
+        <component id="rockettop">
+            <transformation>
+            </transformation>
+            <materials>
+                <material id="reddiffSpec"/>
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <componentref id ="rockettopcone"/>
+                <componentref id ="rockettopbase"/>
+            </children>
+        </component>
+        
+        <component id="rockettopcone">
+            <transformation>
+                <rotate axis="y" angle="90"/>
+                <scale x="2" y="2" z="2"/>
+                <translate x="0" y="0" z="3"/>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="cone1"/>
+            </children>
+        </component>
+        <component id="rockettopbase">
+            <transformation>
+                <translate x="6" y="0" z="0"/>
+                <rotate axis="y" angle="90"/>
+                <scale x="2" y="2" z="0.01"/>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="cone1"/>
+            </children>
+        </component>
+
+        
+        <component id="rocketbooster">
+            <transformation>
+                <translate x="-6    " y="0" z="0"/>
+                <scale x="2" y="2" z="2"/>
+                <rotate axis="y" angle="-90"/>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="cylinder2"/>
+            </children>
+        </component>
+        
+
+         
+
+
+
 
     </components>
 </lxs>
