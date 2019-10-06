@@ -134,7 +134,7 @@ class XMLscene extends CGFscene {
         this.axis.display();
 
         for (var i = 0; i < this.lights.length; i++) {
-         //   this.lights[i].setVisible(true);
+           this.lights[i].setVisible(false);
          //   this.lights[i].enable();
             this.lights[i].update();
         }
