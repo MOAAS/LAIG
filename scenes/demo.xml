@@ -47,10 +47,12 @@
 
     <textures>
         <texture id="sun" file="scenes/images/sun.jpg" />
-        <texture id="gold" file="scenes/images/vidral.jpg" />
+        <texture id="gold" file="scenes/images/golden.jpg" />
         <texture id="vidral" file="scenes/images/vidral.jpg" />
         <texture id="leaves" file="scenes/images/leaves.jpg" />
         <texture id="house" file="scenes/images/house.jpg" />
+        <texture id="earth" file="scenes/images/earth.jpg" />
+        <texture id="moon" file="scenes/images/moon.jpg" />
     </textures>
 
     <materials>
@@ -66,11 +68,11 @@
             <diffuse r="0.6" g="0.6" b="0.6" a="1.0" />
             <specular r="0.2" g="0.2" b="0.2" a="1.0" />
         </material>
-        <material id="bluediffuse" shininess="15">
+        <material id="bluediffSpec" shininess="15">
             <emission r="0.0" g="0.0" b="0.0" a="1.0" />
             <ambient r="0.05" g="0.05" b="0.25" a="1.0" />
             <diffuse r="0.2" g="0.2" b="1.0" a="1.0" />
-            <specular r="0.05" g="0.05" b="0.25" a="1.0" />
+            <specular r="0.1" g="0.1" b="0.5" a="1.0" />
         </material>
         <material id="orangediffSpec" shininess="20">
             <emission r="0.0" g="0.0" b="0.0" a="1.0" />
@@ -78,11 +80,11 @@
             <diffuse r="1.0" g="0.6" b="0.0" a="1.0" />
             <specular r="0.5" g="0.3" b="0.0" a="1.0" />
         </material>
-        <material id="greendiffuse" shininess="20">
+        <material id="reddiffSpec" shininess="20">
             <emission r="0.0" g="0.0" b="0.0" a="1.0" />
-            <ambient r="0.1" g="0.15" b="0.1" a="1.0" />
-            <diffuse r="0.25" g="0.9" b="0.25" a="1.0" />
-            <specular r="0.15" g="0.3" b="0.15" a="1.0" />
+            <ambient r="0.15" g="0.1" b="0.1" a="1.0" />
+            <diffuse r="0.9" g="0.25" b="0.25" a="1.0" />
+            <specular r="0.45" g="0.125" b="0.125" a="1.0" />
         </material>
         <material id="redemissor" shininess="20">
             <emission r="1" g="0.8" b="0.15" a="1.0" />
@@ -103,6 +105,10 @@
             <translate x="-2.5" y="-1.5" z="-1"/>
             <scale x="0.5" y="0.5" z="0.5"/>
         </transformation>
+        <transformation id="earthmoontransform">
+            <translate x="-1.5" y="-0.5" z="3"/>
+            <scale x="0.5" y="0.5" z="0.5"/>
+        </transformation>
     </transformations>
 
     <primitives>
@@ -117,8 +123,8 @@
         <primitive id="cylinder1">
             <cylinder base="8" top="0" height="5" slices="8" stacks="6" />
         </primitive>
-        <primitive id="torus1">
-            <torus inner="0.2" outer="1" slices="8" loops="32" />
+        <primitive id="torusring">
+            <torus inner="0.15" outer="1" slices="8" loops="32" />
         </primitive>
         <primitive id="sphere">
             <sphere radius="1" slices="16" stacks="16" />
@@ -141,6 +147,7 @@
                 <componentref id="planet5"/>
                 <componentref id="planet6"/>
                 <componentref id="planet7"/>
+                <componentref id="earth"/>
             </children>
         </component>
 
@@ -163,7 +170,7 @@
                 <rotate axis="y" angle="40"/>
             </transformation>
             <materials>
-                <material id="bluediffuse" />
+                <material id="bluediffSpec" />
             </materials>
             <texture id="none"/>
             <children>
@@ -191,7 +198,7 @@
                 <rotate axis="y" angle="230"/>
             </transformation>
             <materials>
-                <material id="greendiffuse" />
+                <material id="reddiffSpec" />
             </materials>
             <texture id="none"/>
             <children>
@@ -219,14 +226,13 @@
                 <rotate axis="x" angle="30"/>
             </transformation>
             <materials>
-                <material id="greendiffuse" />
+                <material id="reddiffSpec" />
             </materials>
             <texture id="none"/>
             <children>
                 <componentref id="genericplanet3"/>
             </children>
         </component>
-
 
         <component id="planet6">
             <transformation>
@@ -234,7 +240,7 @@
                 <rotate axis="y" angle="60"/>
             </transformation>
             <materials>
-                <material id="bluediffuse" />
+                <material id="bluediffSpec" />
             </materials>
             <texture id="none"/>
             <children>
@@ -242,18 +248,32 @@
             </children>
         </component>
 
-
         <component id="planet7">
             <transformation>
                 <rotate axis="x" angle="30"/>
                 <rotate axis="y" angle="230"/>
             </transformation>
             <materials>
-                <material id="bluediffuse" />
+                <material id="bluediffSpec" />
             </materials>
             <texture id="none"/>
             <children>
                 <componentref id="genericplanet3"/>
+            </children>
+        </component>
+
+        <component id="earth">
+            <transformation>
+                <translate x="0" y="0" z="12"/>
+                <rotate axis="x" angle="-113"/>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="earth"/>
+            <children>
+                <componentref id="planetbody"/>
+                <componentref id="earthmoon"/>
             </children>
         </component>
 
@@ -266,7 +286,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="none"/>
+            <texture id="inherit"/>
             <children>
                 <componentref id="planetbody"/>
                 <componentref id="ring"/>
@@ -282,7 +302,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="none"/>
+            <texture id="inherit"/>
             <children>
                 <componentref id="planetbody"/>
                 <componentref id="ring"/>
@@ -299,7 +319,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="none"/>
+            <texture id="inherit"/>
             <children>
                 <componentref id="planetbody"/>
                 <componentref id="genericmoon2"/>
@@ -313,7 +333,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="none"/>
+            <texture id="inherit"/>
             <children>
                 <primitiveref id="sphere"/>
             </children>
@@ -329,7 +349,7 @@
             </materials>
             <texture id="gold"/>
             <children>
-                <primitiveref id="torus1"/>
+                <primitiveref id="torusring"/>
             </children>
         </component>
 
@@ -340,7 +360,7 @@
             <materials>
                 <material id="lunar" />
             </materials>
-            <texture id="none"/>
+            <texture id="inherit"/>
             <children>
                 <primitiveref id="sphere"/>
             </children>
@@ -353,7 +373,20 @@
             <materials>
                 <material id="lunar" />
             </materials>
-            <texture id="none"/>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="sphere"/>
+            </children>
+        </component>
+
+        <component id="earthmoon">
+            <transformation>
+                <transformationref id="earthmoontransform"/>
+            </transformation>
+            <materials>
+                <material id="lunar" />
+            </materials>
+            <texture id="moon"/>
             <children>
                 <primitiveref id="sphere"/>
             </children>
