@@ -1,0 +1,285 @@
+<lxs>
+    <scene root="root" axis_length="5"/>
+
+    <views default="defaultCamera">
+        <perspective id="defaultCamera" near="0.1" far="500" angle="25">
+            <to x="0" y="0" z="0" />
+            <from x="15" y="15" z="15" />
+        </perspective>
+        <ortho id="orthoCamera" near="0.1" far="200" left="45" right="-70" top="90" bottom="-80" >
+            <to x="0" y="0" z="-1" />
+            <from x="0" y="0" z="1" />
+            <up x="0" y="1" z="1"/> 
+        </ortho>
+    </views>
+
+    <globals>
+        <ambient r="0.2" g="0.2" b="0.2" a="1.0" />
+        <background r="0.0" g="0.0" b="0.0" a="1.0" />
+    </globals>
+
+    <lights>
+        <omni id="demoLight" enabled="0">
+            <location x="5" y="5" z="5" w="1.0" />
+            <ambient r="0" g="0" b="0" a="1.0" />
+            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
+            <specular r="1.0" g="1.0" b="1.0" a="1.0" />
+            <attenuation constant="1.0" linear="0.1" quadratic="0.01" />
+        </omni>
+
+        <omni id="light" enabled="1">
+            <location x="5" y="7" z="5" w="1.0" />
+            <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
+            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
+            <specular r="1.0" g="1.0" b="1.0" a="1.0" />
+            <attenuation constant="1.0" linear="0.0" quadratic="0.00" />
+        </omni>
+    </lights>
+
+    <textures>
+        <texture id="vidral" file="scenes/images/vidral.jpg" />
+        <texture id="leaves" file="scenes/images/leaves.jpg" />
+        <texture id="house" file="scenes/images/house.jpg" />
+    </textures>
+
+    <materials>
+        <material id="greenAmbMaterial" shininess="10">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="0.0" g="1.0" b="0.0" a="1.0" />
+            <diffuse r="0.0" g="1.0" b="0.0" a="1.0" />
+            <specular r="0.0" g="1.0" b="0.0" a="1.0" />
+        </material>
+        <material id="blueSpecMaterial" shininess="15">
+            <specular r="0.0" g="0.0" b="1.0" a="1.0" />
+            <diffuse r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="0.0" g="0.0" b="0.0" a="1.0" />
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+        </material>
+        <material id="orangeDiffSpecMaterial" shininess="20">
+            <specular r="0.5" g="0.3" b="0.0" a="1.0" />
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <diffuse r="1.0" g="0.6" b="0.0" a="1.0" />
+            <ambient r="0.15" g="0.15" b="0.15" a="1.0" />
+        </material>
+        
+
+    </materials>
+
+    <transformations>
+        <transformation id="transformMain">
+            <scale x="2" y="1" z="1"/>
+        </transformation>
+        <transformation id="transform1">
+            <translate x="0" y="0" z="2" />
+            <rotate axis="x" angle="-45" />
+        </transformation>
+        <transformation id="transform2">
+            <translate x="0" y="1" z="0" />
+            <rotate axis="y" angle="45" />
+            <rotate axis="x" angle="-45" />
+        </transformation>
+    </transformations>
+
+    <primitives>
+        <primitive id="basicrectangle">
+            <rectangle x1="-0.5" y1="-1" x2="0.5" y2="1" />
+        </primitive>
+        <primitive id="unitsquare">
+            <rectangle x1="-0.5" y1="-0.5" x2="0.5" y2="0.5" />
+        </primitive>
+        <primitive id="triangletest">
+            <triangle x1="0" y1="-0.5" z1="0"
+                      x2="0" y2="0" z2="5"
+                      x3="5" y3="-0.5" z3="0"/> 
+        </primitive>
+        <primitive id="cylinder1">
+            <cylinder base="8" top="0" height="5" slices="8" stacks="6" />
+        </primitive>
+        <primitive id="sphere1">
+            <sphere radius="3" slices="8" stacks="8" />
+        </primitive>
+        <primitive id="torus1">
+            <torus inner="1" outer="5" slices="8" loops="12" />
+        </primitive>
+    </primitives>
+
+    <components>
+        <component id="root">
+            <transformation>
+                <translate x="0" y="1" z="0"/>
+            </transformation>
+            <materials>
+                <material id="blueSpecMaterial" />
+            </materials>
+            <texture id="vidral"/>
+            <children>
+                <componentref id="componentOnZ"/>
+                <componentref id="componentCenter"/>
+                <componentref id="componentTop"/>
+                <componentref id="supercube"/>
+                <componentref id="cooltriangle"/>
+                <componentref id="superplanet"/>
+            </children>
+        </component>
+
+        <component id="superplanet">
+            <transformation>
+                <translate x="0" y="3" z="0"/>
+                <scale x="0.2" y="0.2" z="0.2"/>
+                <rotate axis="x" angle="90"/>
+            </transformation>
+            <materials>
+                <material id="orangeDiffSpecMaterial" />
+            </materials>
+            <texture id="none"/>
+            <children>
+                <primitiveref id="torus1" />
+                <primitiveref id="sphere1" />
+                <primitiveref id="cylinder1" />
+
+            </children>
+        </component>
+
+        <component id="cooltriangle">
+            <transformation/>
+            <materials>
+                <material id="greenAmbMaterial" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="triangletest" />
+            </children>
+        </component>
+
+    
+        <component id="componentOnZ">
+            <transformation>
+                <transformationref id="transform1"/>
+            </transformation>
+            <materials>
+                <material id="greenAmbMaterial" />
+            </materials>
+            <texture id="vidral"/>
+            <children>
+                <primitiveref id="basicrectangle" />
+            </children>
+        </component>
+        
+        <component id="componentCenter">
+            <transformation>
+                <transformationref id="transform2"/>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none"/>
+            <children>
+                <primitiveref id="basicrectangle" />
+            </children>
+        </component>
+
+        <component id="componentTop">
+            <transformation>
+                <rotate axis="x" angle="-90" />
+                <scale x="3" y="1" z="0.5"/>
+            </transformation>
+            <materials>
+                <material id="orangeDiffSpecMaterial" />
+            </materials>
+            <texture id="none"/>
+            <children>
+                <primitiveref id="basicrectangle" />
+            </children>
+        </component>
+
+        <component id="cubeface">
+            <transformation/>
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="unitsquare"/>
+            </children>
+        </component>
+
+        <component id="cubeleft">
+            <transformation>
+                <translate x="-0.5" y="0" z="0"/>
+                <rotate axis="y" angle="-90"/>
+            </transformation>
+            <materials><material id="inherit" /></materials>
+            <texture id="inherit"/>
+            <children><componentref id="cubeface"/></children>
+        </component>
+
+        <component id="cuberight">
+            <transformation>
+                <translate x="0.5" y="0" z="0"/>
+                <rotate axis="y" angle="90"/>
+            </transformation>
+            <materials><material id="inherit" /></materials>
+            <texture id="inherit"/>
+            <children><componentref id="cubeface"/></children>
+        </component>
+
+        <component id="cubetop">
+            <transformation>
+                <translate x="0" y="0.5" z="0"/>
+                <rotate axis="x" angle="-90"/>
+            </transformation>
+            <materials><material id="inherit" /></materials>
+            <texture id="inherit"/>
+            <children><componentref id="cubeface"/></children>
+        </component>
+
+        <component id="cubebot">
+            <transformation>
+                <translate x="0" y="-0.5" z="0"/>
+                <rotate axis="x" angle="90"/>
+            </transformation>
+            <materials><material id="inherit" /></materials>
+            <texture id="inherit"/>
+            <children><componentref id="cubeface"/></children>
+        </component>
+
+        <component id="cubefront">
+            <transformation>
+                <translate x="0" y="0" z="0.5"/>
+            </transformation>
+            <materials><material id="inherit" /></materials>
+            <texture id="inherit"/>
+            <children><componentref id="cubeface"/></children>
+        </component>
+
+        <component id="cubeback">
+            <transformation>
+                <translate x="0" y="0" z="-0.5"/>
+                <rotate axis="y" angle="180"/>
+            </transformation>
+            <materials><material id="inherit" /></materials>
+            <texture id="inherit"/>
+            <children><componentref id="cubeface"/></children>
+        </component>
+
+        <component id="supercube">
+            <transformation>
+                <translate x="3" y="0" z="0"/>
+                <scale x="3" y="3" z="3"/>            
+            </transformation>
+            <materials>
+                <material id="orangeDiffSpecMaterial" />
+                <material id="blueSpecMaterial"/>
+            </materials>
+            <texture id="house" length_s="3" length_t="3"/>
+            <children>
+                <componentref id="cubeleft"/>
+                <componentref id="cuberight"/>
+                <componentref id="cubetop"/>
+                <componentref id="cubebot"/>
+                <componentref id="cubefront"/>
+                <componentref id="cubeback"/>
+            </children>
+        </component>    
+    </components>
+</lxs>

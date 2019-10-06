@@ -113,11 +113,11 @@ class MySceneGraph {
         }
 
         // <ambient>
-        if ((index = nodeNames.indexOf("ambient")) == -1)
-            return "tag <ambient> missing";
+        if ((index = nodeNames.indexOf("globals")) == -1)
+            return "tag <globals> missing";
         else {
             if (index != AMBIENT_INDEX)
-                this.onXMLMinorError("tag <ambient> out of order");
+                this.onXMLMinorError("tag <globals> out of order");
 
             //Parse ambient block
             if ((error = this.parseAmbient(nodes[index])) != null)
@@ -949,7 +949,7 @@ class MySceneGraph {
                 // Gets the component
                 var referencedComponent = this.components[childID];
                 if (referencedComponent == null)
-                    return "Couldn't parse children for component with ID = " + componentID + ", child ID not found: " + childID;
+                    return "Couldn't parse children for component with ID = " + componentIDs[i] + ", child ID not found: " + childID;
                 // Replaces the ID by the actual component
                 component.children[j] = referencedComponent;
             }
