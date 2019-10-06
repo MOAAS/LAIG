@@ -27,7 +27,8 @@ class MyTriangle extends CGFobject {
 
 		//Counter-clockwise reference of vertices
 		this.indices = [
-			0, 1, 2
+			0, 1, 2,
+			2, 1, 0
 		];
 
 		//Facing Z positive
@@ -47,9 +48,9 @@ class MyTriangle extends CGFobject {
         t
         */
 
-		var a = Math.sqrt(Math.pow(this.x2 - this.y1, 2) + Math.pow(this.y2 - this.y1, 2))
-		var b = Math.sqrt(Math.pow(this.x2 - this.y3, 2) + Math.pow(this.y2 - this.y3, 2))
-		var c = Math.sqrt(Math.pow(this.x1 - this.y3, 2) + Math.pow(this.y1 - this.y3, 2))
+		var a = Math.sqrt(Math.pow(this.x2 - this.x1, 2) + Math.pow(this.y2 - this.y1, 2))
+		var b = Math.sqrt(Math.pow(this.x2 - this.x3, 2) + Math.pow(this.y2 - this.y3, 2))
+		var c = Math.sqrt(Math.pow(this.x1 - this.x3, 2) + Math.pow(this.y1 - this.y3, 2))
 
 		var cos = ((a * a) - (b * b) + (c * c)) / (2 * a * c);
 		var sin = Math.sqrt(1 - cos * cos);

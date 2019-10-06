@@ -28,7 +28,7 @@ class MySphere extends CGFobject {
         let y = cosTheta*sinPhi;
         let z = sinTheta;
         let u = 1 - (longNumber / this.slices);
-        let v = 1 - (latNumber / this.stacks);
+        let v = 0.5 - (latNumber / this.stacks) / 2;
         this.vertices.push(this.radius * x);
         this.vertices.push(this.radius * y);
         this.vertices.push(this.radius * z);
@@ -53,7 +53,7 @@ class MySphere extends CGFobject {
         let y = cosTheta*sinPhi;
         let z = sinTheta;
         let u = 1 - (longNumber / this.slices);
-        let v = 1 - (latNumber / this.stacks);
+        let v = 0.5 - (latNumber / this.stacks) / 2;
         this.vertices.push(this.radius * x);
         this.vertices.push(this.radius * y);
         this.vertices.push(this.radius * z);
