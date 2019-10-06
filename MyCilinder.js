@@ -23,6 +23,7 @@ class MyCilinder extends CGFobject {
             for(var j = 0, z = 0, radius = this.baseRadius; j <= this.stacks; j++, z += zDiff, radius += radiusDiff) {
                 this.vertices.push(Math.cos(ang) * radius, Math.sin(ang)  * radius, z); 
 
+                // corrigir normais aaaaaa
                 this.normals.push(Math.cos(ang)  * radius, Math.sin(ang)  * radius, 0);
                 
                 this.texCoords.push(1 - ang / (2*Math.PI), 1 - z / this.height);
@@ -45,6 +46,7 @@ class MyCilinder extends CGFobject {
             }
             
         }
+
         this.primitiveType = this.scene.gl.TRIANGLES;
         this.initGLBuffers();
     }
