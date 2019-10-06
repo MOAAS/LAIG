@@ -42,7 +42,6 @@ class Component {
     }
 }
 
-
 /**
  * Stores a texture for a component: CGFTexture, length_s, length_t
  */
@@ -51,15 +50,13 @@ class ComponentTexture {
         this.texture = texture;
         this.length_s = length_s;
         this.length_t = length_t;
-        this.enabled = true;
-        this.inherit = (this.texture == null);
+        this.inherit = false;
     }
 }
 
-class EmptyTexture extends ComponentTexture {
+class InheritedTexture extends ComponentTexture {
     constructor() {
         super(null, 1, 1)
-        this.enabled = false;
-        this.inherit = false;
+        this.inherit = true;
     }
 }

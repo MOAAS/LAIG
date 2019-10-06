@@ -2,33 +2,38 @@
  * MyTriangle
  * @constructor
  * @param scene - Reference to MyScene object
- * @param x - Scale of rectangle in X
- * @param y - Scale of rectangle in Y
+ * @param A - left vertex
+ * @param B - right vertex
+ * @param C - Middle vertex
  */
 class MyTriangle extends CGFobject {
-	constructor(scene, x1, y1, x2, y2, x3, y3) {
+	constructor(scene, A, B, C) {
 		super(scene);
-		this.x1 = x1;
-		this.x2 = x2;
-		this.x3 = x3;
-		this.y1 = y1;
-		this.y2 = y2;
-		this.y3 = y3;
+		this.x1 = A[0];
+		this.x2 = B[0];
+		this.x3 = C[0];
+
+		this.y1 = A[1];
+		this.y2 = B[1];
+		this.y3 = C[1];
+
+		this.z1 = A[2];
+		this.z2 = B[2];
+		this.z3 = C[2];
 
 		this.initBuffers();
 	}
 	
 	initBuffers() {
 		this.vertices = [
-			this.x1, this.y1, 0,	//0
-			this.x2, this.y2, 0,	//1
-			this.x3, this.y3, 0		//2
+			this.x1, this.y1, this.z1,	//0
+			this.x2, this.y2, this.z2,	//1
+			this.x3, this.y3, this.z3	//2
 		];
 
 		//Counter-clockwise reference of vertices
 		this.indices = [
 			0, 1, 2,
-			2, 1, 0
 		];
 
 		//Facing Z positive
@@ -48,9 +53,9 @@ class MyTriangle extends CGFobject {
         t
         */
 
-		var a = Math.sqrt(Math.pow(this.x2 - this.x1, 2) + Math.pow(this.y2 - this.y1, 2))
-		var b = Math.sqrt(Math.pow(this.x2 - this.x3, 2) + Math.pow(this.y2 - this.y3, 2))
-		var c = Math.sqrt(Math.pow(this.x1 - this.x3, 2) + Math.pow(this.y1 - this.y3, 2))
+		var a = Math.sqrt(Math.pow(this.x2 - this.x1, 2) + Math.pow(this.y2 - this.y1, 2) + Math.pow(this.z2 - this.z1, 2))
+		var b = Math.sqrt(Math.pow(this.x2 - this.x3, 2) + Math.pow(this.y2 - this.y3, 2) + Math.pow(this.z2 - this.z3, 2))
+		var c = Math.sqrt(Math.pow(this.x1 - this.x3, 2) + Math.pow(this.y1 - this.y3, 2) + Math.pow(this.z1 - this.z3, 2))
 
 		var cos = ((a * a) - (b * b) + (c * c)) / (2 * a * c);
 		var sin = Math.sqrt(1 - cos * cos);
