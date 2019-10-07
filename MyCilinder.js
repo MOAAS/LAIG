@@ -22,16 +22,23 @@ class MyCilinder extends CGFobject {
         for(var i = 0, ang = 0; i <= this.slices; i++, ang += angDiff) {
             for(var j = 0, z = 0, radius = this.baseRadius; j <= this.stacks; j++, z += zDiff, radius += radiusDiff) {
                 this.vertices.push(Math.cos(ang) * radius, Math.sin(ang)  * radius, z); 
+                this.vertices.push(Math.cos(ang) * radius, Math.sin(ang)  * radius, z); 
 
-                // corrigir normais aaaaaa
                 this.normals.push(Math.cos(ang)  * radius, Math.sin(ang)  * radius, 0);
+                this.normals.push(-Math.cos(ang)  * radius, -Math.sin(ang)  * radius, 0);
                 
                 this.texCoords.push(1 - ang / (2*Math.PI), 1 - z / this.height);
+                this.texCoords.push(1 - ang / (2*Math.PI), 1 - z / this.height);
 
-                var currVertIndex = (this.stacks + 1) * i + j;
-                var nextVertIndex = currVertIndex + 1;
-                var nextSliceVertIndex = currVertIndex + (this.stacks + 1);
-                var nextSliceNextVertIndex = nextSliceVertIndex + 1;
+                var currVertIndex = (this.stacks + 1) * 2 * i + 2 * j;
+                var nextVertIndex = currVertIndex + 2;
+                var nextSliceVertIndex = currVertIndex + 2 * (this.stacks + 1);
+                var nextSliceNextVertIndex = nextSliceVertIndex + 2;
+
+                var opcurrVertIndex = currVertIndex + 1;
+                var opnextVertIndex = nextVertIndex + 1;
+                var opnextSliceVertIndex = nextSliceVertIndex + 1;
+                var opnextSliceNextVertIndex = nextSliceNextVertIndex + 1;
 
                 if (j != this.stacks && i != this.slices) {
 
@@ -39,8 +46,8 @@ class MyCilinder extends CGFobject {
                     this.indices.push(nextVertIndex, nextSliceVertIndex, nextSliceNextVertIndex);
 
                     // opposite square
-                    this.indices.push(nextVertIndex, nextSliceVertIndex, currVertIndex);
-                    this.indices.push(nextSliceNextVertIndex, nextSliceVertIndex, nextVertIndex);
+                    this.indices.push(opnextVertIndex, opnextSliceVertIndex, opcurrVertIndex);
+                    this.indices.push(opnextSliceNextVertIndex, opnextSliceVertIndex, opnextVertIndex);
                 }
     
             }
