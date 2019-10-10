@@ -3,7 +3,7 @@ class Component {
         this.transformation = transformation;
         this.children = children;
         this.materials = materials;
-        this.displayedMaterial = materials[0];
+        this.currMaterialIndex = 0;
         this.texture = comptexture;
     }
 
@@ -11,12 +11,10 @@ class Component {
         currTrans = mat4.clone(currTrans);
         mat4.multiply(currTrans, currTrans, this.transformation)
         // Not null -> not inherit
-        if (this.displayedMaterial != null) 
-            currMaterial = this.displayedMaterial;
+        if (this.materials[this.currMaterialIndex] != null) 
+            currMaterial = this.materials[this.currMaterialIndex];
         if (!this.texture.inherit)
             currTexture = this.texture
-        //currMaterial.setTexture(currTexture.texture);        
-        // length_s, length_t...
         for (var i = 0; i < this.children.length; i++) {
             let child = this.children[i];
             if (child instanceof CGFobject) {
@@ -39,6 +37,11 @@ class Component {
             primitive.texCoords[i + 1] *= tFact;
         }
         primitive.updateTexCoordsGLBuffers();    
+    }
+
+    cycleMaterial() {
+        this.currMaterialIndex = (this.currMaterialIndex + 1) % this.materials.length
+        //this.displayedMaterial = this.materials[8];
     }
 }
 
