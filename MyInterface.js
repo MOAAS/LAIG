@@ -24,7 +24,15 @@ class MyInterface extends CGFinterface {
 
         this.initKeys();
 
+        this.lightfolder = this.gui.addFolder('Lights');
         return true;
+    }
+
+    addLights(lights, numLights) {
+        for (var i = 0; i < numLights; i++) {
+            var lightpos = "(" + lights[i].position[0] + "," + lights[i].position[1] + "," + lights[i].position[2] + ")";
+            this.lightfolder.add(lights[i], 'enabled').name("Light #" + i + ": " + lightpos);
+        }
     }
 
     /**

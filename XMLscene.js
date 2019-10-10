@@ -82,6 +82,8 @@ class XMLscene extends CGFscene {
                 i++;
             }
         }
+
+        this.numLights = i;
     }
 
     setDefaultAppearance() {
@@ -102,6 +104,7 @@ class XMLscene extends CGFscene {
         this.setGlobalAmbientLight(this.graph.ambient[0], this.graph.ambient[1], this.graph.ambient[2], this.graph.ambient[3]);
 
         this.initLights();
+        this.interface.addLights(this.lights, this.numLights);
 
         this.sceneInited = true;
         this.camera = this.graph.defaultView
@@ -141,7 +144,7 @@ class XMLscene extends CGFscene {
         this.axis.display();
 
         for (var i = 0; i < this.lights.length; i++) {
-           this.lights[i].setVisible(true);
+           this.lights[i].setVisible(this.lights[i].enabled);
          //   this.lights[i].enable();
             this.lights[i].update();
         }
