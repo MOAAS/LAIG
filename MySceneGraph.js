@@ -1347,4 +1347,10 @@ class MySceneGraph {
         this.scene.popMatrix();
         */
     }
+
+    cycleMaterials() {
+        for (var componentID in this.components) {
+            this.components[componentID].cycleMaterial();
+        }
+    }
 }

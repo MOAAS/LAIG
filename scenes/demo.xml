@@ -337,6 +337,8 @@
             </transformation>
             <materials>
                 <material id="bluediffSpec" />
+                <material id="orangediffSpec" />
+                <material id="reddiffSpec" />
             </materials>
             <texture id="none"/>
             <children>
@@ -351,6 +353,8 @@
             </transformation>
             <materials>
                 <material id="orangediffSpec" />
+                <material id="bluediffSpec" />
+                <material id="reddiffSpec" />
             </materials>
             <texture id="none"/>
             <children>
@@ -364,7 +368,9 @@
                 <rotate axis="y" angle="230"/>
             </transformation>
             <materials>
-                <material id="reddiffSpec" />
+                <material id="reddiffSpec" /> 
+                <material id="orangediffSpec" />
+                <material id="bluediffSpec" />
             </materials>
             <texture id="none"/>
             <children>
@@ -379,6 +385,8 @@
             </transformation>
             <materials>
                 <material id="orangediffSpec" />
+                <material id="bluediffSpec" />
+                <material id="reddiffSpec" />
             </materials>
             <texture id="none"/>
             <children>
@@ -393,6 +401,8 @@
             </transformation>
             <materials>
                 <material id="reddiffSpec" />
+                <material id="bluediffSpec" />
+                <material id="orangediffSpec" />
             </materials>
             <texture id="none"/>
             <children>
@@ -407,6 +417,8 @@
             </transformation>
             <materials>
                 <material id="bluediffSpec" />
+                <material id="orangediffSpec" />
+                <material id="reddiffSpec" />
             </materials>
             <texture id="none"/>
             <children>
@@ -421,6 +433,8 @@
             </transformation>
             <materials>
                 <material id="bluediffSpec" />
+                <material id="reddiffSpec" />
+                <material id="orangediffSpec" />
             </materials>
             <texture id="none"/>
             <children>
