@@ -55,6 +55,7 @@
         <texture id="moon" file="scenes/images/moon.jpg" />
         <texture id="head" file="scenes/images/head.jpg" />
         <texture id="astronaut" file="scenes/images/astronaut.jpg" />
+        <texture id="rocket" file= "scenes/images/rocket.jpg"/>
     </textures>
 
     <materials>
@@ -146,7 +147,7 @@
             <torus inner="0.15" outer="1" slices="8" loops="32" />
         </primitive>
         <primitive id="sphere">
-            <sphere radius="1" slices="16" stacks="16" />
+            <sphere radius="1" slices="32" stacks="32" />
         </primitive>
         <primitive id="cylinder">
             <cylinder base="1" top="1" height="1" slices="12" stacks="12" />
@@ -596,7 +597,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="rocket"/>
             <children>
                 <componentref id="rocketrect1"/>
                 <componentref id="rocketrect2"/>
@@ -714,7 +715,7 @@
         <component id="rockettopbase">
             <transformation>
                 <translate x="6" y="0" z="0"/>
-                <rotate axis="y" angle="90"/>
+                <rotate axis="y" angle="270"/>
                 <scale x="2" y="2" z="0.01"/>
             </transformation>
             <materials>
@@ -729,6 +730,18 @@
         
         <component id="rocketbooster">
             <transformation>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <componentref id="rocketcone"/>
+                <componentref id="rocketflame"/>
+            </children>
+        </component>
+        <component id="rocketcone">
+            <transformation>
                 <translate x="-6    " y="0" z="0"/>
                 <scale x="2" y="2" z="2"/>
                 <rotate axis="y" angle="-90"/>
@@ -739,6 +752,20 @@
             <texture id="inherit"/>
             <children>
                 <primitiveref id="cylinder2"/>
+            </children>
+        </component>
+        <component id="rocketflame">
+            <transformation>
+                <translate x="-9    " y="0" z="0"/>
+                <scale x="4" y="1.3" z="1.3"/>
+                <rotate axis="y" angle="-90"/>
+            </transformation>
+            <materials>
+                <material id="redemissor" />
+            </materials>
+            <texture id="sun"  length_s="1" length_t="1"/>
+            <children>
+                <primitiveref id="sphere"/>
             </children>
         </component>
         
