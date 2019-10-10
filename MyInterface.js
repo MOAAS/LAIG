@@ -17,10 +17,7 @@ class MyInterface extends CGFinterface {
         super.init(application);
         // init GUI. For more information on the methods, check:
         //  http://workshop.chromeexperiments.com/examples/gui
-
-        this.views=[];
         this.gui = new dat.GUI();
-       // this.gui.add(this.scene, 'selectedView', this.views).name('CAMEERA').onChange(this.scene.updateCamera.bind(this.scene))
 
         // add a group of controls (and open/expand by defult)
 
@@ -29,6 +26,9 @@ class MyInterface extends CGFinterface {
         return true;
     }
 
+    initCamerasUI(views){
+        this.gui.add(this.scene, 'selectedCamera', views).name('CAMERA').onChange(this.scene.updateCameras.bind(this.scene));
+    }
     /**
      * initKeys
      */
