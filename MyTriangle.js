@@ -36,11 +36,22 @@ class MyTriangle extends CGFobject {
 			0, 1, 2,
 		];
 
+		// U = B - A, V = C - A
+		let U = [this.x2 - this.x1, this.y2 - this.y1, this.z2 - this.z1]
+		let V = [this.x3 - this.x1, this.y3 - this.y1, this.z3 - this.z1]
+
+		// Cross product U x V
+		let normal = [
+			U[1] * V[2] - U[2] * V[1],
+			U[2] * V[0] - U[0] * V[2],
+			U[0] * V[1] - U[1] * V[0],			
+		]
+
 		//Facing Z positive
 		this.normals = [
-			0, 0, 1,
-			0, 0, 1,
-			0, 0, 1
+			normal[0], normal[1], normal[2],
+			normal[0], normal[1], normal[2],
+			normal[0], normal[1], normal[2]
 		];
 		
 		/*

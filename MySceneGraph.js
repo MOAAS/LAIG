@@ -610,6 +610,7 @@ class MySceneGraph {
 
             // Adds to material array
             this.materials[materialId] = new Material(this.scene, attributes[0], attributes[1], attributes[2], attributes[3], materialShine)
+            this.materials[materialId].setTextureWrap('REPEAT', 'REPEAT');            
             numMaterials++;    
         }
 
@@ -1060,21 +1061,31 @@ class MySceneGraph {
         }
 
         // Passes no texture for inherit
-        if (ID == 'inherit')
+        if (ID == 'inherit') {
+            if (length_s != null)
+                this.onXMLMinorError("Component texture set as inherit, length_s will be ignored");
+            if (length_t != null)
+                this.onXMLMinorError("Component texture set as inherit, length_t will be ignored");
             return new InheritedTexture();
+        }
     
         // Makes no texture for none
-        if (ID == 'none')
+        if (ID == 'none') {
+            if (length_s != null)
+                this.onXMLMinorError("Component texture set as none, length_s will be ignored");
+            if (length_t != null)
+                this.onXMLMinorError("Component texture set as none, length_t will be ignored");
             return new ComponentTexture(null, 1, 1);   
+        }
     
         
         if (length_s == null || isNaN(length_s)) {
-            this.onXMLMinorError("Couldn't parse length_s for component texture, defaulting to 1");
+            this.onXMLMinorError("Couldn't parse length_s for component texture, defaulting to 1 (texture ID = " + ID + ")");
             length_s = 1;
         }
         
         if (length_t == null || isNaN(length_t)) {
-            this.onXMLMinorError("Couldn't parse length_t for component texture, defaulting to 1");
+            this.onXMLMinorError("Couldn't parse length_t for component texture, defaulting to 1 (texture ID = " + ID + ")");
             length_t = 1;
         }
 
