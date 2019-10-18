@@ -28,6 +28,8 @@ class MyInterface extends CGFinterface {
     }
 
     addLights(lights, numLights) {
+        // adds numLights lights to the folder previously created
+        // Light #i : (X, Y, Z)
         for (var i = 0; i < numLights; i++) {
             var lightpos = "(" + lights[i].position[0] + "," + lights[i].position[1] + "," + lights[i].position[2] + ")";
             this.lightfolder.add(lights[i], 'enabled').name("Light #" + i + ": " + lightpos);

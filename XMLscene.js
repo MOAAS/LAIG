@@ -104,18 +104,24 @@ class XMLscene extends CGFscene {
         this.setGlobalAmbientLight(this.graph.ambient[0], this.graph.ambient[1], this.graph.ambient[2], this.graph.ambient[3]);
 
         this.initLights();
+
+        // adds the lights to the interface drop down
         this.interface.addLights(this.lights, this.numLights);
 
+        // Gets the current and the camera list from the graph
         var cameraKeys = [];
         for(var key in this.graph.views ){
             if(this.graph.defaultView==this.graph.views[key])
                 this.selectedCamera = key;
             cameraKeys.push(key);
         }
+
+        // Initializes camera list with the keys (IDs) of the cameras
         this.interface.initCamerasUI(cameraKeys);
         this.sceneInited = true;
         this.camera = this.graph.defaultView
 
+        // sets the active camera (default)
         this.setCamera(this.graph.defaultView)
     }
 
@@ -129,8 +135,11 @@ class XMLscene extends CGFscene {
     }
 
     update(t) {
+        // In case it's not loaded
         if (this.graph == null)
             return;
+
+        // if M is pressed, go to next material in the list
         if (this.gui.isKeyPressed("KeyM"))
             this.graph.cycleMaterials()
     }
@@ -152,16 +161,15 @@ class XMLscene extends CGFscene {
         // Apply transformations corresponding to the camera position relative to the origin
         this.applyViewMatrix();
 
+        // Draw axis
         this.axis.display();
 
         for (var i = 0; i < this.lights.length; i++) {
            this.lights[i].setVisible(this.lights[i].enabled);
-         //   this.lights[i].enable();
             this.lights[i].update();
         }
 
         if (this.sceneInited) {
-            // Draw axis
           //  this.setDefaultAppearance();
 
             // Displays the scene (MySceneGraph function).

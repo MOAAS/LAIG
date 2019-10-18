@@ -83,6 +83,12 @@
             <diffuse r="1.0" g="0.6" b="0.0" a="1.0" />
             <specular r="0.5" g="0.3" b="0.0" a="1.0" />
         </material>
+        <material id="sninyGreen" shininess="20">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="0.05" g="0.15" b="0.05" a="1.0" />
+            <diffuse r="0.2" g="0.5" b="0.0" a="1.0" />
+            <specular r="0.2" g="0.8" b="0.0" a="1.0" />
+        </material>
         <material id="reddiffSpec" shininess="20">
             <emission r="0.0" g="0.0" b="0.0" a="1.0" />
             <ambient r="0.15" g="0.1" b="0.1" a="1.0" />
@@ -183,13 +189,13 @@
         <component id="pyramid">
             <transformation>
                 <translate x="-12" y="2" z="-3"/>
-                <scale x="3" y="4" z="3"/>
             </transformation>
             <materials>
-                <material id="orangediffSpec" />
+                <material id="sninyGreen" />
             </materials>
             <texture id="inherit"/>
             <children>
+                <componentref id="ring"/>
                 <componentref id="pyramidup"/>
                 <componentref id="pyramiddown"/>
             </children>
@@ -582,7 +588,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="none"  length_s="1" length_t="1"/>
+            <texture id="earth"  length_s="1" length_t="1"/>
             <children>
                 <componentref id="planetbody"/>
                 <componentref id="earthmoon"/>
