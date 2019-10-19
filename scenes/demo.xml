@@ -193,7 +193,7 @@
             <materials>
                 <material id="shinyGreen" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="vidral" length_s="3" length_t="3"/>
             <children>
                 <componentref id="diamond"/>
                 <componentref id="ring"/>
@@ -202,7 +202,7 @@
 
         <component id="diamond">
             <transformation>
-<scale x="2" y="2" z="2"/>
+                <scale x="2" y="2" z="2"/>
                 <rotate axis="x" angle="90"/>
                 <rotate axis="y" angle="45"/>
              </transformation>
