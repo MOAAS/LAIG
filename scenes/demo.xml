@@ -83,11 +83,11 @@
             <diffuse r="1.0" g="0.6" b="0.0" a="1.0" />
             <specular r="0.5" g="0.3" b="0.0" a="1.0" />
         </material>
-        <material id="sninyGreen" shininess="20">
+        <material id="shinyGreen" shininess="3">
             <emission r="0.0" g="0.0" b="0.0" a="1.0" />
             <ambient r="0.05" g="0.15" b="0.05" a="1.0" />
-            <diffuse r="0.2" g="0.5" b="0.0" a="1.0" />
-            <specular r="0.2" g="0.8" b="0.0" a="1.0" />
+            <diffuse r="0.1" g="0.4" b="0.1" a="1.0" />
+            <specular r="0.9" g="0.9" b="0.9" a="1.0" />
         </material>
         <material id="reddiffSpec" shininess="20">
             <emission r="0.0" g="0.0" b="0.0" a="1.0" />
@@ -171,7 +171,7 @@
             </materials>
             <texture id="none"/>
             <children> 
-                <componentref id="pyramid"/>
+                <componentref id="pyramidplanet"/>
                 <componentref id="sun"/>
                 <componentref id="person"/>
                 <componentref id="planet1"/>
@@ -186,34 +186,33 @@
             </children>
         </component>
 
-        <component id="pyramid">
+        <component id="pyramidplanet">
             <transformation>
-                <translate x="-12" y="2" z="-3"/>
+                <translate x="-8" y="2" z="-5"/>
             </transformation>
             <materials>
-                <material id="sninyGreen" />
+                <material id="shinyGreen" />
             </materials>
             <texture id="inherit"/>
             <children>
+                <componentref id="diamond"/>
                 <componentref id="ring"/>
-                <componentref id="pyramidup"/>
-                <componentref id="pyramiddown"/>
             </children>
         </component>
 
-        <component id="pyramidup">
+        <component id="diamond">
             <transformation>
-            </transformation>
+<scale x="2" y="2" z="2"/>
+                <rotate axis="x" angle="90"/>
+                <rotate axis="y" angle="45"/>
+             </transformation>
             <materials>
                 <material id="inherit" />
             </materials>
             <texture id="inherit"/>
             <children>
-                <componentref id="pyramidright"/>
-                <componentref id="pyramidleft"/>
-                <componentref id="pyramidfront"/>
-                <componentref id="pyramidback"/>
-                <componentref id="pyramidbot"/>
+                <componentref id="pyramid"/>
+                <componentref id="pyramiddown"/>
             </children>
         </component>
 
@@ -221,6 +220,17 @@
             <transformation>
                 <rotate axis="x" angle="180"/>
             </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <componentref id="pyramid"/>
+            </children>
+        </component>
+
+        <component id="pyramid">
+            <transformation/>
             <materials>
                 <material id="inherit" />
             </materials>
