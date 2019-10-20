@@ -17,34 +17,43 @@ class MyTorus extends CGFobject {
     this.indices = [];
     this.normals = [];
     this.texCoords = [];
-
+  
+    //Goes around inner circle
     for (let slice = 0; slice <= this.slices; ++slice) {
-      const v = slice / this.slices;
-      const slice_angle = v * 2 * Math.PI;
-      const cos_slices = Math.cos(slice_angle);
-      const sin_slices = Math.sin(slice_angle);
-      const slice_rad = this.outerRadius + this.innerRadius * cos_slices;
+      let v = slice / this.slices;
+      //slice angle
+      let theta = slice / this.slices * 2 * Math.PI;
+      let cos_theta = Math.cos(theta);
+      let sin_theta = Math.sin(theta);
+      let slice_rad = this.outerRadius + this.innerRadius * cos_theta;
 
+      //Goes around outer circle
       for (let loop = 0; loop <= this.loops; ++loop) {
-        const u = loop / this.loops;
-        const loop_angle = u * 2 * Math.PI;
-        const cos_loops = Math.cos(loop_angle);
-        const sin_loops = Math.sin(loop_angle);
+        let u = loop / this.loops;
+        //loop angle
+        let phi =loop / this.loops * 2 * Math.PI;
+        let cos_phi = Math.cos(phi);
+        let sin_phi = Math.sin(phi);
 
-        const x = slice_rad * cos_loops;
-        const y = slice_rad * sin_loops;
-        const z = this.innerRadius * sin_slices;
+        let x = slice_rad * cos_phi; // x = (R + r cos(theta)) * cos(phi)
+        let y = slice_rad * sin_phi; // y = (R + r cos(theta)) * sin(phi)
+        let z = this.innerRadius * sin_theta; // z = r * sin (theta)
 
         this.vertices.push(x, y, z);
-        this.normals.push(
-          cos_slices * cos_loops,
-          cos_slices * sin_loops,
-          sin_slices);
 
+        //Normals
+        this.normals.push(
+          cos_theta * cos_phi,
+          cos_theta * sin_phi,
+          sin_theta);
+
+        //texCoords
         this.texCoords.push(u);
         this.texCoords.push(v);
       }
     }
+
+    // Calculate torus indices
     const vertsPerSlice = this.loops + 1;
     for (let i = 0; i < this.slices; ++i) {
       let v1 = i * vertsPerSlice;
