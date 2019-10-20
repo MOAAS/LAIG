@@ -22,7 +22,7 @@ class Component {
             let child = this.children[i];            
             if (child instanceof CGFobject) { // if child is primitive...
                 // Multiplies the texcoords by length_s and length_t, sets the texture and applies the material
-                this.multTexCoords(child, currTexture.length_s, currTexture.length_t)
+                this.multTexCoords(child, 1.0 / currTexture.length_s, 1.0 / currTexture.length_t)
                 currMaterial.setTexture(currTexture.texture);        
                 currMaterial.apply();
                 // Saves the scene matrix, applies transformations to the scene, displays the primitive and restores the scene matrix
@@ -31,7 +31,7 @@ class Component {
                 child.display(scene);
                 scene.popMatrix();
                 // Restores the original texcoords
-                this.multTexCoords(child, 1.0 / currTexture.length_s, 1.0 / currTexture.length_t)
+                this.multTexCoords(child, currTexture.length_s, currTexture.length_t)
             }
             // if component, calls the function again with the current arguments
             else child.display(scene, currTrans, currMaterial, currTexture)

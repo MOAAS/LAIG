@@ -193,7 +193,7 @@
             <materials>
                 <material id="shinyGreen" />
             </materials>
-            <texture id="vidral" length_s="3" length_t="3"/>
+            <texture id="vidral" length_s="0.33" length_t="0.33"/>
             <children>
                 <componentref id="diamond"/>
                 <componentref id="ring"/>
