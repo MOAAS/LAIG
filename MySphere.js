@@ -16,7 +16,7 @@ class MySphere extends CGFobject {
     this.normals = [];
     this.texCoords = [];
 
-    //goes around latitute of the sphere
+    //goes around latitute of the semi-sphere z>=0
     for (let latNumber = 0; latNumber <= this.stacks; ++latNumber) {
       let theta = (latNumber * Math.PI/2) / this.stacks;
       let sinTheta = Math.sin(theta);
@@ -46,7 +46,7 @@ class MySphere extends CGFobject {
         this.texCoords.push(v);
       }
     }
-    
+     //goes around latitute of the semi-sphere z<0
     for (let latNumber = -this.stacks; latNumber <= 0; ++latNumber) {
       let theta = (latNumber * Math.PI/2) / this.stacks;
       let sinTheta = Math.sin(theta);
