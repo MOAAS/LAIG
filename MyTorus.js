@@ -30,6 +30,7 @@ class MyTorus extends CGFobject {
       //Goes around outer circle
       for (let loop = 0; loop <= this.loops; ++loop) {
         let u = loop / this.loops;
+        //loop angle
         let phi =loop / this.loops * 2 * Math.PI;
         let cos_phi = Math.cos(phi);
         let sin_phi = Math.sin(phi);
@@ -39,15 +40,20 @@ class MyTorus extends CGFobject {
         let z = this.innerRadius * sin_theta; // z = r * sin (theta)
 
         this.vertices.push(x, y, z);
+
+        //Normals
         this.normals.push(
           cos_theta * cos_phi,
           cos_theta * sin_phi,
           sin_theta);
 
+        //texCoords
         this.texCoords.push(u);
         this.texCoords.push(v);
       }
     }
+
+    // Calculate torus indices
     const vertsPerSlice = this.loops + 1;
     for (let i = 0; i < this.slices; ++i) {
       let v1 = i * vertsPerSlice;

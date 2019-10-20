@@ -33,7 +33,7 @@ class MySphere extends CGFobject {
         this.vertices.push(this.radius * x); //x = r * cos(theta) * cos(phi)
         this.vertices.push(this.radius * y); //y = r * cos(theta) * sin(phi)
         this.vertices.push(this.radius * z); //z = r * sin(theta)
-        
+
         //normals have the direction of the vertices coordinates
         this.normals.push(x);
         this.normals.push(y);
@@ -47,7 +47,7 @@ class MySphere extends CGFobject {
       }
     }
     
-    // Calculate sphere indices.
+    // Calculate sphere indices
     for (let latNumber = 0; latNumber <= this.stacks*2; ++latNumber) {
       for (let longNumber = 0; longNumber < this.slices; ++longNumber) {
         let first = (latNumber * (this.slices + 1)) + longNumber;
