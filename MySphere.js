@@ -16,10 +16,12 @@ class MySphere extends CGFobject {
     this.normals = [];
     this.texCoords = [];
 
-    for (let latNumber = 0; latNumber <= this.stacks; ++latNumber) {
+    //goes around latitute of the semi-sphere z>0
+    for (let latNumber = -this.stacks; latNumber <= this.stacks; ++latNumber) {
       let theta = (latNumber * Math.PI/2) / this.stacks;
       let sinTheta = Math.sin(theta);
       let cosTheta = Math.cos(theta);
+      //goes around longitude of the sphere
       for (let longNumber = 0; longNumber <= this.slices; ++longNumber) {
         let phi = longNumber * 2 * Math.PI / this.slices;
         let sinPhi = Math.sin(phi);
@@ -27,39 +29,19 @@ class MySphere extends CGFobject {
         let x = cosTheta*cosPhi;
         let y = cosTheta*sinPhi;
         let z = sinTheta;
-        let u = 1 - (longNumber / this.slices);
-        let v = 0.5 - (latNumber / this.stacks) / 2;
-        this.vertices.push(this.radius * x);
-        this.vertices.push(this.radius * y);
-        this.vertices.push(this.radius * z);
+        //vertices 
+        this.vertices.push(this.radius * x); //x = r * cos(theta) * cos(phi)
+        this.vertices.push(this.radius * y); //y = r * cos(theta) * sin(phi)
+        this.vertices.push(this.radius * z); //z = r * sin(theta)
+        
+        //normals have the direction of the vertices coordinates
         this.normals.push(x);
         this.normals.push(y);
         this.normals.push(z);
-        this.texCoords.push(u);
-        this.texCoords.push(v);
-      }
-    }
-
-
-    for (let latNumber = -this.stacks; latNumber <= 0; ++latNumber) {
-      let theta = (latNumber * Math.PI/2) / this.stacks;
-      let sinTheta = Math.sin(theta);
-      let cosTheta = Math.cos(theta);
-      for (let longNumber = 0; longNumber <= this.slices; ++longNumber) {
-        let phi = longNumber * 2 * Math.PI / this.slices;
-        let sinPhi = Math.sin(phi);
-        let cosPhi = Math.cos(phi);
-        let x = cosTheta*cosPhi;
-        let y = cosTheta*sinPhi;
-        let z = sinTheta;
+        
+        //texCoords
         let u = 1 - (longNumber / this.slices);
         let v = 0.5 - (latNumber / this.stacks) / 2;
-        this.vertices.push(this.radius * x);
-        this.vertices.push(this.radius * y);
-        this.vertices.push(this.radius * z);
-        this.normals.push(x);
-        this.normals.push(y);
-        this.normals.push(z);
         this.texCoords.push(u);
         this.texCoords.push(v);
       }
