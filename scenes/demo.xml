@@ -50,7 +50,6 @@
         <texture id="gold" file="scenes/images/golden.jpg" />
         <texture id="vidral" file="scenes/images/vidral.jpg" />
         <texture id="leaves" file="scenes/images/leaves.jpg" />
-        <texture id="house" file="scenes/images/house.jpg" />
         <texture id="earth" file="scenes/images/earth.jpg" />
         <texture id="moon" file="scenes/images/moon.jpg" />
         <texture id="head" file="scenes/images/head.jpg" />
@@ -745,7 +744,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="rocket"/>
+            <texture id="rocket" length_s="1" length_t="1"/>
             <children>
                 <componentref id="rocketrect1"/>
                 <componentref id="rocketrect2"/>
