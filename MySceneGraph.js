@@ -8,8 +8,9 @@ var LIGHTS_INDEX = 3;
 var TEXTURES_INDEX = 4;
 var MATERIALS_INDEX = 5;
 var TRANSFORMATIONS_INDEX = 6;
-var PRIMITIVES_INDEX = 7;
-var COMPONENTS_INDEX = 8;
+var ANIMATIONS_INDEX = 7;
+var PRIMITIVES_INDEX = 8;
+var COMPONENTS_INDEX = 9;
 
 /**
  * MySceneGraph class, representing the scene graph.
@@ -168,6 +169,18 @@ class MySceneGraph {
 
             //Parse transformations block
             if ((error = this.parseTransformations(nodes[index])) != null)
+                return error;
+        }
+
+        // <animations>
+        if ((index = nodeNames.indexOf("animations")) == -1)
+            return "tag <animations> missing";
+        else {
+            if (index != ANIMATIONS_INDEX)
+                this.onXMLMinorError("tag <animations> out of order");
+
+            //Parse transformations block
+            if ((error = this.parseAnimations(nodes[index])) != null)
                 return error;
         }
 
@@ -669,6 +682,55 @@ class MySceneGraph {
         return null;
     }
 
+        /**
+     * Parses the <transformations> block.
+     * @param {animations block element} animationsNode
+     */
+    parseAnimations(animationsNode) {
+        var children = animationsNode.children;
+
+        this.animations = [];
+
+        var grandChildren = [];
+
+        // Any number of animations.
+        for (var i = 0; i < children.length; i++) {
+
+            if (children[i].nodeName != "animation") {
+                this.onXMLMinorError("unknown tag <" + children[i].nodeName + ">");
+                continue;
+            }
+
+            // Get id of the current transformation.
+            var animationID = this.reader.getString(children[i], 'id');
+            if (animationID == null)
+                return "no ID defined for animation";
+
+            // Checks for repeated IDs.
+            if (this.animations[animationID] != null)
+                return "ID must be unique for each animation (conflict: ID = " + animationID + ")";
+
+            grandChildren = children[i].children;
+            
+            let keyframes = [];
+
+            for (var j = 0; j < grandChildren.length; j++) {
+                // parses primitive transformation to transfMatrix
+                if (grandChildren[j].nodeName != 'keyframe') {
+                    this.onXMLMinorError("Expected <keyframe>, got <" + grandChildren[j].nodeName + ">, ignoring");
+                    continue;
+                }
+                var error = this.parseKeyframe(grandChildren[j], keyframes, "with ID " + animationID)
+                if (error != null)
+                    return error;
+            }
+            this.animations[animationID] = new MyAnimation(keyframes);
+        }
+
+        this.log("Parsed animations");
+        return null;
+    }
+
     /** TODO
      * Parses the <primitives> block.
      * @param {primitives block element} primitivesNode
@@ -902,6 +964,7 @@ class MySceneGraph {
             var materialsIndex = nodeNames.indexOf("materials");
             var textureIndex = nodeNames.indexOf("texture");
             var childrenIndex = nodeNames.indexOf("children");
+            var animationsIndex = nodeNames.indexOf("animationref");
 
             // Verify if blocks exist
             if (transformationIndex == -1)
@@ -933,8 +996,15 @@ class MySceneGraph {
             if (compChildren == null)
                 return "Couldn't parse children for component with ID = " + componentID;
 
-            
-            this.components[componentID] = new Component(transformation, materials, compTexture, compChildren);
+                // Animations
+            let compAnimation = null;
+            if (animationsIndex != -1) {
+                compAnimation = this.parseComponentAnimation(grandChildren[animationsIndex]);
+                if (compAnimation == null)
+                    return "Couldn't parse animations for component with ID = " + componentID;
+            }
+                
+            this.components[componentID] = new Component(transformation, materials, compTexture, compChildren, compAnimation);
             componentIDs.push(componentID)
             numComponents++;
         }
@@ -1143,6 +1213,24 @@ class MySceneGraph {
         return componentChildren;
     }
 
+    parseComponentAnimation(node) {
+        let ID = this.reader.getString(node, 'id');
+        if (ID == null) {
+            this.onXMLError("No ID found for component animation");
+            return null;
+        }
+
+        // Searches for material with given ID
+        // In this case, null means it's not present
+        let animation = this.animations[ID];
+        if (animation == null) {
+            this.onXMLError("Couldn't find animation with ID " + ID + " for component");
+            return null;
+        }
+
+        return animation;
+    }
+
     /**
      * Parses a translation, scaling or rotation
      * @param {Primitive transformation node} node 
@@ -1190,6 +1278,63 @@ class MySceneGraph {
                 this.onXMLMinorError("Unknown transformation type: " + node.nodeName + ", ignoring");
                 break;
         }
+        return null;
+    }
+
+    /**
+     * Parses a keyframe
+     * @param {Primitive transformation node} node 
+     * @param {Current keyframe array (to be added to)} currArray 
+     * @param {Message to show along the error info, if there's one} errorMSG 
+     */
+    parseKeyframe(node, currArray, errorMSG) {
+        let instant = this.reader.getFloat(node, "instant");
+        if (instant == null || isNaN(instant))
+            return "unable to parse keyframe instant for animation " + errorMSG;
+        let children = node.children;
+        let T, R, S;
+        for (let i = 0; i < children.length; i++) {
+            switch (children[i].nodeName) {
+                case 'translate':
+                    var coordinates = this.parseCoordinates3D(children[i], "translate component of animation " + errorMSG);
+                    if (!Array.isArray(coordinates))
+                        return coordinates;
+                    
+                    T = new Transformation(coordinates[0], coordinates[1], coordinates[2]);                    
+                    break;
+                case 'rotate':
+                    var coordinates = this.parseKeyframeRotation(children[i], "rotate component of animation " + errorMSG);
+                    if (!Array.isArray(coordinates))
+                        return coordinates;
+                    
+                    R = new Transformation(coordinates[0] * DEGREE_TO_RAD, coordinates[1] * DEGREE_TO_RAD, coordinates[2] * DEGREE_TO_RAD);                    
+                    break;
+                case 'scale':
+                    var coordinates = this.parseCoordinates3D(children[i], "scale component of animation " + errorMSG);
+                    if (!Array.isArray(coordinates))
+                        return coordinates;
+                    
+                    S = new Transformation(coordinates[0], coordinates[1], coordinates[2]);                    
+                    break;
+            }
+    
+
+        }
+
+        if (T == null)
+            return "missing translate component for animation " + errorMSG;
+
+        if (R == null)
+            return "missing rotate component for animation " + errorMSG;
+
+        if (S == null)
+            return "missing scale component for animation " + errorMSG;
+
+        if (children.length != 3)
+            return "unexpected keyframe components for animation " + errorMSG;
+
+        currArray.push(new KeyFrame(instant, T, R, S));
+
         return null;
     }
 
@@ -1309,6 +1454,30 @@ class MySceneGraph {
         return color;
     }
 
+    parseKeyframeRotation(node, messageError) {
+        var position = [];
+
+        // x
+        var x = this.reader.getFloat(node, 'angle_x');
+        if (!(x != null && !isNaN(x)))
+            return "unable to parse x-angle of the " + messageError;
+
+        // y
+        var y = this.reader.getFloat(node, 'angle_y');
+        if (!(y != null && !isNaN(y)))
+            return "unable to parse y-angle of the " + messageError;
+
+        // z
+        var z = this.reader.getFloat(node, 'angle_z');
+        if (!(z != null && !isNaN(z)))
+            return "unable to parse z-angle of the " + messageError;
+
+        position.push(...[x, y, z]);
+
+        return position;
+    }
+
+
     /*
      * Callback to be executed on any read error, showing an error on the console.
      * @param {string} message
@@ -1341,7 +1510,9 @@ class MySceneGraph {
         var defaultTrans = mat4.create();
         var defaultMaterial = new CGFappearance(this.scene)
         var defaultTexture = new ComponentTexture(null, 0, 0);
+
         this.components[this.idRoot].display(this.scene, defaultTrans, defaultMaterial, defaultTexture);
+
 
        // defaultMaterial.apply()
        // new MyTorus(this.scene,70,70,1,7).display();
@@ -1362,6 +1533,12 @@ class MySceneGraph {
     cycleMaterials() {
         for (var componentID in this.components) {
             this.components[componentID].cycleMaterial();
+        }
+    }
+
+    update(t) {
+        for (var componentID in this.components) {
+            this.components[componentID].update(t);
         }
     }
 }

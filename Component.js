@@ -1,16 +1,30 @@
 class Component {
-    constructor(transformation, materials, comptexture, children) {
+    constructor(transformation, materials, comptexture, children, animation) {
         this.transformation = transformation;
         this.children = children;
         this.materials = materials;
         this.currMaterialIndex = 0;
         this.texture = comptexture;
+        this.animation = animation;
+        this.animationMatrix = mat4.create();
+    }
+
+    update(t) {
+        if (this.animation == null)
+            return;
+        if (this.started == null) {
+            console.log("START");
+            this.started = true;
+            this.animation.start(t)
+        }
+        else this.animationMatrix = this.animation.apply(t);
     }
 
     display(scene, currTrans, currMaterial, currTexture) {
         // Clones the current transformation to avoid changing the passed reference
         currTrans = mat4.clone(currTrans);
         mat4.multiply(currTrans, currTrans, this.transformation)
+        mat4.multiply(currTrans, currTrans, this.animationMatrix);
         // Not null -> not inherit
         if (this.materials[this.currMaterialIndex] != null) 
             currMaterial = this.materials[this.currMaterialIndex];

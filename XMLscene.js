@@ -33,7 +33,7 @@ class XMLscene extends CGFscene {
         this.gl.depthFunc(this.gl.LEQUAL);
 
         this.axis = new CGFaxis(this);
-        this.setUpdatePeriod(100);
+        this.setUpdatePeriod(33.33);
     }
 
     /**
@@ -138,6 +138,8 @@ class XMLscene extends CGFscene {
         // In case it's not loaded
         if (this.graph == null)
             return;
+
+        this.graph.update(t)
 
         // if M is pressed, go to next material in the list
         if (this.gui.isKeyPressed("KeyM"))

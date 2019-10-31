@@ -1,5 +1,5 @@
 <lxs>
-    <scene root="root" axis_length="0"/>
+    <scene root="root" axis_length="5"/>
 
     <views default="defaultCamera">
         <perspective id="defaultCamera" near="0.1" far="500" angle="25">
@@ -19,7 +19,7 @@
     </globals>
 
     <lights>
-        <omni id="demoLight" enabled="0">
+        <omni id="demoLight" enabled="1">
             <location x="-5" y="5" z="5" w="1.0" />
             <ambient r="0" g="0" b="0" a="1.0" />
             <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
@@ -130,6 +130,28 @@
         </transformation>
     </transformations>
 
+    <animations>
+        <animation id="animation1" >
+            <keyframe instant="1">
+                <translate x="0" y="0" z="0" />
+                <rotate angle_x="-90" angle_y="0" angle_z="90" />
+                <scale x="5" y="5" z="5" />  
+            </keyframe>
+            <keyframe instant="10">
+                <translate x="0" y="0" z="80" />
+                <rotate angle_x="3600" angle_y="0" angle_z="90" />
+                <scale x="5" y="5" z="5" />  
+            </keyframe>
+        </animation>
+        <animation id="animation2" >
+            <keyframe instant="8">
+                <translate x="0" y="0" z="0" />
+                <rotate angle_x="0" angle_y="900" angle_z="0"/>
+                <scale x="1" y="100" z="1" />  
+            </keyframe>
+        </animation>
+    </animations>
+
     <primitives>
         <primitive id="unitsquare">
             <rectangle x1="-0.5" y1="-0.5" x2="0.5" y2="0.5" />
@@ -183,6 +205,7 @@
                 <componentref id="earth"/>
                 <componentref id="rocket"/>
             </children>
+            <animationref id="animation2"/>
         </component>
 
         <component id="pyramidplanet">
