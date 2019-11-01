@@ -1511,11 +1511,11 @@ class MySceneGraph {
         var defaultMaterial = new CGFappearance(this.scene)
         var defaultTexture = new ComponentTexture(null, 0, 0);
 
-        //this.components[this.idRoot].display(this.scene, defaultTrans, defaultMaterial, defaultTexture);
+        this.components[this.idRoot].display(this.scene, defaultTrans, defaultMaterial, defaultTexture);
         
 
 
-        defaultMaterial.apply();
+        //defaultMaterial.apply();
         /*
         var controlcoords=[	// U = 0
             [ // V = 0..3;
@@ -1542,7 +1542,7 @@ class MySceneGraph {
             new MyPatch(this.scene,3,4,20,20,controlcoords).display();
             new MyPlane(this.scene,6,6).display();
         */
-       new MyCilinder2(this.scene,5,1,5,64,10).display();
+      // new MyCilinder2(this.scene,5,1,5,64,10).display();
 
        // new MyTorus(this.scene,70,70,1,7).display();
        // new MySphere(this.scene,5,20,4).display();
