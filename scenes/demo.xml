@@ -165,7 +165,7 @@
             <cylinder base="2" top="2" height="6" slices="20" stacks="20" />
         </primitive>
         <primitive id="cylinder2">
-            <cylinder base="0.5" top="1.0" height="2" slices="15" stacks="6" />
+            <cylinder2 base="0.5" top="1.0" height="2" slices="16" stacks="6" />
         </primitive>
         <primitive id="cone1">
             <cylinder base="2" top="0" height="4" slices="20" stacks="6" />

@@ -10,6 +10,7 @@ class MyCilinder2 extends CGFobject {
         this.makeSurface();
     }
     makeSurface(){
+        this.texCoords = [];
         var controlcoords1=[	// U = 0
             [ // V = 0..1;
                 [ 0, this.base, 0, 1 ],
@@ -70,10 +71,8 @@ class MyCilinder2 extends CGFobject {
         this.cilQuad2 = new MyPatch(this.scene,2,3,this.slices/4,this.stacks,controlcoords2);
         this.cilQuad3 = new MyPatch(this.scene,2,3,this.slices/4,this.stacks,controlcoords3);
         this.cilQuad4 = new MyPatch(this.scene,2,3,this.slices/4,this.stacks,controlcoords4);
-        this.cilinder2Obj = [this.cilQuad1,this.cilQuad2,this.cilQuad3,this.cilQuad4];
     }
     display(){
-        //this.cilinder2Obj.display(); //temp
         this.cilQuad1.display();
         this.cilQuad2.display();
         this.cilQuad3.display();

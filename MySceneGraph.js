@@ -765,8 +765,9 @@ class MySceneGraph {
             if (grandChildren.length != 1 ||
                 (grandChildren[0].nodeName != 'rectangle' && grandChildren[0].nodeName != 'triangle' &&
                     grandChildren[0].nodeName != 'cylinder' && grandChildren[0].nodeName != 'sphere' &&
-                    grandChildren[0].nodeName != 'torus')) {
-                return "There must be exactly 1 primitive type (rectangle, triangle, cylinder, sphere or torus) (ID = " + primitiveId + ")";
+                    grandChildren[0].nodeName != 'torus' && grandChildren[0].nodeName != 'cylinder2' &&
+                    grandChildren[0].nodeName != 'plane' && grandChildren[0].nodeName != 'patch')) {
+                return "There must be exactly 1 primitive type (rectangle, triangle, cylinder, cylinder2, plane, patch, sphere or torus) (ID = " + primitiveId + ")";
             }
 
             // Specifications for the current primitive.
@@ -832,7 +833,7 @@ class MySceneGraph {
 
                 this.primitives[primitiveId] = new MyTriangle(this.scene, [x1,y1,z1], [x2,y2,z2], [x3,y3,z3]);
             }
-            else if (primitiveType == 'cylinder') {
+            else if (primitiveType == 'cylinder' || primitiveType == 'cylinder2') {
                 // Gets the cylinder base radius (must be >= 0)
                 var base = this.reader.getFloat(primitiveNode, 'base');
                 if (base == null || isNaN(base) || base < 0)
@@ -858,9 +859,10 @@ class MySceneGraph {
                 if (stacks == null || isNaN(stacks) || stacks < 0)
                     return "unable to parse stacks of the cylinder primitive with ID = " + primitiveId;
     
-                this.primitives[primitiveId] = new MyCilinder(this.scene, base, top, height, slices, stacks);
-            }
-            else if (primitiveType == 'sphere') {
+                if (primitiveType == 'cylinder')
+                    this.primitives[primitiveId] = new MyCilinder(this.scene, base, top, height, slices, stacks);
+                else this.primitives[primitiveId] = new MyCilinder2(this.scene, base, top, height, slices, stacks);
+            } else if (primitiveType == 'sphere') {
                 // Gets the sphere radius (must be >= 0)
                 var radius = this.reader.getFloat(primitiveNode, 'radius');
                 if (radius == null || isNaN(radius) || radius < 0)
@@ -900,6 +902,15 @@ class MySceneGraph {
                     return "unable to parse loops of the torus primitive with ID = " + primitiveId;
 
                 this.primitives[primitiveId] = new MyTorus(this.scene, slices, loops, inner, outer);
+            }
+            else if (primitiveType == 'patch') {
+                // tratar
+                console.log("OLA");
+                this.primitives[primitiveId] = new MyPatch(this.scene);                
+            }
+            else if (primitiveType == 'plane') {
+                // tratar
+                this.primitives[primitiveId] = new MyPlane(this.scene);                
             }
 
         }
@@ -1542,21 +1553,8 @@ class MySceneGraph {
             new MyPatch(this.scene,3,4,20,20,controlcoords).display();
             new MyPlane(this.scene,6,6).display();
         */
-      // new MyCilinder2(this.scene,5,1,5,64,10).display();
+       //new MyCilinder2(this.scene,5,1,5,64,10).display();
 
-       // new MyTorus(this.scene,70,70,1,7).display();
-       // new MySphere(this.scene,5,20,4).display();
-        /*
-        this.scene.pushMatrix();
-        this.scene.multMatrix(this.transformations["demoTransform"])
-        //To do: Create display loop for transversing the scene graph
-
-        new Material(this.scene, [0,0,0,0], [0.5,0.5,0.5,0.5], [0.5,0.5,0.5,0.5], [0.5,0.5,0.5,0.5], 10).apply();
-
-        //To test the parsing/creation of the primitives, call the display function directly
-        this.primitives['demoRectangle'].display();
-        this.scene.popMatrix();
-        */
     }
 
     cycleMaterials() {
