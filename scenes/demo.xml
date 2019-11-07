@@ -500,7 +500,7 @@
                 <primitiveref id="cone"/>
             </children>
         </component>
-
+<!--
     <component id="sun">
             <transformation>
             </transformation>
@@ -512,9 +512,8 @@
                 <primitiveref id="patch1"/>
             </children>
         </component>  
+-->
 
-
-<!--
         <component id="sun">
             <transformation>
                 <scale x="5" y="5" z="5"/>
@@ -527,7 +526,6 @@
                 <primitiveref id="sphere"/>
             </children>
         </component>
--->
         
 
         <component id="planet1">
