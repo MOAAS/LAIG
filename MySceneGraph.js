@@ -881,6 +881,7 @@ class MySceneGraph {
                 this.primitives[primitiveId] = new MySphere(this.scene, stacks, slices, radius);
             }
             else if (primitiveType == 'torus') {
+
                 // Gets the torus inner radius (must be >= 0)
                 var inner = this.reader.getFloat(primitiveNode, 'inner');
                 if (inner == null || isNaN(inner) || inner < 0)
@@ -900,17 +901,64 @@ class MySceneGraph {
                 var loops = this.reader.getInteger(primitiveNode, 'loops');
                 if (loops == null || isNaN(loops) || loops < 0)
                     return "unable to parse loops of the torus primitive with ID = " + primitiveId;
-
+                
                 this.primitives[primitiveId] = new MyTorus(this.scene, slices, loops, inner, outer);
             }
-            else if (primitiveType == 'patch') {
-                // tratar
-                console.log("OLA");
-                this.primitives[primitiveId] = new MyPatch(this.scene);                
+            else if (primitiveType == 'patch') {//npointsU=“ii” npointsV=“ii” npartsU=“ii” npartsV=“ii”
+                var children = primitiveNode.children;
+
+                var npointsU = this.reader.getInteger(primitiveNode, 'npointsU');
+                if (npointsU == null || isNaN(npointsU) || npointsU < 0)
+                    return "unable to parse npointsU of the patch primitive with ID = " + primitiveId;
+
+                var npointsV = this.reader.getInteger(primitiveNode, 'npointsV');
+                if (npointsV == null || isNaN(npointsV) || npointsV < 0)
+                    return "unable to parse npointsV of the patch primitive with ID = " + primitiveId;
+
+                var npartsU = this.reader.getInteger(primitiveNode, 'npartsU');
+                if (npartsU == null || isNaN(npartsU) || npartsU < 0)
+                    return "unable to parse npartsU of the patch primitive with ID = " + primitiveId;
+
+                var npartsV = this.reader.getInteger(primitiveNode, 'npartsV');
+                if (npartsV == null || isNaN(npartsV) || npartsV < 0)
+                        return "unable to parse npartsV of the patch primitive with ID = " + primitiveId;
+                var i=0;
+                var points = [];
+                for (var u = 0; u < npointsU; u++){
+                    var pointsU = [];
+                    for(var v = 0 ; v < npointsV;v++){
+                        if (children[i].nodeName != "controlpoint") {
+                            this.onXMLMinorError("unknown tag <" + children[i].nodeName + ">");
+                            continue;
+                        }
+                        
+                        var xx = this.reader.getInteger(children[i], 'xx');
+                        if (xx == null || isNaN(xx))
+                            return "unable to parse xx of the patch primitive with ID = " + primitiveId +" ; controlpoint num: " + (i+1);
+                        var yy = this.reader.getInteger(children[i], 'yy');
+                        if (yy == null || isNaN(yy))
+                            return "unable to parse yy of the patch primitive with ID = " + primitiveId +" ; controlpoint num: " + (i+1);
+                        var zz = this.reader.getInteger(children[i], 'zz');
+                        if (zz == null || isNaN(zz))
+                            return "unable to parse zz of the patch primitive with ID = " + primitiveId +" ; controlpoint num: " + (i+1);
+                    
+                        pointsU.push([xx,yy,zz,1]);
+                        i++;
+                    }
+                    points.push(pointsU);
+                }
+                this.primitives[primitiveId] = new MyPatch(this.scene,npointsU,npointsV,npartsU,npartsV,points);                
             }
             else if (primitiveType == 'plane') {
-                // tratar
-                this.primitives[primitiveId] = new MyPlane(this.scene);                
+                var npartsU = this.reader.getInteger(primitiveNode, 'npartsU');
+                if (npartsU == null || isNaN(npartsU) || npartsU < 0)
+                    return "unable to parse npartsU of the plane primitive with ID = " + primitiveId;
+
+                var npartsV = this.reader.getInteger(primitiveNode, 'npartsV');
+                if (npartsV == null || isNaN(npartsV) || npartsV < 0)
+                        return "unable to parse npartsV of the plane primitive with ID = " + primitiveId;
+
+                this.primitives[primitiveId] = new MyPlane(this.scene,npartsU,npartsV);                
             }
 
         }
@@ -1526,7 +1574,8 @@ class MySceneGraph {
         
 
 
-        //defaultMaterial.apply();
+       // defaultMaterial.apply();
+        //new MyCilinder2(this.scene,3,1,6,64,64).display();
         /*
         var controlcoords=[	// U = 0
             [ // V = 0..3;
@@ -1553,7 +1602,6 @@ class MySceneGraph {
             new MyPatch(this.scene,3,4,20,20,controlcoords).display();
             new MyPlane(this.scene,6,6).display();
         */
-       //new MyCilinder2(this.scene,5,1,5,64,10).display();
 
     }
 

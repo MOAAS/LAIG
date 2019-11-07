@@ -9,6 +9,7 @@ class MyPatch extends CGFobject {
         this.makeSurface();
     }
     makeSurface(){
+        this.texCoords = [];
         var nurbsSurface = new CGFnurbsSurface(this.degree1,this.degree2,this.controlPoints);
         this.nurbsObject = new CGFnurbsObject(this.scene,this.nPartsU,this.nPartsV,nurbsSurface);
     }

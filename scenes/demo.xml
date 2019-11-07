@@ -145,9 +145,9 @@
         </animation>
         <animation id="animation2" >
             <keyframe instant="8">
-                <translate x="0" y="0" z="0" />
+                <translate x="0" y="10" z="0" />
                 <rotate angle_x="0" angle_y="900" angle_z="0"/>
-                <scale x="1" y="100" z="1" />  
+                <scale x="1" y="0.5" z="1" />  
             </keyframe>
         </animation>
     </animations>
@@ -182,6 +182,24 @@
         <primitive id="cone">
             <cylinder base="1" top="0" height="1" slices="12" stacks="12" />
         </primitive>
+           <primitive id="patch1">
+            <patch npointsU="3" npointsV="4" npartsU="16" npartsV="16" >
+                <controlpoint xx="-2" yy="-2" zz="1" />
+                <controlpoint xx="-2" yy="-1" zz="-2" />
+                <controlpoint xx="-2" yy="1" zz="5" />
+                <controlpoint xx="-2" yy="2" zz="-1" />
+
+                <controlpoint xx="0" yy="-2" zz="0" />
+                <controlpoint xx="0" yy="-1" zz="-1" />
+                <controlpoint xx="0" yy="1" zz="1.5" />
+                <controlpoint xx="0" yy="2" zz="0" />
+
+                <controlpoint xx="2" yy="-2" zz="-1" />
+                <controlpoint xx="2" yy="-1" zz="2" />
+                <controlpoint xx="2" yy="1" zz="-5" />
+                <controlpoint xx="2" yy="2" zz="1" />
+            </patch>
+        </primitive> 
     </primitives>
 
     <components>
@@ -485,8 +503,20 @@
             </children>
         </component>
 
+    <component id="sun">
+            <transformation>
+            </transformation>
+            <materials>
+            <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="patch1"/>
+            </children>
+        </component>  
 
 
+<!--
         <component id="sun">
             <transformation>
                 <scale x="5" y="5" z="5"/>
@@ -499,6 +529,8 @@
                 <primitiveref id="sphere"/>
             </children>
         </component>
+-->
+        
 
         <component id="planet1">
             <transformation>
