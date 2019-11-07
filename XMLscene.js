@@ -33,6 +33,8 @@ class XMLscene extends CGFscene {
         this.gl.depthFunc(this.gl.LEQUAL);
 
         this.axis = new CGFaxis(this);
+        this.rtt = new CGFtextureRTT(this,1000, 850);
+
         this.setUpdatePeriod(33.33);
     }
 
@@ -41,6 +43,8 @@ class XMLscene extends CGFscene {
      */
     initCameras() {
         this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(15, 15, 15), vec3.fromValues(0, 0, 0));
+      //  this.camera2 = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(-15, -15, -15), vec3.fromValues(0, 0, 0));
+        this.camera2 = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(15, 15, 15), vec3.fromValues(0, 0, 0));
     }
     /**
      * Initializes the scene lights with the values read from the XML file.
@@ -146,12 +150,26 @@ class XMLscene extends CGFscene {
             this.graph.cycleMaterials()
     }
 
+    display() {
+        if (!this.sceneInited)
+            return;
+
+        this.rtt.attachToFrameBuffer();
+        this.render(this.graph.views[this.selectedCamera]);
+        this.rtt.detachFromFrameBuffer();
+        this.render(this.graph.views[this.selectedCamera]);
+
+        this.gl.disable(this.gl.DEPTH_TEST)
+        new MySecurityCamera(this, this.rtt).display();
+        this.gl.enable(this.gl.DEPTH_TEST)
+    }
     /**
      * Displays the scene.
      */
-    display() {
+    render(camera) {
         // ---- BEGIN Background, camera and axis setup
-
+        this.camera = camera;
+        
         // Clear image and depth buffer everytime we update the scene
         this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
         this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
@@ -171,12 +189,9 @@ class XMLscene extends CGFscene {
             this.lights[i].update();
         }
 
-        if (this.sceneInited) {
-          //  this.setDefaultAppearance();
 
             // Displays the scene (MySceneGraph function).
             this.graph.displayScene();
-        }
 
         // ---- END Background, camera and axis setup
     }

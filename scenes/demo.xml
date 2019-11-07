@@ -211,7 +211,6 @@
             <texture id="none"/>
             <children> 
                 <componentref id="pyramidplanet"/>
-                <componentref id="sun"/>
                 <componentref id="person"/>
                 <componentref id="planet1"/>
                 <componentref id="planet2"/>
@@ -223,7 +222,6 @@
                 <componentref id="earth"/>
                 <componentref id="rocket"/>
             </children>
-            <animationref id="animation2"/>
         </component>
 
         <component id="pyramidplanet">
