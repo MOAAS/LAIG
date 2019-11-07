@@ -147,7 +147,7 @@
             <keyframe instant="8">
                 <translate x="0" y="0" z="0" />
                 <rotate angle_x="0" angle_y="900" angle_z="0"/>
-                <scale x="1" y="100" z="1" />  
+                <scale x="1" y="1" z="1" />  
             </keyframe>
         </animation>
     </animations>
@@ -193,7 +193,6 @@
             <texture id="none"/>
             <children> 
                 <componentref id="pyramidplanet"/>
-                <componentref id="sun"/>
                 <componentref id="person"/>
                 <componentref id="planet1"/>
                 <componentref id="planet2"/>
@@ -205,7 +204,6 @@
                 <componentref id="earth"/>
                 <componentref id="rocket"/>
             </children>
-            <animationref id="animation2"/>
         </component>
 
         <component id="pyramidplanet">
