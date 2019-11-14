@@ -11,11 +11,6 @@ class MySecurityCamera extends CGFobject {
        material.setTexture(this.rtt);
         material.apply();
 
-        this.scene.pushMatrix()
-        this.scene.translate(0,0,-8);
-        this.scene.scale(20, -20, 20)
-
         this.rectangle.display();
-        this.scene.popMatrix();
     }
 }

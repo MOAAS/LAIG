@@ -33,9 +33,12 @@ class XMLscene extends CGFscene {
         this.gl.depthFunc(this.gl.LEQUAL);
 
         this.axis = new CGFaxis(this);
-        this.rtt = new CGFtextureRTT(this,1000, 850);
+        this.rtt = new CGFtextureRTT(this, 1500, 860);
 
         this.setUpdatePeriod(33.33);
+
+        this.coolshader = new CGFshader(this.gl, "shaders/test.vert", "shaders/test.frag");
+        this.coolshader.setUniformsValues({ uSampler : 1, time: 0 })
     }
 
     /**
@@ -43,7 +46,7 @@ class XMLscene extends CGFscene {
      */
     initCameras() {
         this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(15, 15, 15), vec3.fromValues(0, 0, 0));
-      //  this.camera2 = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(-15, -15, -15), vec3.fromValues(0, 0, 0));
+        //  this.camera2 = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(-15, -15, -15), vec3.fromValues(0, 0, 0));
         this.camera2 = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(15, 15, 15), vec3.fromValues(0, 0, 0));
     }
     /**
@@ -114,8 +117,8 @@ class XMLscene extends CGFscene {
 
         // Gets the current and the camera list from the graph
         var cameraKeys = [];
-        for(var key in this.graph.views ){
-            if(this.graph.defaultView==this.graph.views[key])
+        for (var key in this.graph.views) {
+            if (this.graph.defaultView == this.graph.views[key])
                 this.selectedCamera = key;
             cameraKeys.push(key);
         }
@@ -134,11 +137,13 @@ class XMLscene extends CGFscene {
         this.interface.setActiveCamera(view);
     }
 
-    updateCameras(){
+    updateCameras() {
         this.setCamera(this.graph.views[this.selectedCamera]);
     }
 
     update(t) {
+        this.coolshader.setUniformsValues({ time: Math.sin(t) })
+
         // In case it's not loaded
         if (this.graph == null)
             return;
@@ -159,9 +164,13 @@ class XMLscene extends CGFscene {
         this.rtt.detachFromFrameBuffer();
         this.render(this.graph.views[this.selectedCamera]);
 
+        this.setActiveShader(this.coolshader);
         this.gl.disable(this.gl.DEPTH_TEST)
-        new MySecurityCamera(this, this.rtt).display();
+        new MySecurityCamera(this, this.rtt).display()
         this.gl.enable(this.gl.DEPTH_TEST)
+        this.setActiveShader(this.defaultShader)
+
+
     }
     /**
      * Displays the scene.
@@ -169,7 +178,7 @@ class XMLscene extends CGFscene {
     render(camera) {
         // ---- BEGIN Background, camera and axis setup
         this.camera = camera;
-        
+
         // Clear image and depth buffer everytime we update the scene
         this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
         this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
@@ -185,13 +194,13 @@ class XMLscene extends CGFscene {
         this.axis.display();
 
         for (var i = 0; i < this.lights.length; i++) {
-           this.lights[i].setVisible(this.lights[i].enabled);
+            this.lights[i].setVisible(this.lights[i].enabled);
             this.lights[i].update();
         }
 
 
-            // Displays the scene (MySceneGraph function).
-            this.graph.displayScene();
+        // Displays the scene (MySceneGraph function).
+        this.graph.displayScene();
 
         // ---- END Background, camera and axis setup
     }

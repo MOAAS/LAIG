@@ -28,9 +28,10 @@ class MyRectangle extends CGFobject {
 		this.indices = [
 			0, 1, 2,
 			1, 3, 2,
-
+			
 			2, 1, 0,
 			2, 3, 1
+			
 		];
 
 		//Facing Z positive
@@ -51,8 +52,8 @@ class MyRectangle extends CGFobject {
         t
         */
 
-		let width = this.x2 - this.x1;
-		let height = this.y2 - this.y1;
+		let width = Math.abs(this.x2 - this.x1);
+		let height = Math.abs(this.y2 - this.y1);
 		
 		this.texCoords = [
 			0, height,

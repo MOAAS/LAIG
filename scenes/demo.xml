@@ -221,6 +221,7 @@
                 <componentref id="planet7"/>
                 <componentref id="earth"/>
                 <componentref id="rocket"/>
+                <componentref id="sun"/>
             </children>
         </component>
 
