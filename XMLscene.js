@@ -47,7 +47,7 @@ class XMLscene extends CGFscene {
     initCameras() {
         this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(15, 15, 15), vec3.fromValues(0, 0, 0));
         //  this.camera2 = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(-15, -15, -15), vec3.fromValues(0, 0, 0));
-        this.camera2 = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(15, 15, 15), vec3.fromValues(0, 0, 0));
+        this.securityCamera = new CGFcamera(1, 0.1, 500, vec3.fromValues(0, 0, 0), vec3.fromValues(-15, 2, 0));
     }
     /**
      * Initializes the scene lights with the values read from the XML file.
@@ -123,13 +123,12 @@ class XMLscene extends CGFscene {
             cameraKeys.push(key);
         }
 
+        this.securityCamera = 'securityCamera';
+
         // Initializes camera list with the keys (IDs) of the cameras
+        this.updateCameras()
         this.interface.initCamerasUI(cameraKeys);
         this.sceneInited = true;
-        this.camera = this.graph.defaultView
-
-        // sets the active camera (default)
-        this.setCamera(this.graph.defaultView)
     }
 
     setCamera(view) {
@@ -160,7 +159,7 @@ class XMLscene extends CGFscene {
             return;
 
         this.rtt.attachToFrameBuffer();
-        this.render(this.graph.views[this.selectedCamera]);
+        this.render(this.graph.views[this.securityCamera]);
         this.rtt.detachFromFrameBuffer();
         this.render(this.graph.views[this.selectedCamera]);
 

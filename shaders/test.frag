@@ -16,7 +16,7 @@ void main() {
     color = vec4(color.rgb * factor, color.a);
 
     if(mod(time + textureCoord.y * 100.0, 2.0) > 1.0)
-        color = vec4(color.rgb * 0.5, 1.0);
+        color.rgb = mix(color.rgb, vec3(1.0, 1.0, 1.0), 0.25);
 
     gl_FragColor = color;
 
