@@ -136,22 +136,57 @@
 
     <animations>
         <animation id="animation1" >
-            <keyframe instant="1">
-                <translate x="0" y="0" z="0" />
-                <rotate angle_x="-90" angle_y="0" angle_z="90" />
-                <scale x="5" y="5" z="5" />  
+            <keyframe instant="2.75">
+                <translate x="13" y="0" z="0" />
+                <rotate angle_x="90" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" />  
             </keyframe>
-            <keyframe instant="10">
-                <translate x="0" y="0" z="80" />
-                <rotate angle_x="3600" angle_y="0" angle_z="90" />
-                <scale x="5" y="5" z="5" />  
+            <keyframe instant="4">
+                <translate x="16" y="0" z="0" />
+                <rotate angle_x="120" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" />  
+            </keyframe>
+            <keyframe instant="5">
+                <translate x="17" y="0" z="0" />
+                <rotate angle_x="140" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" />  
+            </keyframe>
+            <keyframe instant="6.25">
+                <translate x="18" y="0" z="0" />
+                <rotate angle_x="160" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" />  
+            </keyframe>
+            <keyframe instant="7.5">
+                <translate x="18" y="0" z="0" />
+                <rotate angle_x="160" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" />  
+            </keyframe>
+            <keyframe instant="10.5">
+                <translate x="10" y="0" z="0" />
+                <rotate angle_x="180" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" />  
+            </keyframe>
+            <keyframe instant="11">
+                <translate x="10" y="0" z="0" />
+                <rotate angle_x="180" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" />  
+            </keyframe>
+            <keyframe instant="11.20">
+                <translate x="-50" y="0" z="0" />
+                <rotate angle_x="180" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" />  
             </keyframe>
         </animation>
         <animation id="animation2" >
-            <keyframe instant="8">
-                <translate x="0" y="10" z="0" />
-                <rotate angle_x="0" angle_y="900" angle_z="0"/>
-                <scale x="1" y="0.5" z="1" />  
+            <keyframe instant="7.5">
+                <translate x="0" y="0" z="0" />
+                <rotate angle_x="0" angle_y="0" angle_z="0"/>
+                <scale x="1" y="1" z="1" />  
+            </keyframe>
+            <keyframe instant="10.5">
+                <translate x="0" y="0" z="0" />
+                <rotate angle_x="0" angle_y="0" angle_z="0"/>
+                <scale x="2" y="2" z="2" />  
             </keyframe>
         </animation>
     </animations>
@@ -372,7 +407,7 @@
 
         <component id="person">
             <transformation>
-                <translate x="-20" y="0" z="-10"/>
+                <translate x="-25" y="0" z="-10"/>
                 <rotate axis="y" angle="45"/>
                 <rotate axis="z" angle="45"/>
                 <rotate axis="x" angle="25"/>
@@ -386,6 +421,7 @@
                 <componentref id="head"/>
                 <componentref id="body"/>
             </children>
+            <animationref id="animation2"/>
         </component>
 
         <component id="head">
@@ -774,7 +810,7 @@
                 <primitiveref id="sphere"/>
             </children>
         </component>
-             
+                     
         <component id="rocket">
             <transformation>
                 <translate x="-20" y="-8" z="16"/>
@@ -791,6 +827,7 @@
                 <componentref id="rockettop"/>
                 <componentref id="rocketbooster"/>
             </children>
+            <animationref id="animation1"/>
         </component>
 
         <component id="rocketbody">
