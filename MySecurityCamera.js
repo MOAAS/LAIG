@@ -6,8 +6,6 @@ class MySecurityCamera extends CGFobject {
         for (let i = 0; i < this.rectangle.texCoords.length; i++)
             this.rectangle.texCoords[i] = this.rectangle.texCoords[i] * 2;
         this.rectangle.updateTexCoordsGLBuffers();
-
-        debugger;
         
         this.rtt = rtt;
     }

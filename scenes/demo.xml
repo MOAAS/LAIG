@@ -59,6 +59,7 @@
         <texture id="head" file="scenes/images/head.jpg" />
         <texture id="astronaut" file="scenes/images/astronaut.jpg" />
         <texture id="rocket" file= "scenes/images/rocket.jpg"/>
+        <texture id="space" file= "scenes/images/space.png"/>
     </textures>
 
     <materials>
@@ -135,7 +136,7 @@
     </transformations>
 
     <animations>
-        <animation id="animation1" >
+        <animation id="rocketanimation" >
             <keyframe instant="2.75">
                 <translate x="13" y="0" z="0" />
                 <rotate angle_x="90" angle_y="0" angle_z="0" />
@@ -177,7 +178,7 @@
                 <scale x="1" y="1" z="1" />  
             </keyframe>
         </animation>
-        <animation id="animation2" >
+        <animation id="personanimation" >
             <keyframe instant="7.5">
                 <translate x="0" y="0" z="0" />
                 <rotate angle_x="0" angle_y="0" angle_z="0"/>
@@ -188,10 +189,56 @@
                 <rotate angle_x="0" angle_y="0" angle_z="0"/>
                 <scale x="2" y="2" z="2" />  
             </keyframe>
+            <keyframe instant="12">
+                <translate x="0" y="0" z="0" />
+                <rotate angle_x="0" angle_y="0" angle_z="0"/>
+                <scale x="2" y="2" z="2" />  
+            </keyframe>
+            <keyframe instant="14">
+                <translate x="0" y="0" z="0" />
+                <rotate angle_x="0" angle_y="720" angle_z="0"/>
+                <scale x="1.5" y="1.5" z="1.5" />  
+            </keyframe>
+            <keyframe instant="16">
+                <translate x="0" y="0" z="0" />
+                <rotate angle_x="0" angle_y="2160" angle_z="0"/>
+                <scale x="1.5" y="1.5" z="1.5" />  
+            </keyframe>
+            <keyframe instant="26">
+                <translate x="0" y="0" z="0" />
+                <rotate angle_x="0" angle_y="12960" angle_z="0"/>
+                <scale x="1.5" y="1.5" z="1.5" />  
+            </keyframe>
+        </animation>
+        <animation id="solarsystemanimation" >
+            <keyframe instant="14">
+                <translate x="0" y="0" z="0" />
+                <rotate angle_x="0" angle_y="0" angle_z="0"/>
+                <scale x="1" y="1" z="1" />  
+            </keyframe>
+            <keyframe instant="16">
+                <translate x="-12.5" y="0" z="-5" />
+                <rotate angle_x="0" angle_y="0" angle_z="0"/>
+                <scale x="0.5" y="0.5" z="0.5" />  
+            </keyframe>
+            <keyframe instant="20">
+                <translate x="-25" y="0" z="-10" />
+                <rotate angle_x="0" angle_y="0" angle_z="0"/>
+                <scale x="0.01" y="0.01" z="0.01" />  
+            </keyframe>
+            <keyframe instant="21">
+                <translate x="-6" y="0" z="0" />
+                <rotate angle_x="0" angle_y="0" angle_z="0"/>
+                <scale x="0" y="0" z="0" />  
+            </keyframe>
         </animation>
     </animations>
 
     <primitives>
+        <primitive id="plane">
+            <plane npartsU="5" npartsV="5"/>
+        </primitive>
+
         <primitive id="unitsquare">
             <rectangle x1="-0.5" y1="-0.5" x2="0.5" y2="0.5" />
         </primitive>
@@ -249,8 +296,21 @@
             </materials>
             <texture id="none"/>
             <children> 
-                <componentref id="pyramidplanet"/>
+                <componentref id="solarsystem"/>
                 <componentref id="person"/>
+                <componentref id="rocket"/>
+                <componentref id="skybox"/>
+            </children>
+        </component>
+
+        <component id="solarsystem">
+            <transformation/>
+            <materials>
+                <material id="graydiffusematerial" />
+            </materials>
+            <texture id="none"/>
+            <children> 
+                <componentref id="pyramidplanet"/>
                 <componentref id="planet1"/>
                 <componentref id="planet2"/>
                 <componentref id="planet3"/>
@@ -259,10 +319,112 @@
                 <componentref id="planet6"/>
                 <componentref id="planet7"/>
                 <componentref id="earth"/>
-                <componentref id="rocket"/>
                 <componentref id="sun"/>
             </children>
+            <animationref id="solarsystemanimation"/>
         </component>
+
+        <component id="skybox">
+            <transformation>
+                <scale x="75" y="75" z="75"/>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="space"/>
+            <children>
+                <componentref id="skyboxtop"/>
+                <componentref id="skyboxbot"/>
+                <componentref id="skyboxleft"/>
+                <componentref id="skyboxright"/>
+                <componentref id="skyboxfront"/>
+                <componentref id="skyboxback"/>
+            </children>
+        </component>
+
+        <component id="skyboxtop">
+            <transformation>
+                <translate x="0" y="0.5" z="0"/>
+                <rotate axis="z" angle="180"/>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="plane"/>
+            </children>
+        </component>
+
+        <component id="skyboxbot">
+            <transformation>
+                <translate x="0" y="-0.5" z="0"/>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="plane"/>
+            </children>
+        </component>
+
+        <component id="skyboxleft">
+            <transformation>
+                <translate x="-0.5" y="0" z="0"/>
+                <rotate axis="z" angle="-90"/>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="plane"/>
+            </children>
+        </component>
+
+        <component id="skyboxright">
+            <transformation>
+                <translate x="0.5" y="0" z="0"/>
+                <rotate axis="z" angle="90"/>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="plane"/>
+            </children>
+        </component>
+
+        <component id="skyboxfront">
+            <transformation>
+                <translate x="0" y="0" z="0.5"/>
+                <rotate axis="x" angle="-90"/>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="plane"/>
+            </children>
+        </component>
+
+        <component id="skyboxback">
+            <transformation>
+                <translate x="0" y="0" z="-0.5"/>
+                <rotate axis="x" angle="90"/>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="plane"/>
+            </children>
+        </component>
+
 
         <component id="pyramidplanet">
             <transformation>
@@ -421,7 +583,7 @@
                 <componentref id="head"/>
                 <componentref id="body"/>
             </children>
-            <animationref id="animation2"/>
+            <animationref id="personanimation"/>
         </component>
 
         <component id="head">
@@ -827,7 +989,7 @@
                 <componentref id="rockettop"/>
                 <componentref id="rocketbooster"/>
             </children>
-            <animationref id="animation1"/>
+            <animationref id="rocketanimation"/>
         </component>
 
         <component id="rocketbody">

@@ -39,8 +39,8 @@ class XMLscene extends CGFscene {
 
         this.setUpdatePeriod(33.33);
 
-        this.coolshader = new CGFshader(this.gl, "shaders/security.vert", "shaders/security.frag");
-        this.coolshader.setUniformsValues({ uSampler : 1, time: 0 })
+        this.shader = new CGFshader(this.gl, "shaders/security.vert", "shaders/security.frag");
+        this.shader.setUniformsValues({ uSampler : 1, time: 0 })
     }
 
     /**
@@ -142,7 +142,7 @@ class XMLscene extends CGFscene {
     }
 
     update(t) {
-        this.coolshader.setUniformsValues({ time: Math.sin(t) })
+        this.shader.setUniformsValues({ time: Math.sin(t) })
 
         // In case it's not loaded
         if (this.graph == null)
@@ -164,7 +164,7 @@ class XMLscene extends CGFscene {
         this.rtt.detachFromFrameBuffer();
         this.render(this.graph.views[this.selectedCamera]);
 
-        this.setActiveShader(this.coolshader);
+        this.setActiveShader(this.shader);
         this.gl.disable(this.gl.DEPTH_TEST)
         new MySecurityCamera(this, this.rtt).display()
         this.gl.enable(this.gl.DEPTH_TEST)
@@ -191,7 +191,7 @@ class XMLscene extends CGFscene {
         this.applyViewMatrix();
 
         // Draw axis
-        this.axis.display();
+        //this.axis.display();
 
         for (var i = 0; i < this.lights.length; i++) {
             this.lights[i].setVisible(this.lights[i].enabled);
