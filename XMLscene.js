@@ -33,11 +33,13 @@ class XMLscene extends CGFscene {
         this.gl.depthFunc(this.gl.LEQUAL);
 
         this.axis = new CGFaxis(this);
-        this.rtt = new CGFtextureRTT(this, 1500, 860);
+        //this.rtt = new CGFtextureRTT(this, this.gl.canvas.width, this.gl.canvas.height);
+        //this.rtt = new CGFtextureRTT(this, 1500, 860);
+        this.rtt = new CGFtextureRTT(this, 1400, 800);
 
         this.setUpdatePeriod(33.33);
 
-        this.coolshader = new CGFshader(this.gl, "shaders/test.vert", "shaders/test.frag");
+        this.coolshader = new CGFshader(this.gl, "shaders/security.vert", "shaders/security.frag");
         this.coolshader.setUniformsValues({ uSampler : 1, time: 0 })
     }
 
@@ -46,7 +48,6 @@ class XMLscene extends CGFscene {
      */
     initCameras() {
         this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(15, 15, 15), vec3.fromValues(0, 0, 0));
-        //  this.camera2 = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(-15, -15, -15), vec3.fromValues(0, 0, 0));
         this.securityCamera = new CGFcamera(1, 0.1, 500, vec3.fromValues(0, 0, 0), vec3.fromValues(-15, 2, 0));
     }
     /**
