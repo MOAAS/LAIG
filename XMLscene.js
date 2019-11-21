@@ -33,9 +33,9 @@ class XMLscene extends CGFscene {
         this.gl.depthFunc(this.gl.LEQUAL);
 
         this.axis = new CGFaxis(this);
-        //this.rtt = new CGFtextureRTT(this, this.gl.canvas.width, this.gl.canvas.height);
+        this.rtt = new CGFtextureRTT(this, this.gl.canvas.width, this.gl.canvas.height);
         //this.rtt = new CGFtextureRTT(this, 1500, 860);
-        this.rtt = new CGFtextureRTT(this, 1400, 800);
+        //this.rtt = new CGFtextureRTT(this, 1400, 800);
 
         this.setUpdatePeriod(33.33);
 
