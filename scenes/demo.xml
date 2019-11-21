@@ -12,7 +12,7 @@
             <up x="0" y="1" z="1"/> 
         </ortho>
         <perspective id="securityCamera" near="0.1" far="500" angle="70">
-            <from x="0" y="0" z="0" />
+            <from x="-0.1" y="0" z="0" />
             <to x="-15" y="2" z="0" />
         </perspective>
     </views>
@@ -59,6 +59,7 @@
         <texture id="head" file="scenes/images/head.jpg" />
         <texture id="astronaut" file="scenes/images/astronaut.jpg" />
         <texture id="rocket" file= "scenes/images/rocket.jpg"/>
+        <texture id="flag" file="scenes/images/flag.png" />
     </textures>
 
     <materials>
@@ -92,6 +93,12 @@
             <diffuse r="0.1" g="0.4" b="0.1" a="1.0" />
             <specular r="0.9" g="0.9" b="0.9" a="1.0" />
         </material>
+        <material id="greendiff" shininess="3">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="0.05" g="0.15" b="0.05" a="1.0" />
+            <diffuse r="0.1" g="0.4" b="0.1" a="1.0" />
+            <specular r="0.1" g="0.4" b="0.1" a="1.0" />
+        </material>
         <material id="reddiffSpec" shininess="20">
             <emission r="0.0" g="0.0" b="0.0" a="1.0" />
             <ambient r="0.15" g="0.1" b="0.1" a="1.0" />
@@ -102,7 +109,13 @@
             <emission r="0.0" g="0.0" b="0.0" a="1.0" />
             <ambient r="0.25" g="0.25" b="0.25" a="1.0" />
             <diffuse r="0.6" g="0.6" b="0.6" a="1.0" />
-            <specular r="0.8hm" g="0.8hm" b="0.8hm" a="1.0" />
+            <specular r="0.8" g="0.8" b="0.8" a="1.0" />
+        </material>
+        <material id="browndiff" shininess="3">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="0.1" g="0.05" b="0.025" a="1.0" />
+            <diffuse r="0.4" g="0.2" b="0.1" a="1.0" />
+            <specular r="0.1" g="0.05" b="0.025" a="1.0" />
         </material>
         <material id="redemissor" shininess="20">
             <emission r="1" g="0.8" b="0.15" a="1.0" />
@@ -168,11 +181,14 @@
         <primitive id="cylinder1">
             <cylinder base="2" top="2" height="6" slices="20" stacks="20" />
         </primitive>
-        <primitive id="cylinder2">
-            <cylinder2 base="0.5" top="1.0" height="2" slices="16" stacks="6" />
+         <primitive id="cylinder2">
+            <cylinder2 base="2" top="0.3" height="6" slices="20" stacks="20" />
         </primitive>
         <primitive id="cone1">
             <cylinder base="2" top="0" height="4" slices="20" stacks="6" />
+        </primitive>
+        <primitive id="cone2">
+            <cylinder base="0.5" top="1.0" height="2" slices="16" stacks="6" />
         </primitive>
         <primitive id="torusring">
             <torus inner="0.15" outer="1" slices="8" loops="32" />
@@ -186,7 +202,7 @@
         <primitive id="cone">
             <cylinder base="1" top="0" height="1" slices="12" stacks="12" />
         </primitive>
-           <primitive id="patch1">
+        <primitive id="patch1">
             <patch npointsU="3" npointsV="4" npartsU="16" npartsV="16" >
                 <controlpoint xx="-2" yy="-2" zz="1" />
                 <controlpoint xx="-2" yy="-1" zz="-2" />
@@ -203,7 +219,7 @@
                 <controlpoint xx="2" yy="1" zz="-5" />
                 <controlpoint xx="2" yy="2" zz="1" />
             </patch>
-        </primitive> 
+        </primitive>
     </primitives>
 
     <components>
@@ -225,7 +241,7 @@
                 <componentref id="planet7"/>
                 <componentref id="earth"/>
                 <componentref id="rocket"/>
-                <componentref id="sun"/>
+                <componentref id="sun"/>´
             </children>
         </component>
 
@@ -383,10 +399,66 @@
             </materials>
             <texture id="inherit"/>
             <children>
+                <componentref id="hat"/>
                 <componentref id="head"/>
                 <componentref id="body"/>
+                <componentref id="flagStructure"/>
             </children>
         </component>
+
+       <component id="hat">
+            <transformation>
+                <translate x="0" y="3" z="0"/>
+                <scale x="0.4" y="0.4" z="0.4"/>
+                <rotate axis="x" angle="-90"/>
+            </transformation>
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <componentref id="hattop"/>
+                <componentref id="hatbody"/>
+                <componentref id="hatbot"/> 
+            </children>
+        </component>
+        <component id="hattop">
+            <transformation>
+                <translate x="0" y="0" z="6.5"/>
+                <scale x="0.6" y="0.6" z="0.6"/>
+            </transformation>
+            <materials>
+                <material id="greendiff"/>
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="sphere"/>
+            </children>
+        </component>
+        <component id="hatbody">
+            <transformation>
+            </transformation>
+            <materials>
+                <material id="reddiffSpec"/>
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="cylinder2"/>
+            </children>
+        </component>
+         <component id="hatbot">
+            <transformation>
+                <scale x="2" y="2" z="3"/>
+            </transformation>
+            <materials>
+                <material id="greendiff"/>
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="torusring"/>
+            </children>
+        </component>
+
 
         <component id="head">
             <transformation>
@@ -505,8 +577,9 @@
                 <primitiveref id="cone"/>
             </children>
         </component>
-<!--
-    <component id="sun">
+        
+   
+        <component id="flagStructure">
             <transformation>
             </transformation>
             <materials>
@@ -514,10 +587,42 @@
             </materials>
             <texture id="inherit"/>
             <children>
+                <componentref id="flag"/>
+                <componentref id="pole"/>
+            </children>
+        </component>
+
+        <component id="flag">
+            <transformation>
+                <translate x="-3.5" y="3  " z="0.3"/>
+                <scale x="0.5" y="0.3" z="0.25"/>
+            </transformation>
+            <materials>
+            <material id="inherit" />
+            </materials>
+            <texture id="flag"/>
+            <children>
                 <primitiveref id="patch1"/>
             </children>
-        </component>  
--->
+        </component>
+
+        
+        <component id="pole">
+            <transformation>
+                <translate x="-3" y="3" z="-0.1"/>
+                <rotate axis="x" angle="90"/>
+                <scale x="0.05" y="0.05" z="0.5"/>
+    
+            </transformation>
+            <materials>
+            <material id="browndiff" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="cylinder1"/>
+            </children>
+        </component>
+
 
         <component id="sun">
             <transformation>
@@ -954,7 +1059,7 @@
             </materials>
             <texture id="inherit"/>
             <children>
-                <primitiveref id="cylinder2"/>
+                <primitiveref id="cone2"/>
             </children>
         </component>
         <component id="rocketflame">
