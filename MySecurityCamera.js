@@ -1,7 +1,12 @@
 class MySecurityCamera extends CGFobject {
     constructor(scene, rtt) {
         super(scene)
-        this.rectangle = new MyRectangle(scene, "camera", -0.5, 0.5, -0.5, 0.5)
+        this.rectangle = new MyRectangle(scene, "camera", 0.5, 1, -1, -0.5)
+
+        for (let i = 0; i < this.rectangle.texCoords.length; i++)
+            this.rectangle.texCoords[i] = this.rectangle.texCoords[i] * 2;
+        this.rectangle.updateTexCoordsGLBuffers();
+        
         this.rtt = rtt;
     }
 

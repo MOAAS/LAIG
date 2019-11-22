@@ -27,11 +27,7 @@ class MyRectangle extends CGFobject {
 		//Counter-clockwise reference of vertices
 		this.indices = [
 			0, 1, 2,
-			1, 3, 2,
-			
-			2, 1, 0,
-			2, 3, 1
-			
+			1, 3, 2,	
 		];
 
 		//Facing Z positive
@@ -56,10 +52,10 @@ class MyRectangle extends CGFobject {
 		let height = Math.abs(this.y2 - this.y1);
 		
 		this.texCoords = [
-			0, height,
-			width, height,
 			0, 0,
-			width, 0			
+			width, 0,
+			0, height,
+			width, height			
 		]
 		this.primitiveType = this.scene.gl.TRIANGLES;
 		this.initGLBuffers();
