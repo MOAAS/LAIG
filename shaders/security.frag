@@ -16,8 +16,9 @@ void main() {
     if(mod(time + textureCoord.y * 100.0, 2.0) > 1.0)
         color.rgb = mix(color.rgb, vec3(1.0, 1.0, 1.0), 0.25);
 
-    float factor = 1.0- sqrt(x * x + y * y);
-    color = vec4(color.rgb * factor, color.a);
+    float factor = 1.0 - sqrt(x * x + y * y);
+    color.rgb = color.rgb * factor;
+    color.rgb = mix(color.rgb, vec3(0.0, 1.0, 0.0), 0.05);
     gl_FragColor = color;
 
 }

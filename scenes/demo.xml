@@ -335,7 +335,6 @@
                 <componentref id="planet6"/>
                 <componentref id="planet7"/>
                 <componentref id="earth"/>
-                <componentref id="rocket"/>
                 <componentref id="sun"/>
             </children>
             <animationref id="solarsystemanimation"/>
