@@ -934,13 +934,13 @@ class MySceneGraph {
                         
                         var xx = this.reader.getFloat(patchNodeChildren[j], 'xx');
                         if (xx == null || isNaN(xx))
-                            return "unable to parse xx of the patch primitive with ID = " + primitiveId +" ; controlpoint num: " + (i+1);
+                            return "unable to parse xx of the patch primitive with ID = " + primitiveId +" ; controlpoint num: " + (j+1);
                         var yy = this.reader.getFloat(patchNodeChildren[j], 'yy');
                         if (yy == null || isNaN(yy))
-                            return "unable to parse yy of the patch primitive with ID = " + primitiveId +" ; controlpoint num: " + (i+1);
+                            return "unable to parse yy of the patch primitive with ID = " + primitiveId +" ; controlpoint num: " + (j+1);
                         var zz = this.reader.getFloat(patchNodeChildren[j], 'zz');
                         if (zz == null || isNaN(zz))
-                            return "unable to parse zz of the patch primitive with ID = " + primitiveId +" ; controlpoint num: " + (i+1);
+                            return "unable to parse zz of the patch primitive with ID = " + primitiveId +" ; controlpoint num: " + (j+1);
                     
                         pointsU.push([xx,yy,zz,1]);
                     }
