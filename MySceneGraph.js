@@ -905,7 +905,7 @@ class MySceneGraph {
                 this.primitives[primitiveId] = new MyTorus(this.scene, slices, loops, inner, outer);
             }
             else if (primitiveType == 'patch') {//npointsU=“ii” npointsV=“ii” npartsU=“ii” npartsV=“ii”
-                var children = primitiveNode.children;
+                var patchNodeChildren = primitiveNode.children;
 
                 var npointsU = this.reader.getInteger(primitiveNode, 'npointsU');
                 if (npointsU == null || isNaN(npointsU) || npointsU < 0)
@@ -922,28 +922,27 @@ class MySceneGraph {
                 var npartsV = this.reader.getInteger(primitiveNode, 'npartsV');
                 if (npartsV == null || isNaN(npartsV) || npartsV < 0)
                         return "unable to parse npartsV of the patch primitive with ID = " + primitiveId;
-                var i=0;
+                var j=0;
                 var points = [];
                 for (var u = 0; u < npointsU; u++){
                     var pointsU = [];
-                    for(var v = 0 ; v < npointsV;v++){
-                        if (children[i].nodeName != "controlpoint") {
-                            this.onXMLMinorError("unknown tag <" + children[i].nodeName + ">");
+                    for(var v = 0 ; v < npointsV;v++, j++){
+                        if (patchNodeChildren[j].nodeName != "controlpoint") {
+                            this.onXMLMinorError("unknown tag <" + patchNodeChildren[j].nodeName + ">");
                             continue;
                         }
                         
-                        var xx = this.reader.getInteger(children[i], 'xx');
+                        var xx = this.reader.getFloat(patchNodeChildren[j], 'xx');
                         if (xx == null || isNaN(xx))
                             return "unable to parse xx of the patch primitive with ID = " + primitiveId +" ; controlpoint num: " + (i+1);
-                        var yy = this.reader.getInteger(children[i], 'yy');
+                        var yy = this.reader.getFloat(patchNodeChildren[j], 'yy');
                         if (yy == null || isNaN(yy))
                             return "unable to parse yy of the patch primitive with ID = " + primitiveId +" ; controlpoint num: " + (i+1);
-                        var zz = this.reader.getInteger(children[i], 'zz');
+                        var zz = this.reader.getFloat(patchNodeChildren[j], 'zz');
                         if (zz == null || isNaN(zz))
                             return "unable to parse zz of the patch primitive with ID = " + primitiveId +" ; controlpoint num: " + (i+1);
                     
                         pointsU.push([xx,yy,zz,1]);
-                        i++;
                     }
                     points.push(pointsU);
                 }
