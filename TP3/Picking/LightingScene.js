@@ -91,8 +91,11 @@ class LightingScene extends CGFscene{
 			this.registerForPick(i + 1, this.objects[i]);
 			this.objects[i].display();
 			this.translate(0, 0, -2);
-			if (i != this.objects.length - 1)
+			if (i != this.objects.length - 1) {
+		this.clearPickRegistration();
+
 				this.cylinder.display();
+			}
 			this.popMatrix();
 		}
 	}
