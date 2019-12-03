@@ -6,7 +6,7 @@
             <from x="30" y="30" z="30" />
             <to x="0" y="0" z="0" />
         </perspective>
-        <perspective id="television" near="0.1" far="500" angle="70">
+        <perspective id="securityCamera" near="0.1" far="500" angle="70">
             <from x="0" y="10" z="0" />
             <to x="0" y="0" z="0" />
         </perspective>
