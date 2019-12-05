@@ -36,10 +36,11 @@ class MyInterface extends CGFinterface {
         }
     }
 
-    initCamerasUI(views){
+    initCamerasUI(views) {
         this.gui.add(this.scene, 'selectedCamera', views).name('Active camera').onChange(this.scene.updateCameras.bind(this.scene));
-        this.gui.add(this.scene, 'securityCamera', views).name('Security camera').onChange(this.scene.updateCameras.bind(this.scene));
+        this.gui.add(this.scene, 'televisionCamera', views).name('Television camera').onChange(this.scene.updateCameras.bind(this.scene));
     }
+    
     /**
      * initKeys
      */

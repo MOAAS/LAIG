@@ -10,7 +10,6 @@ class XMLscene extends CGFscene {
      */
     constructor(myinterface) {
         super();
-
         this.interface = myinterface;
     }
 
@@ -37,8 +36,8 @@ class XMLscene extends CGFscene {
 
         this.setUpdatePeriod(33.33);
 
-        this.shader = new CGFshader(this.gl, "shaders/tv.vert", "shaders/tv.frag");
-        this.shader.setUniformsValues({ uSampler : 1, time: 0 })
+        //this.shader = new CGFshader(this.gl, "shaders/tv.vert", "shaders/tv.frag");
+        //this.shader.setUniformsValues({ uSampler : 1, time: 0 })
     }
 
     /**
@@ -102,8 +101,9 @@ class XMLscene extends CGFscene {
     /** Handler called when the graph is finally loaded. 
      * As loading is asynchronous, this may be called already after the application has started the run loop
      */
-    onGraphLoaded() {
-        this.axis = new CGFaxis(this, this.graph.referenceLength);
+    onGraphLoaded(graph) {
+        this.graph = graph;
+        this.axis = new CGFaxis(this, 5);
 
         this.gl.clearColor(this.graph.background[0], this.graph.background[1], this.graph.background[2], this.graph.background[3]);
 
@@ -140,7 +140,7 @@ class XMLscene extends CGFscene {
     }
 
     update(t) {
-        this.shader.setUniformsValues({ time: t })
+        //this.shader.setUniformsValues({ time: t })
 
         // In case it's not loaded
         if (this.graph == null)
@@ -162,11 +162,9 @@ class XMLscene extends CGFscene {
         this.rtt.detachFromFrameBuffer();
         this.render(this.graph.views[this.selectedCamera]);
 
-        this.setActiveShader(this.shader);
-        this.gl.disable(this.gl.DEPTH_TEST)
+       // this.setActiveShader(this.shader);
         new MySecurityCamera(this, this.rtt).display()
-        this.gl.enable(this.gl.DEPTH_TEST)
-        this.setActiveShader(this.defaultShader)
+       // this.setActiveShader(this.defaultShader)
 
     }
     /**
@@ -188,7 +186,7 @@ class XMLscene extends CGFscene {
         this.applyViewMatrix();
 
         // Draw axis
-        //this.axis.display();
+        this.axis.display();
         // ---- END Background, camera and axis setup
 
         for (var i = 0; i < this.lights.length; i++) {
@@ -196,9 +194,6 @@ class XMLscene extends CGFscene {
             this.lights[i].update();
         }
 
-
-        // Displays the scene (MySceneGraph function).
-        this.graph.displayScene();
-
+        this.graph.display(this);
     }
 }
