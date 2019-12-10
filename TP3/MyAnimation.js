@@ -43,9 +43,9 @@ class KeyFrame {
     }
 
     apply(percentage, previous) {
-        let translation = new Translation(this.T.x - previous.T.x, this.T.y - previous.T.y, this.T.z - previous.T.z)
-        let rotation = new Rotation(this.R.x - previous.R.x, this.R.y - previous.R.y, this.R.z - previous.R.z)
-        let scale = new Scale(this.S.x / previous.S.x, this.S.y / previous.S.y, this.S.z / previous.S.z)
+        let translation = new AnimTranslation(this.T.x - previous.T.x, this.T.y - previous.T.y, this.T.z - previous.T.z)
+        let rotation = new AnimRotation(this.R.x - previous.R.x, this.R.y - previous.R.y, this.R.z - previous.R.z)
+        let scale = new AnimScale(this.S.x / previous.S.x, this.S.y / previous.S.y, this.S.z / previous.S.z)
 
         translation.x = translation.x * percentage + previous.T.x;
         translation.y = translation.y * percentage + previous.T.y;
@@ -82,7 +82,7 @@ class KeyFrame {
     }
 }
 
-class Transformation {
+class AnimTransformation {
     constructor(x, y, z) {
         this.x = x;
         this.y = y;
@@ -90,12 +90,12 @@ class Transformation {
     }
 }
 
-class Translation extends Transformation {
+class AnimTranslation extends AnimTransformation {
     
 }
-class Rotation extends Transformation {
+class AnimRotation extends AnimTransformation {
     
 }
-class Scale extends Transformation {
+class AnimScale extends AnimTransformation {
     
 }

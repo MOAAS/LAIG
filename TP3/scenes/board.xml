@@ -28,7 +28,7 @@
             <ambient r="0" g="0" b="0" a="1.0" />
             <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
             <specular r="1.0" g="1.0" b="1.0" a="1.0" />
-            <attenuation constant="1.0" linear="0.1" quadratic="0.01" />
+            <attenuation constant="1.0" linear="0.1" quadratic="0.00" />
         </omni>
 
         <omni id="light" enabled="1">
@@ -46,11 +46,18 @@
     </textures>
 
     <materials>
-        <material id="graydiffusematerial" shininess="4">
+        <material id="graydiffuse" shininess="4">
             <emission r="0.0" g="0.0" b="0.0" a="1.0" />
             <ambient r="0.25" g="0.25" b="0.25" a="1.0" />
             <diffuse r="0.8" g="0.8" b="0.8" a="1.0" />
             <specular r="0.5" g="0.5" b="0.5" a="1.0" />
+        </material>
+
+        <material id="shinyGreen" shininess="3">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="0.05" g="0.15" b="0.05" a="1.0" />
+            <diffuse r="0.1" g="0.4" b="0.1" a="1.0" />
+            <specular r="0.9" g="0.9" b="0.9" a="1.0" />
         </material>
     </materials>
 
@@ -73,9 +80,7 @@
     <components>
         <component id="root">
             <transformation/>
-            <materials>
-                <material id="graydiffusematerial" />
-            </materials>
+            <material id="graydiffuse" />
             <texture id="none"/>
             <children> 
                 <componentref id="component1"/>
@@ -86,9 +91,7 @@
             <transformation>
                 <scale x="30" y="1" z="20"/>
             </transformation>
-            <materials>
-                <material id="inherit" />
-            </materials>
+            <material id="inherit" />
             <texture id="none"/>
             <children> 
                 <primitiveref id="plane1"/>

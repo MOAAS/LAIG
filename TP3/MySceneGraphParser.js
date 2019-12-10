@@ -62,7 +62,7 @@ class MySceneGraphParser {
         this.loadedOk = true;
 
         // As the graph loaded ok, signal the scene so that any additional initialization depending on the graph can take place
-        this.scene.onGraphLoaded(new MySceneGraph(this.components, this.idRoot, this.views, this.defaultView, this.ambient, this.background, this.lights));
+        this.scene.onGraphLoaded(new MySceneGraph(this.components, this.idRoot, this.views, this.defaultView, this.ambient, this.background, this.lights, this.materials, this.textures));
     }
 
     /**
@@ -1017,7 +1017,7 @@ class MySceneGraphParser {
             }
 
             var transformationIndex = nodeNames.indexOf("transformation");
-            var materialsIndex = nodeNames.indexOf("materials");
+            var materialIndex = nodeNames.indexOf("material");
             var textureIndex = nodeNames.indexOf("texture");
             var childrenIndex = nodeNames.indexOf("children");
             var animationsIndex = nodeNames.indexOf("animationref");
@@ -1025,8 +1025,8 @@ class MySceneGraphParser {
             // Verify if blocks exist
             if (transformationIndex == -1)
                 return "No transformation block for component with ID = " + componentID;
-            if (materialsIndex == -1)
-                return "No materials block for component with ID = " + componentID;
+            if (materialIndex == -1)
+                return "No material block for component with ID = " + componentID;
             if (textureIndex == -1)
                 return "No texture block for component with ID = " + componentID;
             if (childrenIndex == -1)
@@ -1038,9 +1038,9 @@ class MySceneGraphParser {
                 return "Couldn't parse transformations for component with ID = " + componentID;
                 
             // Materials
-            var materials = this.parseComponentMaterials(grandChildren[materialsIndex]);
-            if (materials == null)
-                return "Couldn't parse materials for component with ID = " + componentID;
+            var material = this.parseComponentMaterial(grandChildren[materialIndex]);
+            if (material == null)
+                return "Couldn't parse material for component with ID = " + componentID;
                 
             // Texture
             var compTexture = this.parseComponentTexture(grandChildren[textureIndex]);
@@ -1060,7 +1060,7 @@ class MySceneGraphParser {
                     return "Couldn't parse animations for component with ID = " + componentID;
             }
                 
-            this.components[componentID] = new Component(transformation, materials, compTexture, compChildren, compAnimation);
+            this.components[componentID] = new Component(this.scene, compChildren, transformation, compAnimation, material, compTexture);
             componentIDs.push(componentID)
             numComponents++;
         }
@@ -1128,44 +1128,27 @@ class MySceneGraphParser {
      * @param {material node} node 
      * @param {component id} id 
      */
-    parseComponentMaterials(node) {
-        var children = node.children;
-        
-        var materials = [];
-        for (var i = 0; i < children.length; i++) {
-            if (children[i].nodeName == 'material') {
-                // Gets the ID attribute from the material, returning an error if it does not exist
-                var ID = this.reader.getString(children[i], 'id');
-                if (ID == null) {
-                    this.onXMLError("No ID found for component material");
-                    return null;
-                }
-
-                // Null material will be considered as inherited
-                if (ID == "inherit") {
-                    materials.push(null);
-                    continue;
-                }
-
-                // Searches for material with given ID
-                // In this case, null means it's not present
-                var material = this.materials[ID];
-                if (material == null) {
-                    this.onXMLError("Couldn't find material with ID " + ID + " for component");
-                    return null;
-                }
-
-                materials.push(material);
-            }
-            else this.onXMLMinorError("Expected <material> tag, found <" + children[i].nodeName + ">, ignoring");
-        }
-
-        // Minimum of 1 material
-        if (materials.length == 0) {
-            this.onXMLError("No materials found for component");
+    parseComponentMaterial(node) {
+        // Gets the ID attribute from the material, returning an error if it does not exist
+        var ID = this.reader.getString(node, 'id');
+        if (ID == null) {
+            this.onXMLError("No ID found for component material");
             return null;
         }
-        return materials;
+
+        // -1 material will be considered as inherited
+        if (ID == "inherit")
+            return -1;
+
+        // Searches for material with given ID
+        // In this case, null means it's not present
+        var material = this.materials[ID];
+        if (material == null) {
+            this.onXMLError("Couldn't find material with ID " + ID + " for component");
+            return null;
+        }
+
+        return material;
     }
 
     /**

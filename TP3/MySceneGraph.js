@@ -1,5 +1,5 @@
 class MySceneGraph {
-    constructor(components, idRoot, views, defaultView, ambient, background, lights) {
+    constructor(components, idRoot, views, defaultView, ambient, background, lights, materials, textures) {
         this.components = components;
         this.idRoot = idRoot;
         this.views = views;
@@ -7,6 +7,8 @@ class MySceneGraph {
         this.ambient = ambient;
         this.background = background;
         this.lights = lights;
+        this.materials = materials;
+        this.textures = textures;
     }
 
     cycleMaterials() {
@@ -21,11 +23,7 @@ class MySceneGraph {
         }
     }
 
-    display(scene) {
-        let defaultTrans = mat4.create();
-        let defaultMaterial = new CGFappearance(this.scene)
-        let defaultTexture = new ComponentTexture(null, 0, 0);
-
-        this.components[this.idRoot].display(scene, defaultTrans, defaultMaterial, defaultTexture);
+    display() {
+        this.components[this.idRoot].display();
     }
 }

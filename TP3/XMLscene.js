@@ -33,6 +33,8 @@ class XMLscene extends CGFscene {
 
         this.axis = new CGFaxis(this);
         this.rtt = new CGFtextureRTT(this, this.gl.canvas.width, this.gl.canvas.height);
+        this.pickables = [];
+        this.onPickeds = [];
 
         this.setUpdatePeriod(33.33);
 
@@ -98,6 +100,16 @@ class XMLscene extends CGFscene {
         this.setShininess(10.0);
     }
 
+        
+    setCamera(view) {
+        this.camera = view;
+        this.interface.setActiveCamera(view);
+    }
+
+    updateCameras() {
+        this.setCamera(this.graph.views[this.selectedCamera]);
+    }
+
     /** Handler called when the graph is finally loaded. 
      * As loading is asynchronous, this may be called already after the application has started the run loop
      */
@@ -106,9 +118,7 @@ class XMLscene extends CGFscene {
         this.axis = new CGFaxis(this, 5);
 
         this.gl.clearColor(this.graph.background[0], this.graph.background[1], this.graph.background[2], this.graph.background[3]);
-
         this.setGlobalAmbientLight(this.graph.ambient[0], this.graph.ambient[1], this.graph.ambient[2], this.graph.ambient[3]);
-
         this.initLights();
 
         // adds the lights to the interface drop down
@@ -128,15 +138,26 @@ class XMLscene extends CGFscene {
         this.updateCameras()
         this.interface.initCamerasUI(cameraKeys);
         this.sceneInited = true;
+        this.game = new BoardGame(this, graph);
+        this.game.start();
     }
 
-    setCamera(view) {
-        this.camera = view;
-        this.interface.setActiveCamera(view);
+    logPicking() {
+        if (this.pickResults != null && this.pickResults.length > 0) {
+            for (let i = 0; i < this.pickResults.length; i++) {
+                let object = this.pickResults[i][0];
+                if (object != null) {
+                    let objectID = this.pickResults[i][1];
+                    this.onPickeds[objectID - 1]();			
+                }
+            }
+            this.pickResults.splice(0, this.pickResults.length);
+        }
     }
 
-    updateCameras() {
-        this.setCamera(this.graph.views[this.selectedCamera]);
+    addPickable(pickable, onPicked) {
+        this.pickables.push(pickable);
+        this.onPickeds.push(onPicked || function() { console.log("Object was picked!")});
     }
 
     update(t) {
@@ -153,17 +174,20 @@ class XMLscene extends CGFscene {
             this.graph.cycleMaterials()
     }
 
+
+    
     display() {
         if (!this.sceneInited)
             return;
 
+        this.logPicking();
         this.rtt.attachToFrameBuffer();
         this.render(this.graph.views[this.televisionCamera]);
         this.rtt.detachFromFrameBuffer();
         this.render(this.graph.views[this.selectedCamera]);
 
        // this.setActiveShader(this.shader);
-        new MySecurityCamera(this, this.rtt).display()
+       // new MySecurityCamera(this, this.rtt).display()
        // this.setActiveShader(this.defaultShader)
 
     }
@@ -179,6 +203,7 @@ class XMLscene extends CGFscene {
         this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
 
         // Initialize Model-View matrix as identity (no transformation
+        this.setDefaultAppearance()
         this.updateProjectionMatrix();
         this.loadIdentity();
 
@@ -189,11 +214,17 @@ class XMLscene extends CGFscene {
         this.axis.display();
         // ---- END Background, camera and axis setup
 
-        for (var i = 0; i < this.lights.length; i++) {
+        for (let i = 0; i < this.lights.length; i++) {
             this.lights[i].setVisible(this.lights[i].enabled);
             this.lights[i].update();
         }
 
-        this.graph.display(this);
+        this.graph.display();
+
+        for (let i = 0; i < this.pickables.length; i++) {
+            this.registerForPick(i + 1, this.pickables[i])
+            this.pickables[i].display();
+        }
+		this.clearPickRegistration();
     }
 }
