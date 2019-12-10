@@ -59,6 +59,13 @@
             <diffuse r="0.1" g="0.4" b="0.1" a="1.0" />
             <specular r="0.9" g="0.9" b="0.9" a="1.0" />
         </material>
+
+        <material id="browndiff" shininess="3">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="0.1" g="0.05" b="0.025" a="1.0" />
+            <diffuse r="0.4" g="0.2" b="0.1" a="1.0" />
+            <specular r="0.1" g="0.05" b="0.025" a="1.0" />
+        </material>
     </materials>
 
     <transformations>
