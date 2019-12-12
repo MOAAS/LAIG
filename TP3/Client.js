@@ -12,3 +12,18 @@ function sendPrologRequest(requestString, onSuccess, onError, port)
     request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
     request.send();
 }
+
+function getNewBoard(onLoad) {
+    sendPrologRequest('start', (response) => { 
+        onLoad(JSON.parse(response.split('-')[0]));
+    });
+}
+
+function getValidMoves(board, onLoad) {
+    console.log(board)
+    sendPrologRequest('validMovesPLS(' + JSON.stringify(board) +  ')', (response) => {
+        console.log(response)
+        //console.log(response.replace('[', '[[').replace(']', ']]').replaceAll(',', '],[').replaceAll('-', ','))
+        onLoad(JSON.parse(response))
+    });
+}

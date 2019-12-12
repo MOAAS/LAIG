@@ -20,4 +20,8 @@ class MySceneGraph {
     display() {
         this.components[this.idRoot].display();
     }
+
+    addComponent(component) {
+        this.components[this.idRoot].children.push(component);
+    }
 }

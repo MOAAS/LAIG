@@ -47,32 +47,51 @@ class BoardGame {
         //this.scene.addPickable(new Pickable(piece3, () => toggleMaterial(piece3)))
 
 
-        sendPrologRequest('start', (response) => this.parseBoard(response));
+
+        getNewBoard((cellArray) => this.createBoard(cellArray));
+
+
     }
 
-    parseBoard(string) {
-        let cellArray = JSON.parse(string.split('-')[0]); 
-        if (cellArray.length == 0)
-            return;
+    createBoard(cellArray) {
         this.boardWidth = cellArray[0].length;
         this.boardHeight = cellArray.length;
 
-        console.log(cellArray)
+       // console.log(cellArray)
+        this.board = [];
         for (let i = 0; i < cellArray.length; i++) {
-            let boardRow = [];
+            this.board.push([]);
             for (let j = 0; j < cellArray[i].length; j++) {
                 let piece = this.makePiece(cellArray[i][j], j, i);
-                boardRow.push(piece)
+                this.board[i].push(piece)
                 if (piece != null)
                     this.scene.addPickable(piece);
             }
-            this.board.push(boardRow);
         }
+        getValidMoves(this.toCellArray(), (response) => console.log(response));
+    }
+
+    toCellArray() {
+        let cells = [];
+        for (let i = 0; i < this.board.length; i++) {
+            cells.push([])
+            for (let j = 0; j < this.board[i].length; j++)
+                cells[i].push(this.pieceValue(this.board[i][j]))
+        }
+        return cells;
+    }
+
+    pieceAt(x, y) {
+        if (x <= 0 || y <= 0 || x > this.boardWidth || y > this.boardHeight)
+            return null;
+        return this.board[y][x];
     }
 
     calculate3Dposition(x, y) {
         const pieceSpacing = 1.25;
-        return new Translation((x + 0.5 - this.boardWidth  / 2.0) * pieceSpacing, 0, (y + 0.5 - this.boardHeight / 2.0) * pieceSpacing)
+        let offset = (y % 2) ? pieceSpacing / 2 : 0;
+
+        return new Translation((x + 0.5 - this.boardWidth  / 2.0) * pieceSpacing + offset, 0, (y + 0.5 - this.boardHeight / 2.0) * pieceSpacing)
     }
 
     makePiece(value, x, y) {
