@@ -764,8 +764,9 @@ class MySceneGraphParser {
                 (grandChildren[0].nodeName != 'rectangle' && grandChildren[0].nodeName != 'triangle' &&
                     grandChildren[0].nodeName != 'cylinder' && grandChildren[0].nodeName != 'sphere' &&
                     grandChildren[0].nodeName != 'torus' && grandChildren[0].nodeName != 'cylinder2' &&
-                    grandChildren[0].nodeName != 'plane' && grandChildren[0].nodeName != 'patch')) {
-                return "There must be exactly 1 primitive type (rectangle, triangle, cylinder, cylinder2, plane, patch, sphere or torus) (ID = " + primitiveId + ")";
+                    grandChildren[0].nodeName != 'plane' && grandChildren[0].nodeName != 'patch' &&
+                    grandChildren[0].nodeName != 'prism')) {
+                return "There must be exactly 1 primitive type (rectangle, triangle, cylinder, cylinder2, plane, patch, prism, sphere or torus) (ID = " + primitiveId + ")";
             }
 
             // Specifications for the current primitive.
@@ -956,6 +957,14 @@ class MySceneGraphParser {
                         return "unable to parse npartsV of the plane primitive with ID = " + primitiveId;
 
                 this.primitives[primitiveId] = new MyPlane(this.scene,npartsU,npartsV);                
+            }
+
+            else if (primitiveType == 'prism') {
+                var parts = this.reader.getInteger(primitiveNode, 'parts');
+                if (parts == null || isNaN(parts) || parts < 0)
+                    return "unable to parse parts of the plane primitive with ID = " + primitiveId;
+
+                this.primitives[primitiveId] = new MyPrism(this.scene, parts);                
             }
 
         }
