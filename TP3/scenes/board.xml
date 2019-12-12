@@ -96,6 +96,7 @@
     <primitives>
         <primitive id="plane1"><plane npartsU="60" npartsV="40"/></primitive>
         <primitive id="sphere1"><sphere slices="50" stacks="50" radius="0.5"/></primitive>
+        <primitive id="hexprism"><prism parts="6"/></primitive>
     </primitives>
 
     <components>
@@ -105,6 +106,7 @@
             <texture id="none"/>
             <children> 
                 <componentref id="component1"/>
+              <!--  <componentref id="component2"/> -->
             </children>
         </component>
 
@@ -118,6 +120,18 @@
                 <primitiveref id="plane1"/>
             </children>
         </component>
+
+        <component id="component2">
+            <transformation>
+                <scale x="3" y="3" z="3"/>
+            </transformation>
+            <material id="inherit" />
+            <texture id="none"/>
+            <children> 
+                <primitiveref id="hexprism"/>
+            </children>
+        </component>
+
 
         <component id="piece1">
             <transformation/>

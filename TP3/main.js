@@ -33,6 +33,11 @@ serialInclude([
     'BoardGame.js',
     'Transformation.js',
     'Pickable.js',
+    'CGFOBJModel.js',
+    'CGFResourceReader.js',
+    'MyPrism.js',
+    
+
 main=function()
 {
 	// Standard application, scene and interface setup
