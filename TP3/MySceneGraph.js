@@ -11,12 +11,6 @@ class MySceneGraph {
         this.textures = textures;
     }
 
-    cycleMaterials() {
-        for (var componentID in this.components) {
-            this.components[componentID].cycleMaterial();
-        }
-    }
-
     update(t) {
         for (var componentID in this.components) {
             this.components[componentID].update(t);

@@ -32,6 +32,7 @@ serialInclude([
     'Client.js',
     'BoardGame.js',
     'Transformation.js',
+    'Pickable.js',
 main=function()
 {
 	// Standard application, scene and interface setup

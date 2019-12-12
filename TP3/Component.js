@@ -1,7 +1,7 @@
 class Component {
     constructor(scene, children, transformationMatrix, animation, material, comptexture) {
         this.scene = scene;
-        this.children = children;
+        this.children = children || [];
         // Sets identity matrix as default matrix
         // Sets empty animation as default animation
         // Sets default apearance as default material

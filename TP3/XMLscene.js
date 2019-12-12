@@ -34,7 +34,6 @@ class XMLscene extends CGFscene {
         this.axis = new CGFaxis(this);
         this.rtt = new CGFtextureRTT(this, this.gl.canvas.width, this.gl.canvas.height);
         this.pickables = [];
-        this.onPickeds = [];
 
         this.setUpdatePeriod(33.33);
 
@@ -148,16 +147,25 @@ class XMLscene extends CGFscene {
                 let object = this.pickResults[i][0];
                 if (object != null) {
                     let objectID = this.pickResults[i][1];
-                    this.onPickeds[objectID - 1]();			
+                    this.pickables[objectID - 1].onPicked();			
                 }
             }
             this.pickResults.splice(0, this.pickResults.length);
         }
     }
 
-    addPickable(pickable, onPicked) {
+    addPickable(pickable) {
         this.pickables.push(pickable);
-        this.onPickeds.push(onPicked || function() { console.log("Object was picked!")});
+    }
+
+    removePickable(pickable) {
+        let index = this.pickables.indexOf(pickable);
+        if (index > -1)
+            this.pickables.splice(index, 1);
+    }
+
+    clearPickables() {
+        this.pickables = [];
     }
 
     update(t) {
@@ -168,10 +176,7 @@ class XMLscene extends CGFscene {
             return;
 
         this.graph.update(t)
-
-        // if M is pressed, go to next material in the list
-        if (this.gui.isKeyPressed("KeyM"))
-            this.graph.cycleMaterials()
+        this.game.update(t);
     }
 
 
@@ -223,7 +228,7 @@ class XMLscene extends CGFscene {
 
         for (let i = 0; i < this.pickables.length; i++) {
             this.registerForPick(i + 1, this.pickables[i])
-            this.pickables[i].display();
+            this.pickables[i].component.display();
         }
 		this.clearPickRegistration();
     }
