@@ -14,7 +14,7 @@ varying vec2 textureCoord;
 varying vec3 coords;
 
 void main() {
-    gl_Position = vec4(aVertexPosition.x, aVertexPosition.y, aVertexPosition.z, 1.0);
+	gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
     textureCoord = aTextureCoord;
     coords = aVertexPosition;
 }

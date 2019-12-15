@@ -20,10 +20,32 @@ function getNewBoard(onLoad) {
 }
 
 function getValidMoves(board, onLoad) {
-    console.log(board)
     sendPrologRequest('validMovesPLS(' + JSON.stringify(board) +  ')', (response) => {
-        console.log(response)
-        //console.log(response.replace('[', '[[').replace(']', ']]').replaceAll(',', '],[').replaceAll('-', ','))
-        onLoad(JSON.parse(response))
+        response = response.replace('[', '[[');
+        response = response.replace(']', ']]');
+        response = response.replace(/,/g, '],[');
+        response = response.replace(/-/g, ',');
+        let moves = JSON.parse(response);
+        moves.forEach(move => { move[0]--; move[1]--; });
+        onLoad(moves)
+    });
+}
+
+function isGameOver(board, player1, player2, onYes, onNo) {
+    let game = JSON.stringify(board) + '-[' + JSON.stringify(player1) + ',' + JSON.stringify(player2) + ']';
+    sendPrologRequest('isGameOver(' + game +  ')', (response) => {
+        let parsed = JSON.parse(response);
+        if (parsed[0] == 1) {
+            onYes(parsed[1])
+        }
+        else onNo();
+    });
+}
+
+function getCPUMove(board, player1, player2, playerToMove, onLoad) {
+    let game = JSON.stringify(board) + '-[' + JSON.stringify(player1) + ',' + JSON.stringify(player2) + ']';
+    sendPrologRequest('movePLS(' + game +  ',' + playerToMove + ')', (response) => {
+        let move = JSON.parse('[' + response.replace('-', ',') + ']')
+        onLoad([move[0]-1, move[1]-1]);
     });
 }

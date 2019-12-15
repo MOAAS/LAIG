@@ -43,9 +43,6 @@ class MyCilinder extends CGFobject {
         var zDiff = this.height / this.stacks;
         var radiusDiff = (this.topRadius - this.baseRadius) / this.stacks;
 
-        console.log(this.vertices.length);
-        console.log(this.slices);
-
         // Goes around the cylinder
         for(var i = 0, ang = 0; i <= this.slices; i++, ang += angDiff) {
             // Goes up the cylinder

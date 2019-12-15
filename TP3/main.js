@@ -28,14 +28,13 @@ serialInclude([
     'MyPlane.js', 
     'MyPatch.js', 
     'MyCilinder2.js', 
-    'MySecurityCamera.js',
     'Client.js',
     'BoardGame.js',
     'Transformation.js',
-    'Pickable.js',
     'CGFOBJModel.js',
     'CGFResourceReader.js',
     'MyPrism.js',
+    'Button.js',
     
 
 main=function()

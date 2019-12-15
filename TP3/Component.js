@@ -7,7 +7,7 @@ class Component {
         // Sets default apearance as default material
         // Sets no texture as default texture
         this.transformationMatrix = transformationMatrix || mat4.create();
-        this.animation = animation || new MyAnimation([]);
+        this.setAnimation(animation || new MyAnimation([]));
         this.material = material || new CGFappearance(scene);
         this.texture = comptexture || new ComponentTexture(null, 1, 1);
         this.animationMatrix = mat4.create();
@@ -17,12 +17,33 @@ class Component {
         if (this.animation == null)
             return;
         // Starts the animation if not started
-        if (this.started == null) {
-            console.log("START");
-            this.started = true;
-            this.animation.start(t)
+        if (this.animationStarted == false) {
+            this.animationStarted = true;
+            this.animationStartTime = t;
         }
-        else this.animationMatrix = this.animation.apply(t);
+        this.animationMatrix = this.animation.apply(this.animationStartTime, t);
+    }
+
+    setAnimation(animation) {
+        this.animation = animation;
+        this.animationStarted = false;
+    }
+
+    reverseAnimation() {
+        if (this.animation == null)
+            return console.log("Animation is null.");
+        if (!this.animationStarted)
+            return console.log("Animation hasn't been started, can't reverse")            
+        this.animation = this.animation.reverse()
+        let lastInstant = this.animation.keyframes[this.animation.keyframes.length - 1].instant;
+        let now = new Date().getTime()
+        this.animationStartTime = now + Math.min(0, now - this.animationStartTime - 1000 * lastInstant);
+    }
+
+    setOnPick(onPick, pickID) {
+        this.onPick = onPick;
+        if (pickID != null)
+            this.pickID = pickID;
     }
 
     display() {
@@ -35,6 +56,9 @@ class Component {
     }
     
     displayChildren(currTrans, currMaterial, currTexture) {
+        if (this.onPick != null)
+            this.scene.registerForPick(this.pickID, this);
+
         // Clones the current transformation to avoid changing the passed reference
         currTrans = mat4.clone(currTrans);
         mat4.multiply(currTrans, currTrans, this.transformationMatrix)
@@ -64,6 +88,8 @@ class Component {
             // if component, calls the function again with the current arguments
             else child.displayChildren(currTrans, currMaterial, currTexture)
         }
+
+        this.scene.clearPickRegistration();
     }
 
     multTexCoords(primitive, sFact, tFact) {

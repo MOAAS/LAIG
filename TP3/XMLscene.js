@@ -20,8 +20,6 @@ class XMLscene extends CGFscene {
     init(application) {
         super.init(application);
 
-        this.sceneInited = false;
-
         this.initCameras();
 
         this.enableTextures(true);
@@ -32,13 +30,11 @@ class XMLscene extends CGFscene {
         this.gl.depthFunc(this.gl.LEQUAL);
 
         this.axis = new CGFaxis(this);
-        this.rtt = new CGFtextureRTT(this, this.gl.canvas.width, this.gl.canvas.height);
-        this.pickables = [];
 
         this.setUpdatePeriod(33.33);
 
-        //this.shader = new CGFshader(this.gl, "shaders/tv.vert", "shaders/tv.frag");
-        //this.shader.setUniformsValues({ uSampler : 1, time: 0 })
+        //this.tvshader = new CGFshader(this.gl, "shaders/tv.vert", "shaders/tv.frag");
+       // this.tvshader.setUniformsValues({ uSampler : 1, time: 0 })
     }
 
     /**
@@ -77,7 +73,7 @@ class XMLscene extends CGFscene {
                     this.lights[i].setSpotDirection(light[9][0], light[9][1], light[9][2]);
                 }
 
-                this.lights[i].setVisible(true);
+                this.lights[i].setVisible(false);
                 if (light[0])
                     this.lights[i].enable();
                 else
@@ -136,36 +132,21 @@ class XMLscene extends CGFscene {
         // Initializes camera list with the keys (IDs) of the cameras
         this.updateCameras()
         this.interface.initCamerasUI(cameraKeys);
-        this.sceneInited = true;
         this.game = new BoardGame(this, graph);
         this.game.start();
     }
 
     logPicking() {
-        if (this.pickResults != null && this.pickResults.length > 0) {
-            for (let i = 0; i < this.pickResults.length; i++) {
-                let object = this.pickResults[i][0];
-                if (object != null) {
-                    let objectID = this.pickResults[i][1];
-                    this.pickables[objectID - 1].onPicked();			
+        if (this.pickMode == false) {
+            if (this.pickResults != null && this.pickResults.length > 0) {
+                for (let i = 0; i < this.pickResults.length; i++) {
+                    let object = this.pickResults[i][0];
+                    if (object != null)
+                        object.onPick()		
                 }
+                this.pickResults.splice(0, this.pickResults.length);
             }
-            this.pickResults.splice(0, this.pickResults.length);
         }
-    }
-
-    addPickable(pickable) {
-        this.pickables.push(pickable);
-    }
-
-    removePickable(pickable) {
-        let index = this.pickables.indexOf(pickable);
-        if (index > -1)
-            this.pickables.splice(index, 1);
-    }
-
-    clearPickables() {
-        this.pickables = [];
     }
 
     update(t) {
@@ -182,18 +163,21 @@ class XMLscene extends CGFscene {
 
     
     display() {
-        if (!this.sceneInited)
+        // In case it's not loaded
+        if (this.graph == null)
             return;
 
         this.logPicking();
-        this.rtt.attachToFrameBuffer();
+
+        let rtt = new CGFtextureRTT(this, this.gl.canvas.width, this.gl.canvas.height);
+        rtt.attachToFrameBuffer();
         this.render(this.graph.views[this.televisionCamera]);
-        this.rtt.detachFromFrameBuffer();
+        rtt.detachFromFrameBuffer();
         this.render(this.graph.views[this.selectedCamera]);
 
-       // this.setActiveShader(this.shader);
-       // new MySecurityCamera(this, this.rtt).display()
-       // this.setActiveShader(this.defaultShader)
+        this.graph.components['tvscreen'].texture = new ComponentTexture(rtt, 1, 1);
+      //  this.setActiveShader(this.tvshader);
+      //  this.setActiveShader(this.defaultShader)
 
     }
     /**
@@ -220,16 +204,10 @@ class XMLscene extends CGFscene {
         // ---- END Background, camera and axis setup
 
         for (let i = 0; i < this.lights.length; i++) {
-            this.lights[i].setVisible(this.lights[i].enabled);
+           // this.lights[i].setVisible(this.lights[i].enabled);
             this.lights[i].update();
         }
 
         this.graph.display();
-
-        for (let i = 0; i < this.pickables.length; i++) {
-            this.registerForPick(i + 1, this.pickables[i])
-            this.pickables[i].component.display();
-        }
-		this.clearPickRegistration();
     }
 }

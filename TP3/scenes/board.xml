@@ -11,9 +11,9 @@
             <from x="0" y="0" z="1" />
             <up x="0" y="1" z="1"/> 
         </ortho>
-     <perspective id="television" near="0.1" far="500" angle="70">
-            <from x="-0.1" y="0" z="0" />
-            <to x="-15" y="2" z="0" />
+         <perspective id="television" near="0.1" far="500" angle="70">
+            <from x="-7.5" y="15" z="0" />
+            <to x="2.5" y="0" z="0" />
         </perspective>
     </views>
 
@@ -91,13 +91,106 @@
     </transformations>
 
     <animations>
+        <animation id="jumping" maxLoops="3">
+            <keyframe instant="0.25">
+                <translate x="0" y="0.75" z="0" />
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" />  
+            </keyframe>
+            <keyframe instant="0.5">
+                <translate x="0" y="0.0" z="0" />
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" />  
+            </keyframe>
+        </animation>
+
+        <animation id="invalidmove" maxLoops="1">
+            <keyframe instant="0.2">
+                <translate x="0" y="0" z="0" />
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="0.8" y="0.3" z="0.8" />  
+            </keyframe>
+            <keyframe instant="1">
+                <translate x="0" y="0.0" z="0" />
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" />  
+            </keyframe>
+        </animation>
+
+        <animation id="buttonpress" maxLoops="1">
+            <keyframe instant="0.2">
+                <translate x="0" y="0" z="0" />
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="1" y="0.2" z="1" />  
+            </keyframe>
+            <keyframe instant="1">
+                <translate x="0" y="0.0" z="0" />
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" />  
+            </keyframe>
+        </animation>
+
+        <animation id="buttonToggleDown" maxLoops="1">
+            <keyframe instant="0.0">
+                <translate x="0" y="0" z="0" />
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" />  
+            </keyframe>
+            <keyframe instant="0.2">
+                <translate x="0" y="0" z="0" />
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="1" y="0.2" z="1" />  
+            </keyframe>
+        </animation>
+
+        <animation id="buttonToggleUp" maxLoops="1">
+            <keyframe instant="0.0">
+                <translate x="0" y="0" z="0" />
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="1" y="0.2" z="1" />  
+            </keyframe>
+            <keyframe instant="0.2">
+                <translate x="0" y="0" z="0" />
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="1" y="1.0" z="1" />  
+            </keyframe>
+        </animation>
+
+        <animation id="cameraswitchtoP1" maxLoops="1">
+            <keyframe instant="0">
+                <translate x="0" y="0.0" z="0" />
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" />  
+            </keyframe>
+            <keyframe instant="1">
+                <translate x="0" y="0.0" z="0" />
+                <rotate angle_x="0" angle_y="180" angle_z="0" />
+                <scale x="1" y="1" z="1" />  
+            </keyframe>
+        </animation>
+        <animation id="cameraswitchtoP2" maxLoops="1">
+            <keyframe instant="0">
+                <translate x="0" y="0.0" z="0" />
+                <rotate angle_x="0" angle_y="180" angle_z="0" />
+                <scale x="1" y="1" z="1" />  
+            </keyframe>
+            <keyframe instant="1">
+                <translate x="0" y="0.0" z="0" />
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" />  
+            </keyframe>
+        </animation>
+
+        
     </animations>
 
     <primitives>
         <primitive id="plane1"><plane npartsU="60" npartsV="40"/></primitive>
         <primitive id="sphere1"><sphere slices="50" stacks="50" radius="0.5"/></primitive>
-        <primitive id="cylinder1"><cylinder base="0.5" top="0.5" height="0.25" slices="20" stacks="20"/></primitive>
+        <primitive id="shortCylinder"><cylinder base="0.5" top="0.5" height="0.25" slices="20" stacks="20"/></primitive>
+        <primitive id="cylinder"><cylinder base="1" top="1" height="1" slices="20" stacks="20"/></primitive>
         <primitive id="hexprism"><prism parts="6"/></primitive>
+        <primitive id="prism4"><prism parts="4"/></primitive>
     </primitives>
 
     <components>
@@ -106,23 +199,13 @@
             <material id="graydiff" />
             <texture id="none"/>
             <children> 
-                <componentref id="component1"/>
-              <!--  <componentref id="component2"/> -->
+                <componentref id="board"/>
+                <componentref id="tv"/>
+              <!--  <componentref id="vericoolhexprism"/> -->
             </children>
         </component>
 
-        <component id="component1">
-            <transformation>
-                <scale x="20" y="1" z="20"/>
-            </transformation>
-            <material id="inherit" />
-            <texture id="none"/>
-            <children> 
-                <primitiveref id="plane1"/>
-            </children>
-        </component>
-
-        <component id="component2">
+        <component id="vericoolhexprism">
             <transformation>
                 <scale x="3" y="3" z="3"/>
             </transformation>
@@ -133,13 +216,99 @@
             </children>
         </component>
 
+        <component id="board">
+            <transformation>
+                <scale x="25" y="1" z="25"/>
+            </transformation>
+            <material id="inherit" />
+            <texture id="none"/>
+            <children> 
+                <primitiveref id="plane1"/>
+            </children>
+        </component>
+
+        <component id="genericbutton">
+            <transformation>
+                <scale x="1" y="0.3" z="1"/>
+                <rotate axis="y" angle="45"/>
+            </transformation>
+            <material id="inherit" />
+            <texture id="none"/>
+            <children> 
+                <primitiveref id="prism4"/>
+            </children>
+        </component>
+
+
+        <component id="tv">
+            <transformation>
+                <translate x="-10" y="5" z="0"/>
+            </transformation>
+            <material id="inherit" />
+            <texture id="none"/>
+            <children> 
+                <componentref id="tvpole"/>
+                <componentref id="tvhead"/>
+            </children>
+        </component>
+
+        <component id="tvhead">
+            <transformation>
+                <scale x="0.2" y="5" z="8"/>
+            </transformation>
+            <material id="inherit"/>
+            <texture id="none"/>
+            <children> 
+                <componentref id="tvframe"/>
+                <componentref id="tvscreen"/>
+            </children>
+        </component>
+
+        <component id="tvframe">
+            <transformation>
+                <scale x="1" y="1" z="0.85"/>
+                <rotate axis="y" angle="45"/>
+            </transformation>
+            <material id="inherit"/>
+            <texture id="none"/>
+            <children> 
+                <primitiveref id="prism4"/>
+            </children>
+        </component>
+
+        <component id="tvscreen">
+            <transformation>
+                <translate x="0.75" y="0.5" z="0"/>
+                <rotate axis="x" angle="-90"/>
+                <rotate axis="z" angle="-90"/>
+            </transformation>
+            <material id="inherit" />
+            <texture id="none"/>
+            <children> 
+                <primitiveref id="plane1"/>
+            </children>
+        </component>
+
+        <component id="tvpole">
+            <transformation>
+                <translate x="-0.2" y="-5.0" z="0"/>
+                <scale x="0.2" y="7.5" z="0.2"/>
+                <rotate axis="x" angle="-90"/>
+            </transformation>
+            <material id="inherit" />
+            <texture id="none"/>
+            <children> 
+                <primitiveref id="cylinder"/>
+            </children>
+        </component>
+
 
         <component id="piece1">
             <transformation><rotate axis="x" angle="-90"/></transformation>
             <material id="shinyGreen"/>
             <texture id="none"/>
             <children> 
-                <primitiveref id="cylinder1"/>
+                <primitiveref id="shortCylinder"/>
             </children>
         </component>
 
@@ -148,7 +317,7 @@
             <material id="shinyGold"/>
             <texture id="none"/>
             <children> 
-                <primitiveref id="cylinder1"/>
+                <primitiveref id="shortCylinder"/>
             </children>
         </component>
         <component id="piece3">
@@ -156,7 +325,7 @@
             <material id="shinyRed"/>
             <texture id="none"/>
             <children> 
-                <primitiveref id="cylinder1"/>
+                <primitiveref id="shortCylinder"/>
             </children>
         </component>
     </components>

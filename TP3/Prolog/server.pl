@@ -106,6 +106,9 @@ print_header_line(_).
 
 parse_input(start, Game):- make_game(Game).
 parse_input(validMovesPLS(Board), Moves):- valid_moves(Board, Moves).
+parse_input(isGameOver(Game), [1, Winner]):- game_over(Game, Winner), !.
+parse_input(isGameOver(_), [0]).
+parse_input(movePLS(Game, Player), Move):- choose_move(Game, Player, 1, Move).
 
 parse_input(handshake, handshake).
 parse_input(test(C,N), Res) :- test(C,Res,N).

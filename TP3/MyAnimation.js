@@ -1,16 +1,38 @@
 class MyAnimation {
-    constructor(keyframes) {
+    constructor(keyframes, maxLoops) {
         this.keyframes = keyframes;
+        this.maxLoops = maxLoops || 1;
     }
 
-    start(t) {
-        this.startTime = t;
+    reverse() {
+        let reversedKeyframes = [];
+        let lastInstant = this.keyframes[this.keyframes.length - 1].instant;
+        for (let i = this.keyframes.length - 1; i >= 0; i--) {
+            let keyframe = this.keyframes[i];
+            reversedKeyframes.push(new KeyFrame(
+                lastInstant - keyframe.instant,
+                new AnimTranslation(keyframe.T.x, keyframe.T.y, keyframe.T.z),
+                new AnimRotation(keyframe.R.x, keyframe.R.y, keyframe.R.z),
+                new AnimScale(keyframe.S.x, keyframe.S.y, keyframe.S.z)
+            ));
+        }
+        reversedKeyframes.push(new DefaultKeyFrame(lastInstant))
+        return new MyAnimation(reversedKeyframes, this.maxLoops)
     }
 
-    apply(t) {
+    apply(startTime, t) {
         if (this.keyframes.length == 0)
             return mat4.create();
-        let dt = (t - this.startTime) / 1000;
+        let dt = (t - startTime) / 1000;
+
+
+        // if loopsDone < maxLoops OR maxLoops == 0 -> loop
+        let endingInstant = this.keyframes[this.keyframes.length - 1].instant;
+        let loopsDone = Math.floor(dt / endingInstant);
+        if (this.maxLoops != 0)
+            dt = dt - Math.min(loopsDone, this.maxLoops - 1) * endingInstant;
+        else dt = dt - loopsDone * endingInstant;
+        
         let currKeyFrame = this.getCurrKeyFrame(dt);
         let previousKeyFrame = this.getPreviousKeyFrame(currKeyFrame);
         let currKeyFramePercentage = Math.min(1, (dt - previousKeyFrame.instant) / (currKeyFrame.instant - previousKeyFrame.instant));
@@ -29,7 +51,7 @@ class MyAnimation {
     getPreviousKeyFrame(currentKeyFrame) {
         let index = this.keyframes.indexOf(currentKeyFrame);
         if (index == 0)
-            return new KeyFrame(0, new Translation(0,0,0), new Rotation(0,0,0), new Scale(1,1,1));
+            return new DefaultKeyFrame(0);
         return this.keyframes[index - 1];
     }
 }
@@ -59,19 +81,6 @@ class KeyFrame {
         scale.y = Math.pow(scale.y, percentage) * previous.S.y;
         scale.z = Math.pow(scale.z, percentage) * previous.S.z;
 
-        /*
-        let T = mat4.create();
-        let R = mat4.create();
-        let S = mat4.create();
-        
-        mat4.translate(T, T, [translation.x, translation.y, translation.z]);
-        mat4.scale(S, S, [scale.x, scale.y, scale.z]);
-
-        mat4.rotate(R, R, rotation.x, [1, 0, 0]);
-        mat4.rotate(R, R, rotation.y, [0, 1, 0]);
-        mat4.rotate(R, R, rotation.z, [0, 0, 1]);
-        return [T, R, S];
-        */
         let matrix = mat4.create();
         mat4.translate(matrix, matrix, [translation.x, translation.y, translation.z]);
         mat4.rotate(matrix, matrix, rotation.x, [1, 0, 0]);
@@ -79,6 +88,12 @@ class KeyFrame {
         mat4.rotate(matrix, matrix, rotation.z, [0, 0, 1]);
         mat4.scale(matrix, matrix, [scale.x, scale.y, scale.z]);
         return matrix;
+    }
+}
+
+class DefaultKeyFrame extends KeyFrame {
+    constructor(instant) {
+        super(instant, new AnimTranslation(0,0,0), new AnimRotation(0,0,0), new AnimScale(1,1,1))
     }
 }
 

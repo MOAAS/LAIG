@@ -62,7 +62,7 @@ class MySceneGraphParser {
         this.loadedOk = true;
 
         // As the graph loaded ok, signal the scene so that any additional initialization depending on the graph can take place
-        this.scene.onGraphLoaded(new MySceneGraph(this.components, this.idRoot, this.views, this.defaultView, this.ambient, this.background, this.lights, this.materials, this.textures));
+        this.scene.onGraphLoaded(new MySceneGraph(this.components, this.idRoot, this.views, this.defaultView, this.ambient, this.background, this.lights, this.materials, this.textures, this.animations));
     }
 
     /**
@@ -708,6 +708,15 @@ class MySceneGraphParser {
             if (this.animations[animationID] != null)
                 return "ID must be unique for each animation (conflict: ID = " + animationID + ")";
 
+            // Checks if loop enabled
+            let maxLoops = this.reader.getInteger(children[i], 'maxLoops');
+            if (maxLoops == null) {
+                maxLoops = 1;
+                this.onXMLMinorError("Didn't find maxLoops for animation " + animationID + ", defaulting to 1");
+            }
+            if (maxLoops < 0)
+                return "negative maxLoops for animation " + animationID;
+            
             grandChildren = children[i].children;
             
             let keyframes = [];
@@ -722,7 +731,7 @@ class MySceneGraphParser {
                 if (error != null)
                     return error;
             }
-            this.animations[animationID] = new MyAnimation(keyframes);
+            this.animations[animationID] = new MyAnimation(keyframes, maxLoops);
         }
 
         this.log("Parsed animations");
@@ -1348,21 +1357,21 @@ class MySceneGraphParser {
                     if (!Array.isArray(coordinates))
                         return coordinates;
                     
-                    T = new Transformation(coordinates[0], coordinates[1], coordinates[2]);                    
+                    T = new AnimTransformation(coordinates[0], coordinates[1], coordinates[2]);                    
                     break;
                 case 'rotate':
                     var coordinates = this.parseKeyframeRotation(children[i], "rotate component of animation " + errorMSG);
                     if (!Array.isArray(coordinates))
                         return coordinates;
                     
-                    R = new Transformation(coordinates[0] * DEGREE_TO_RAD, coordinates[1] * DEGREE_TO_RAD, coordinates[2] * DEGREE_TO_RAD);                    
+                    R = new AnimTransformation(coordinates[0] * DEGREE_TO_RAD, coordinates[1] * DEGREE_TO_RAD, coordinates[2] * DEGREE_TO_RAD);                    
                     break;
                 case 'scale':
                     var coordinates = this.parseCoordinates3D(children[i], "scale component of animation " + errorMSG);
                     if (!Array.isArray(coordinates))
                         return coordinates;
                     
-                    S = new Transformation(coordinates[0], coordinates[1], coordinates[2]);                    
+                    S = new AnimTransformation(coordinates[0], coordinates[1], coordinates[2]);                    
                     break;
             }
     
