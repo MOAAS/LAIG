@@ -39,7 +39,7 @@ class BoardGame {
 
        // this.gameEnvironment = new GameEnvironment(this.scene, this.graph, this)
         this.replayButton = new ToggleButton(this.scene, this.graph, new Translation(8, 0, -3).getMatrix(), () => this.replay())
-        this.showValidMoves = new SimpleButton(this.scene, this.graph, new Translation(8, 0, 0).getMatrix(), () => this.undoMove())
+        this.showValidMovesButton = new SimpleButton(this.scene, this.graph, new Translation(8, 0, 0).getMatrix(), () => this.showValidMoves())
         this.undoButton = new SimpleButton(this.scene, this.graph, new Translation(8, 0, 3).getMatrix(), () => this.undoMove())
         this.mode1button = new ToggleButton(this.scene, this.graph, new TransformationGroup([new Translation(11, 0, -2.25), new Scale(0.8, 0.8, 0.8)]).getMatrix(), () => this.changeMode(1))
         this.mode2button = new ToggleButton(this.scene, this.graph, new TransformationGroup([new Translation(11, 0, -0.75), new Scale(0.8, 0.8, 0.8)]).getMatrix(), () => this.changeMode(2))
@@ -65,8 +65,8 @@ class BoardGame {
 
         // Show valid moves button
         if (!this.interactable) 
-           this.showValidMoves.disable();
-        else this.showValidMoves.enable()
+           this.showValidMovesButton.disable();
+        else this.showValidMovesButton.enable()
 
         if (this.interactable || this.gameState != this.gameStates.PLAYING)
             this.modebuttons.forEach(button => button.enable())
@@ -121,6 +121,7 @@ class BoardGame {
         this.interactable = false;
         this.clearBoard();
         this.gameState = this.gameStates.PLAYING
+        this.currentPlayer = 0;
         getNewBoard((cellArray) => {
             this.createBoard(cellArray)
             getValidMoves(this.toCellArray(), (moves) => {
@@ -397,7 +398,6 @@ class BoardGame {
             case 2: this.gameState = this.gameStates.P2_WON; break;
             default: console.log("Invalid winner: " + winner); break;
         }
-        this.currentPlayer = 0;
         console.log("GAME OVER, WINNER = " + winner);
     }
 

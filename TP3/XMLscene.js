@@ -133,7 +133,6 @@ class XMLscene extends CGFscene {
         this.updateCameras()
         this.interface.initCamerasUI(cameraKeys);
         this.game = new BoardGame(this, graph);
-        this.game.start();
     }
 
     logPicking() {
