@@ -185,6 +185,7 @@
     </animations>
 
     <primitives>
+        <primitive id="woodtable"><obj name="woodtable.obj"/></primitive>
         <primitive id="plane1"><plane npartsU="60" npartsV="40"/></primitive>
         <primitive id="sphere1"><sphere slices="50" stacks="50" radius="0.5"/></primitive>
         <primitive id="shortCylinder"><cylinder base="0.5" top="0.5" height="0.25" slices="20" stacks="20"/></primitive>
@@ -201,7 +202,20 @@
             <children> 
                 <componentref id="board"/>
                 <componentref id="tv"/>
+                <componentref id="table"/>
               <!--  <componentref id="vericoolhexprism"/> -->
+            </children>
+        </component>
+
+        <component id="table">
+            <transformation>
+                <translate x="0" y="-28.2" z="0"/>
+                <scale x="60" y="60" z="60"/>
+            </transformation>
+            <material id="inherit" />
+            <texture id="none"/>
+            <children> 
+                <primitiveref id="woodtable"/>
             </children>
         </component>
 

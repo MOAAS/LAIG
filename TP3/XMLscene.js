@@ -32,6 +32,7 @@ class XMLscene extends CGFscene {
         this.axis = new CGFaxis(this);
 
         this.setUpdatePeriod(33.33);
+        this.table = new CGFOBJModel(this,"../models/woodtable.obj",false)
 
         //this.tvshader = new CGFshader(this.gl, "shaders/tv.vert", "shaders/tv.frag");
        // this.tvshader.setUniformsValues({ uSampler : 1, time: 0 })
@@ -208,5 +209,9 @@ class XMLscene extends CGFscene {
         }
 
         this.graph.display();
+
+
+        //this.scale(10,10,10);
+        //this.table.display();
     }
 }
