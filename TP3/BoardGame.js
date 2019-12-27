@@ -24,9 +24,7 @@ class BoardGame {
         this.gameStates = {
             IDLE: 1,
             PLAYING: 2,
-            P1_WON: 3,
-            P2_WON: 4,
-            TIE: 5,            
+            OVER: 3          
         };
         this.gameState = this.gameStates.IDLE;
 
@@ -52,9 +50,9 @@ class BoardGame {
 
     update(t) {
         // Replay button
-        if (this.gameState == this.gameStates.PLAYING || this.gameState == this.gameStates.IDLE)
-            this.replayButton.disable()
-        else this.replayButton.enable();        
+        if (this.gameState == this.gameStates.OVER)
+            this.replayButton.enable()
+        else this.replayButton.disable();        
         if (!this.replaying)
             this.replayButton.toggleUp()
 
@@ -90,7 +88,8 @@ class BoardGame {
             return console.log("Currently in-game!")
         if (this.replaying)
             return console.log("Already replaying!")
-    
+
+        this.gameState = this.gameStates.PLAYING;    
         this.interactable = false;
         this.replaying = true;
 
@@ -114,7 +113,10 @@ class BoardGame {
                 else this.player2.push(this.pieceAt(x, y))
             }, i * timePerMove + 4000)    
         }
-        setTimeout(() => this.replaying = false, timePerMove * this.moveList.length + 7500)
+        setTimeout(() => {
+            this.replaying = false;
+            this.gameState = this.gameStates.OVER;
+        }, timePerMove * this.moveList.length + 7500)
     }
 
     start() {
@@ -393,12 +395,13 @@ class BoardGame {
 
     setGameOver(winner) {
         switch (winner) {
-            case 0: this.gameState = this.gameStates.TIE; break;
-            case 1: this.gameState = this.gameStates.P1_WON; break;
-            case 2: this.gameState = this.gameStates.P2_WON; break;
+            case 0: console.log("Tie!"); break;
+            case 1: console.log("P1 won!"); break;
+            case 2: console.log("P2 won!"); break;
             default: console.log("Invalid winner: " + winner); break;
         }
-        console.log("GAME OVER, WINNER = " + winner);
+
+        this.gameState = this.gameStates.OVER;
     }
 
 }
