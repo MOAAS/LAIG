@@ -44,6 +44,15 @@ class BoardGame {
         this.mode3button = new ToggleButton(this.scene, this.graph, new TransformationGroup([new Translation(11, 0, 0.750), new Scale(0.8, 0.8, 0.8)]).getMatrix(), () => this.changeMode(3))
         this.mode4button = new ToggleButton(this.scene, this.graph, new TransformationGroup([new Translation(11, 0, 2.25), new Scale(0.8, 0.8, 0.8)]).getMatrix(), () => this.changeMode(4))
         this.modebuttons = [this.mode1button, this.mode2button, this.mode3button, this.mode4button];
+
+        this.player1timer = new GameTimer(this.scene, this.graph, new Translation(-8, 0, 4))
+        this.player2timer = new GameTimer(this.scene, this.graph, new Translation(-8, 0, -4))
+
+        this.player1timer.resume()
+        this.player2timer.resume()
+
+        this.graph.addComponent(this.player1timer);
+        this.graph.addComponent(this.player2timer);
         
         this.changeMode(this.modes.HUMAN_HUMAN)
     }
@@ -69,6 +78,8 @@ class BoardGame {
         if (this.interactable || this.gameState != this.gameStates.PLAYING)
             this.modebuttons.forEach(button => button.enable())
         else this.modebuttons.forEach(button => button.disable())
+
+        this.player1timer.update();
     }
 
     changeMode(mode) {

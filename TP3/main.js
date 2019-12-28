@@ -35,7 +35,7 @@ serialInclude([
     'CGFResourceReader.js',
     'MyPrism.js',
     'Button.js',
-    
+    'GameTimer.js',    
 
 main=function()
 {

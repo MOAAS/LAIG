@@ -51,6 +51,17 @@
         <texture id="floor" file="scenes/images/floor.png" />
         <texture id="view" file="scenes/images/view.png" />
         <texture id="carpet" file="scenes/images/carpet.jpg" />
+        <texture id="timer1" file="scenes/images/1.png" />
+        <texture id="timer2" file="scenes/images/2.png" />
+        <texture id="timer3" file="scenes/images/3.png" />
+        <texture id="timer4" file="scenes/images/4.png" />
+        <texture id="timer5" file="scenes/images/5.png" />
+        <texture id="timer6" file="scenes/images/6.png" />
+        <texture id="timer7" file="scenes/images/7.png" />
+        <texture id="timer8" file="scenes/images/8.png" />
+        <texture id="timer9" file="scenes/images/9.png" />
+        <texture id="timer0" file="scenes/images/0.png" />
+        <texture id="timercolon" file="scenes/images/colon.png" />
     </textures>
 
     <materials>
@@ -95,6 +106,21 @@
             <diffuse r="0.9" g="0.25" b="0.25" a="1.0" />
             <specular r="0.45" g="0.125" b="0.125" a="1.0" />
         </material>
+
+        <material id="black" shininess="1">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="0.0" g="0.0" b="0.0" a="1.0" />
+            <diffuse r="0.0" g="0.0" b="0.0" a="1.0" />
+            <specular r="0.0" g="0.0" b="0.0" a="1.0" />
+        </material>
+
+        <material id="strongEmissor" shininess="1">
+            <emission r="0.8" g="0.8" b="0.8" a="1.0" />
+            <ambient r="0.0" g="0.0" b="0.0" a="1.0" />
+            <diffuse r="0.0" g="0.0" b="0.0" a="1.0" />
+            <specular r="0.0" g="0.0" b="0.0" a="1.0" />
+        </material>
+
 
     </materials>
 
@@ -235,6 +261,80 @@
               <!--  <componentref id="vericoolhexprism"/> -->
             </children>
         </component>
+
+        <component id="timerbody">
+            <transformation>
+                <scale x="1" y="1" z="2"/>
+                <rotate axis="y" angle="45"/>
+            </transformation>
+            <material id="inherit"/>
+            <texture id="none"/>
+            <children> 
+                <primitiveref id="prism4"/>
+            </children>
+        </component>
+
+        <component id="timerscreenbg">
+            <transformation>
+                <scale x="1.05" y="1" z="2.75"/>
+                <rotate axis="z" angle="-90"/>
+            </transformation>
+            <material id="black"/>
+            <texture id="none"/>
+            <children> 
+                <primitiveref id="plane1"/>
+            </children>
+        </component>
+
+        <component id="timerdigit">
+            <transformation>
+                <translate x="0.01" y="0" z="0"/>
+                <scale x="1" y="0.9" z="0.5"/>
+                <rotate axis="z" angle="-90"/>
+                <rotate axis="y" angle="-90"/>
+            </transformation>
+            <material id="strongEmissor"/>
+            <texture id="inherit"/>
+            <children> 
+                <primitiveref id="plane1"/>
+            </children>
+        </component>
+
+        <component id="timercolon">
+            <transformation><scale x="1" y="1" z="0.5"/></transformation>
+            <material id="inherit"/>
+            <texture id="timercolon"/>
+            <children><componentref id="timerdigit"/></children>
+        </component>
+
+        <component id="timerdigit1">
+            <transformation><translate x="0" y="0" z="1.0"/></transformation>
+            <material id="inherit"/>
+            <texture id="timer0"/>
+            <children><componentref id="timerdigit"/></children>
+        </component>
+
+        <component id="timerdigit2">
+            <transformation><translate x="0" y="0" z="0.4"/></transformation>
+            <material id="inherit"/>
+            <texture id="timer0"/>
+            <children><componentref id="timerdigit"/></children>
+        </component>
+
+        <component id="timerdigit3">
+            <transformation><translate x="0" y="0" z="-0.4"/></transformation>
+            <material id="inherit"/>
+            <texture id="timer0"/>
+            <children><componentref id="timerdigit"/></children>
+        </component>
+
+        <component id="timerdigit4">
+            <transformation><translate x="0" y="0" z="-1"/></transformation>
+            <material id="inherit"/>
+            <texture id="timer0"/>
+            <children><componentref id="timerdigit"/></children>
+        </component>
+
 
         <component id="skybox">
             <transformation>

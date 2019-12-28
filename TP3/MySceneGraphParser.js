@@ -591,7 +591,7 @@ class MySceneGraphParser {
 
             // Checks for repeated IDs.
             if (this.materials[materialId] != null)
-                return "ID must be unique for each light (conflict: ID = " + materialId + ")";
+                return "ID must be unique for each material (conflict: ID = " + materialId + ")";
 
             // Parses shininess value
             var materialShine = this.reader.getFloat(children[i], 'shininess');
