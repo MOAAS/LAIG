@@ -23,15 +23,15 @@
     </globals>
 
     <lights>
-        <omni id="demoLight" enabled="0">
-            <location x="-100" y="10" z="0" w="1.0" />
-            <ambient r="0.2" g="0.2" b="0.2" a="0.2" />
-            <diffuse r="0.2" g="0.2" b="0.2" a="0.2" />
-            <specular r="0.2" g="0.2" b="0.2" a="0.2" />
+        <omni id="demoLight" enabled="1">
+            <location x="-100" y="200" z="200" w="1.0" />
+            <ambient r="0.8" g="0.8" b="0.8" a="0.8" />
+            <diffuse r="0.8" g="0.8" b="0.8" a="0.8" />
+            <specular r="0.8" g="0.8" b="0.8" a="0.8" />
             <attenuation constant="1.0" linear="0" quadratic="0.00" />
         </omni>
 
-        <omni id="light" enabled="1">
+        <omni id="light" enabled="0">
             <location x="0" y="20" z="0" w="1.0" />
             <ambient r="0" g="0" b="0" a="0" />
             <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
@@ -43,6 +43,7 @@
 
     <textures>
         <texture id="sun" file="scenes/images/sun.jpg" />
+        <texture id="road" file="scenes/images/road.jpg" />
         <texture id="redfabric" file="scenes/images/redfabric.jpg" />
         <texture id="blackfabric" file="scenes/images/blackfabric.jpg" />
         <texture id="grayfabric" file="scenes/images/grayfabric.jpg" />
@@ -51,18 +52,14 @@
         <texture id="floor" file="scenes/images/floor.png" />
         <texture id="view" file="scenes/images/view.png" />
         <texture id="carpet" file="scenes/images/carpet.jpg" />
-        <texture id="timer1" file="scenes/images/1.png" />
-        <texture id="timer2" file="scenes/images/2.png" />
-        <texture id="timer3" file="scenes/images/3.png" />
-        <texture id="timer4" file="scenes/images/4.png" />
-        <texture id="timer5" file="scenes/images/5.png" />
-        <texture id="timer6" file="scenes/images/6.png" />
-        <texture id="timer7" file="scenes/images/7.png" />
-        <texture id="timer8" file="scenes/images/8.png" />
-        <texture id="timer9" file="scenes/images/9.png" />
-        <texture id="timer0" file="scenes/images/0.png" />
-        <texture id="timercolon" file="scenes/images/colon.png" />
-        <texture id="black" file="scenes/images/black.png" />
+        <texture id="building" file="scenes/images/building.jpg" />
+        <texture id="airplane" file="scenes/images/airplane.png" />
+        <texture id="skyup" file="scenes/images/bluecloud_up.jpg" />
+        <texture id="skybk" file="scenes/images/bluecloud_bk.jpg" />
+        <texture id="skydn" file="scenes/images/bluecloud_dn.jpg" />
+        <texture id="skyft" file="scenes/images/bluecloud_ft.jpg" />
+        <texture id="skylf" file="scenes/images/bluecloud_lf.jpg" />
+        <texture id="skyrt" file="scenes/images/bluecloud_rt.jpg" />
     </textures>
 
     <materials>
@@ -72,6 +69,7 @@
             <diffuse r="0.4" g="0.4" b="0.4" a="1.0" />
             <specular r="0.4" g="0.4" b="0.4" a="1.0" />
         </material>
+        
 
         <material id="graydiff" shininess="4">
             <emission r="0.0" g="0.0" b="0.0" a="1.0" />
@@ -107,21 +105,12 @@
             <diffuse r="0.9" g="0.25" b="0.25" a="1.0" />
             <specular r="0.45" g="0.125" b="0.125" a="1.0" />
         </material>
-
-        <material id="black" shininess="1">
+        <material id="shinyGray" shininess="20">
             <emission r="0.0" g="0.0" b="0.0" a="1.0" />
-            <ambient r="0.0" g="0.0" b="0.0" a="1.0" />
-            <diffuse r="0.0" g="0.0" b="0.0" a="1.0" />
-            <specular r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="0.15" g="0.15" b="0.15" a="1.0" />
+            <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
+            <specular r="0.45" g="0.45" b="0.45" a="1.0" />
         </material>
-
-        <material id="strongEmissor" shininess="1">
-            <emission r="0.8" g="0.8" b="0.8" a="1.0" />
-            <ambient r="0.0" g="0.0" b="0.0" a="1.0" />
-            <diffuse r="0.0" g="0.0" b="0.0" a="1.0" />
-            <specular r="0.0" g="0.0" b="0.0" a="1.0" />
-        </material>
-
 
     </materials>
 
@@ -227,14 +216,13 @@
     </animations>
 
     <primitives>
-        <primitive id="woodtable"><obj name="table13.obj"/></primitive>
-        <primitive id="chair"><obj name="chair2.obj"/></primitive>
-        <primitive id="chairpillow"><obj name="chairpillow2.obj"/></primitive>
-        <primitive id="window"><obj name="window3.obj"/></primitive>
-        <primitive id="ceilinglamp"><obj name="ceilinglamp1.obj"/></primitive>
-        <primitive id="carpet"><obj name="carpet1.obj"/></primitive>
-        <primitive id="sofa"><obj name="sofa2.obj"/></primitive>
-        <primitive id="desklamp"><obj name="desklamp3.obj"/></primitive>
+
+        <primitive id="airplane"><obj name="plane2.obj"/></primitive>
+        <primitive id="airstairs"><obj name="airstairs1.obj"/></primitive>
+        <primitive id="suitcase"><obj name="suitcase6.obj"/></primitive>
+        <primitive id="building"><obj name="building3.obj"/></primitive>
+        <primitive id="jetbridge"><obj name="jetbridge1.obj"/></primitive>
+        <primitive id="cone"><obj name="cone1.obj"/></primitive>
         <primitive id="plane1"><plane npartsU="64" npartsV="64"/></primitive>
         <primitive id="sphere1"><sphere slices="50" stacks="50" radius="0.5"/></primitive>
         <primitive id="shortCylinder"><cylinder base="0.5" top="0.5" height="0.25" slices="20" stacks="20"/></primitive>
@@ -250,99 +238,157 @@
             <texture id="none"/>
             <children> 
                 <componentref id="skybox"/>
+                <componentref id="ground"/>
                 <componentref id="board"/>
-                <componentref id="tv"/>
-                <componentref id="table"/>
-                <componentref id="chairs"/>
-                <componentref id="window"/>
-                <componentref id="ceilinglamp"/>
-                <componentref id="carpet"/>
-                <componentref id="sofa"/>
-                <!--<componentref id="desklamp"/>-->
+                <componentref id="airplanes"/>
+                <componentref id="airstairs"/>
+                <componentref id="buildings"/>
+                <componentref id="jetbridges"/>
+                <componentref id="cones"/>
               <!--  <componentref id="vericoolhexprism"/> -->
             </children>
         </component>
-
-        <component id="timerbody">
+        
+        <component id="ground">
             <transformation>
-                <scale x="1" y="1" z="2"/>
-                <rotate axis="y" angle="45"/>
+                <rotate axis="z" angle="0"/>
+                <scale x="400" y="400" z="400"/>
             </transformation>
-            <material id="inherit"/>
-            <texture id="none"/>
-            <children> 
-                <primitiveref id="prism4"/>
-            </children>
-        </component>
-
-        <component id="timerscreenbg">
-            <transformation>
-                <scale x="1.05" y="1" z="2.75"/>
-                <rotate axis="z" angle="-90"/>
-            </transformation>
-            <material id="black"/>
-            <texture id="none"/>
-            <children> 
+             <material id="inherit" />
+            <texture id="road" length_s="0.1" length_t="0.1"/>
+            <children>
                 <primitiveref id="plane1"/>
             </children>
         </component>
 
-        <component id="timerdigit">
+         <component id="airplanes">
             <transformation>
-                <translate x="0.01" y="0" z="0"/>
-                <scale x="1" y="0.9" z="0.5"/>
-                <rotate axis="z" angle="-90"/>
+                 <scale x="0.04" y="0.04" z="0.04"/>
+            </transformation>
+             <material id="shinyGray" />
+            <texture id="inherit"/>
+            <children>
+                <componentref id="airplane1"/>
+            </children>
+        </component>
+
+        <component id="airplane1">
+            <transformation>
+                <translate x="-300" y="0" z="-650"/>
                 <rotate axis="y" angle="-90"/>
             </transformation>
-            <material id="strongEmissor"/>
+             <material id="inherit" />
             <texture id="inherit"/>
-            <children> 
-                <primitiveref id="plane1"/>
+            <children>
+                <primitiveref id="airplane"/>
             </children>
         </component>
 
-        <component id="timercolon">
-            <transformation><scale x="1" y="1" z="0.5"/></transformation>
-            <material id="inherit"/>
-            <texture id="timercolon"/>
-            <children><componentref id="timerdigit"/></children>
+         <component id="airstairs">
+            <transformation>
+                <rotate axis="y" angle="15"/>
+                <translate x="-10" y="0" z="10"/>
+                <scale x="0.02" y="0.02" z="0.02"/>
+            </transformation>
+             <material id="inherit" />
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="airstairs"/>
+            </children>
         </component>
 
-        <component id="timerdigit1">
-            <transformation><translate x="0" y="0" z="1.0"/></transformation>
-            <material id="inherit"/>
-            <texture id="timer0"/>
-            <children><componentref id="timerdigit"/></children>
+         <component id="buildings">
+            <transformation>
+                <translate x="27" y="0" z="0"/>
+                <rotate axis="z" angle="0"/>
+                <scale x="0.03" y="0.15" z="0.1"/>
+            </transformation>
+             <material id="inherit" />
+            <texture id="building" length_s="0.1" length_t="0.05"/>
+            <children>
+                <primitiveref id="building"/>
+            </children>
         </component>
 
-        <component id="timerdigit2">
-            <transformation><translate x="0" y="0" z="0.4"/></transformation>
-            <material id="inherit"/>
-            <texture id="timer0"/>
-            <children><componentref id="timerdigit"/></children>
+        <component id="jetbridges">
+            <transformation>
+                <translate x="22" y="0" z="0"/>
+                 <scale x="0.24" y="0.24" z="0.24"/>
+            </transformation>
+             <material id="inherit" />
+            <texture id="inherit"/>
+            <children>
+                <componentref id="jetbridge1"/>
+                <componentref id="jetbridge2"/>
+                <componentref id="jetbridge3"/>
+                <componentref id="jetbridge4"/>
+            </children>
+        </component>
+        
+        <component id="jetbridge1">
+            <transformation>
+                <translate x="0" y="0" z="15"/>
+            </transformation>
+             <material id="inherit" />
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="jetbridge"/>
+            </children>
         </component>
 
-        <component id="timerdigit3">
-            <transformation><translate x="0" y="0" z="-0.4"/></transformation>
-            <material id="inherit"/>
-            <texture id="timer0"/>
-            <children><componentref id="timerdigit"/></children>
+        <component id="jetbridge2">
+            <transformation>
+                <translate x="0" y="0" z="-85"/>
+            </transformation>
+             <material id="inherit" />
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="jetbridge"/>
+            </children>
         </component>
 
-        <component id="timerdigit4">
-            <transformation><translate x="0" y="0" z="-1"/></transformation>
-            <material id="inherit"/>
-            <texture id="timer0"/>
-            <children><componentref id="timerdigit"/></children>
+        <component id="jetbridge3">
+            <transformation>
+                <translate x="0" y="0" z="230"/>
+            </transformation>
+             <material id="inherit" />
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="jetbridge"/>
+            </children>
+        </component>
+
+        <component id="jetbridge4">
+            <transformation>
+                <translate x="0" y="0" z="330"/>
+            </transformation>
+             <material id="inherit" />
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="jetbridge"/>
+            </children>
+        </component>
+
+         <component id="cones">
+            <transformation>
+                <translate x="-20" y="0" z="0"/>
+                <rotate axis="z" angle="0"/>
+                 <scale x="0.003" y="0.003" z="0.003"/>
+            </transformation>
+             <material id="inherit" />
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="cone"/>
+            </children>
         </component>
 
 
         <component id="skybox">
             <transformation>
-                <translate x="0" y="17" z="0"/>
-                <scale x="175" y="80" z="175"/>
+                <translate x="0" y="100" z="0"/>
+                <scale x="500" y="500" z="500"/>
             </transformation>
-            <material id="inherit" />
+            <material id="emissor" />
             <texture id="none"/>
             <children>
                 <componentref id="skyboxtop"/>
@@ -360,7 +406,7 @@
                 <rotate axis="z" angle="180"/>
             </transformation>
              <material id="inherit" />
-            <texture id="inherit"/>
+            <texture id="skyup"/>
             <children>
                 <primitiveref id="plane1"/>
             </children>
@@ -371,7 +417,7 @@
                 <translate x="0" y="-0.5" z="0"/>
             </transformation>
              <material id="inherit" />
-            <texture id="floor" length_s="1" length_t="1"/>
+            <texture id="skydn"/>
             <children>
                 <primitiveref id="plane1"/>
             </children>
@@ -383,7 +429,7 @@
                 <rotate axis="z" angle="-90"/>
             </transformation>
              <material id="inherit" />
-            <texture id="inherit"/>
+            <texture id="skyrt"/>
             <children>
                 <primitiveref id="plane1"/>
             </children>
@@ -395,7 +441,7 @@
                 <rotate axis="z" angle="90"/>
             </transformation>
              <material id="inherit" />
-            <texture id="inherit"/>
+            <texture id="skylf"/>
             <children>
                 <primitiveref id="plane1"/>
             </children>
@@ -407,7 +453,7 @@
                 <rotate axis="x" angle="-90"/>
             </transformation>
              <material id="inherit" />
-            <texture id="inherit"/>
+            <texture id="skyft"/>
             <children>
                 <primitiveref id="plane1"/>
             </children>
@@ -419,165 +465,13 @@
                 <rotate axis="x" angle="90"/>
             </transformation>
              <material id="inherit" />
-            <texture id="inherit"/>
+            <texture id="skybk"/>
             <children>
                 <primitiveref id="plane1"/>
             </children>
         </component>
 
-        <component id="table">
-            <transformation>
-                <translate x="0" y="-23" z="0"/>
-                <rotate axis="x" angle="-90"/>
-                <rotate axis="z" angle="-90"/>
-                <scale x="0.3" y="0.3" z="0.3"/>
-            </transformation>
-            <material id="inherit" />
-            <texture id="wood"/>
-            <children> 
-                <primitiveref id="woodtable"/>
-            </children>
-        </component>
-
-        <component id="window">
-            <transformation>
-                <translate x="-87" y="0" z="0"/>
-                <rotate axis="y" angle="-90"/>
-            </transformation>
-            <material id="inherit" />
-            <texture id="wood"/>
-            <children> 
-                <componentref id="windowstructure"/>
-                <componentref id="windowview"/>
-            </children>
-        </component>
-        <component id="windowstructure">
-            <transformation>
-                <scale x="0.5" y="0.5" z="0.5"/>
-            </transformation>
-            <material id="inherit" />
-            <texture id="inherit"/>
-            <children> 
-                <primitiveref id="window"/>
-            </children>
-        </component>
-         <component id="windowview">
-            <transformation>
-                <translate x="0" y="20" z="0.1"/>
-                <scale x="24.9" y="39" z="1"/>
-                 <rotate axis="x" angle="-90"/>
-            </transformation>
-            <material id="emissor" />
-            <texture id="view"/>
-            <children> 
-                <primitiveref id="plane1"/>
-            </children>
-        </component>
-         <component id="chairs">
-            <transformation>
-                <translate x="0" y="-23" z="0"/>
-            </transformation>
-            <material id="inherit" />
-            <texture id="none"/>
-            <children> 
-                <componentref id="chair1"/>
-                <componentref id="chair2"/>
-            </children>
-        </component>
-        <component id="chair1">
-            <transformation>
-                <translate x="0" y="0" z="-18"/>
-            </transformation>
-            <material id="inherit" />
-            <texture id="none"/>
-            <children> 
-                <componentref id="chairstructure"/>
-                <componentref id="chairpillow"/>
-            </children>
-        </component>
-        <component id="chair2">
-            <transformation>
-                <translate x="0" y="0" z="18"/>
-                <rotate axis="y" angle="180"/>
-            </transformation>
-            <material id="inherit" />
-            <texture id="none"/>
-            <children> 
-                <componentref id="chairstructure"/>
-                <componentref id="chairpillow"/>
-            </children>
-        </component>
-        <component id="chairstructure">
-            <transformation>
-                <scale x="0.27" y="0.27" z="0.27"/>
-            </transformation>
-            <material id="inherit" />
-            <texture id="lightwood"/>
-            <children> 
-                <primitiveref id="chair"/>
-            </children>
-        </component>
-        <component id="chairpillow">
-            <transformation>
-                <translate x="0" y="12" z="0.5"/>
-                <scale x="0.94" y="0.6" z="0.88"/>
-                <rotate axis="y" angle="-15"/>
-            </transformation>
-            <material id="inherit" />
-            <texture id="redfabric"/>
-            <children> 
-                <primitiveref id="chairpillow"/>
-            </children>
-        </component>
-        <component id="ceilinglamp">
-            <transformation>
-                <translate x="-0" y="26" z="0"/>
-                <scale x="1" y="1.2" z="1"/>
-                <rotate axis="y" angle="-90"/>
-            </transformation>
-            <material id="inherit" />
-            <texture id="inherit"/>
-            <children> 
-                <primitiveref id="ceilinglamp"/>
-            </children>
-        </component>
-         <component id="carpet">
-            <transformation>
-                <translate x="-6" y="-23" z="0"/>
-                <scale x="0.06" y="0.05" z="0.04"/>
-                <rotate axis="y" angle="35"/>
-            </transformation>
-            <material id="graydiff" />
-            <texture id="carpet"/>
-            <children> 
-                <primitiveref id="carpet"/>
-            </children>
-        </component>
-        <component id="sofa">
-            <transformation>
-                <translate x="-6" y="-24" z="-70"/>
-                <scale x="0.30" y="0.30" z="0.30"/>
-                <rotate axis="y" angle="0"/>
-            </transformation>
-            <material id="graydiff" />
-            <texture id="grayfabric"/>
-            <children> 
-                <primitiveref id="sofa"/>
-            </children>
-        </component>
-          <component id="desklamp">
-            <transformation>
-                <translate x="-0" y="-0" z="-0"/>
-                <scale x="0.5" y="0.5" z="0.5"/>
-                <rotate axis="y" angle="0"/>
-            </transformation>
-            <material id="graydiff" />
-            <texture id="inherit"/>
-            <children> 
-                <primitiveref id="desklamp"/>
-            </children>
-        </component>
-
+        
         <component id="vericoolhexprism">
             <transformation>
                 <scale x="3" y="3" z="3"/>
@@ -591,6 +485,7 @@
 
         <component id="board">
             <transformation>
+                <translate x="0" y="0.01" z="0"/>
                 <scale x="25" y="1" z="25"/>
             </transformation>
             <material id="inherit" />
@@ -652,7 +547,7 @@
         <component id="tvscreen">
             <transformation>
                 <translate x="0.75" y="0.5" z="0"/>
-                <rotate axis="x" angle="90"/>
+                <rotate axis="x" angle="-90"/>
                 <rotate axis="z" angle="-90"/>
             </transformation>
             <material id="inherit" />
@@ -677,28 +572,39 @@
 
 
         <component id="piece1">
-            <transformation><rotate axis="x" angle="-90"/></transformation>
+            <transformation>
+                <translate x="0" y="0.1" z="0"/>
+                <rotate axis="x" angle="-90"/>
+                <scale x="0.065" y="0.065" z="0.1"/></transformation>
             <material id="shinyGreen"/>
             <texture id="none"/>
             <children> 
-                <primitiveref id="shortCylinder"/>
+                <primitiveref id="suitcase"/>
             </children>
         </component>
 
         <component id="piece2">
-            <transformation><rotate axis="x" angle="-90"/></transformation>
+            <transformation>
+                <translate x="0" y="0.1" z="0"/>
+                <rotate axis="x" angle="-90"/>
+                <scale x="0.065" y="0.065" z="0.1"/>
+            </transformation>
             <material id="shinyGold"/>
             <texture id="none"/>
             <children> 
-                <primitiveref id="shortCylinder"/>
+                <primitiveref id="suitcase"/>
             </children>
         </component>
         <component id="piece3">
-            <transformation><rotate axis="x" angle="-90"/></transformation>
+            <transformation>
+                <translate x="0" y="0.1" z="0"/>
+                <rotate axis="x" angle="-90"/>
+                <scale x="0.065" y="0.065" z="0.1"/>
+            </transformation>
             <material id="shinyRed"/>
             <texture id="none"/>
             <children> 
-                <primitiveref id="shortCylinder"/>
+                <primitiveref id="suitcase"/>
             </children>
         </component>
     </components>
