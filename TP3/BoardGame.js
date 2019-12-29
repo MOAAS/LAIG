@@ -17,14 +17,13 @@ class BoardGame {
         this.validMoves = [];
 
         this.interactable = false;
-        this.replaying = false;
-
         this.currentPlayer = 0;
 
         this.gameStates = {
             IDLE: 1,
             PLAYING: 2,
-            OVER: 3          
+            OVER: 3,          
+            REPLAYING: 4          
         };
         this.gameState = this.gameStates.IDLE;
 
@@ -44,8 +43,14 @@ class BoardGame {
         this.mode3button = new ToggleButton(this.scene, this.graph, new TransformationGroup([new Translation(11, 0, 0.750), new Scale(0.8, 0.8, 0.8)]).getMatrix(), () => this.changeMode(3))
         this.mode4button = new ToggleButton(this.scene, this.graph, new TransformationGroup([new Translation(11, 0, 2.25), new Scale(0.8, 0.8, 0.8)]).getMatrix(), () => this.changeMode(4))
         this.modebuttons = [this.mode1button, this.mode2button, this.mode3button, this.mode4button];
-        
-        this.changeMode(this.modes.HUMAN_HUMAN)
+
+        this.player1timer = new GameTimer(this.scene, this.graph, new Translation(-9, 0, 4))
+        this.player2timer = new GameTimer(this.scene, this.graph, new Translation(-9, 0, -4))
+        this.wincounter = new GameCounter(this.scene, this.graph, new Translation(-9, 0, 0))
+
+        this.graph.addComponent(this.player1timer);
+        this.graph.addComponent(this.player2timer);
+        this.graph.addComponent(this.wincounter);
     }
 
     update(t) {
@@ -53,8 +58,6 @@ class BoardGame {
         if (this.gameState == this.gameStates.OVER)
             this.replayButton.enable()
         else this.replayButton.disable();        
-        if (!this.replaying)
-            this.replayButton.toggleUp()
 
         // Undo button
         if (!this.interactable || this.moveList.length == 0 || (this.moveList.length == 1 && this.mode == this.modes.CPU_HUMAN)) 
@@ -66,9 +69,14 @@ class BoardGame {
            this.showValidMovesButton.disable();
         else this.showValidMovesButton.enable()
 
-        if (this.interactable || this.gameState != this.gameStates.PLAYING)
+        if (this.interactable || this.gameState == this.gameStates.OVER || this.gameState == this.gameStates.IDLE)
             this.modebuttons.forEach(button => button.enable())
         else this.modebuttons.forEach(button => button.disable())
+
+        if (this.gameState == this.gameStates.PLAYING && this.player1timer.isOver())
+            this.setGameOver(2)
+        else if (this.gameState == this.gameStates.PLAYING && this.player2timer.isOver())
+            this.setGameOver(1)
     }
 
     changeMode(mode) {
@@ -79,20 +87,16 @@ class BoardGame {
         });
         modeButton.toggleDown();
         this.mode = mode;
-        console.log("mode " + this.mode)
+        console.log("set mode " + this.mode)
         this.start();
     }
 
     replay() {
-        if (this.gameState == this.gameStates.PLAYING)
-            return console.log("Currently in-game!")
-        if (this.replaying)
-            return console.log("Already replaying!")
+        if (this.gameState != this.gameStates.OVER)
+            return console.log("Cannot replay!")
 
-        this.gameState = this.gameStates.PLAYING;    
+        this.gameState = this.gameStates.REPLAYING
         this.interactable = false;
-        this.replaying = true;
-
         this.player1.forEach(piece => setTimeout(() => piece.reverseAnimation(), Math.random() * 750));
         this.player2.forEach(piece => setTimeout(() => piece.reverseAnimation(), Math.random() * 750));
 
@@ -114,16 +118,20 @@ class BoardGame {
             }, i * timePerMove + 4000)    
         }
         setTimeout(() => {
-            this.replaying = false;
             this.gameState = this.gameStates.OVER;
-        }, timePerMove * this.moveList.length + 7500)
+            this.replayButton.toggleUp()
+        }, timePerMove * this.moveList.length + 5000)
     }
 
     start() {
         this.interactable = false;
         this.clearBoard();
+        this.moveList = [];
         this.gameState = this.gameStates.PLAYING
         this.currentPlayer = 0;
+        this.player1timer.reset(5, 0);
+        this.player2timer.reset(5, 0);
+        
         getNewBoard((cellArray) => {
             this.createBoard(cellArray)
             getValidMoves(this.toCellArray(), (moves) => {
@@ -267,16 +275,6 @@ class BoardGame {
 
     }
 
-    canUndo() {
-        if (!this.interactable)
-            return false;
-        if (this.moveList.length == 0)
-            return false;
-        if (this.moveList.length == 1 && this.mode == this.modes.CPU_HUMAN) 
-            return false;
-        return true;
-    }
-
     undoMove() {
         if (!this.interactable)
             return console.log("Not a human's turn!");
@@ -320,9 +318,15 @@ class BoardGame {
         let pickedPiece = this.pieceAt(x, y);
         pickedPiece.setOnPick(() => {});
 
-        if (this.currentPlayer == 1)
+        if (this.currentPlayer == 1) {
             this.player1.push(pickedPiece);
-        else this.player2.push(pickedPiece)
+            this.player1timer.pause();
+        }
+        else {
+            this.player2.push(pickedPiece)
+            this.player2timer.pause();
+        }
+
         this.board[y][x] = null;
         this.moveList.push([x,y])        
 
@@ -369,6 +373,10 @@ class BoardGame {
 
        // this.updateCamera();
 
+        if (this.currentPlayer == 1)
+            this.player1timer.resume();
+        else this.player2timer.resume()
+
         if (this.isCpuTurn()) {
             getCPUMove(this.toCellArray(), this.toPieceValueArray(this.player1), this.toPieceValueArray(this.player2), this.currentPlayer, (move) => {
                 this.performMove(move[0], move[1])
@@ -395,13 +403,14 @@ class BoardGame {
 
     setGameOver(winner) {
         switch (winner) {
-            case 0: console.log("Tie!"); break;
-            case 1: console.log("P1 won!"); break;
-            case 2: console.log("P2 won!"); break;
+            case 0: console.log("Tie!"); break;       
+            case 1: console.log("P1 won!"); this.wincounter.addP1win(); break;
+            case 2: console.log("P2 won!"); this.wincounter.addP2win(); break;
             default: console.log("Invalid winner: " + winner); break;
         }
 
         this.gameState = this.gameStates.OVER;
+        this.interactable = false;
     }
 
 }

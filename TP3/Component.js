@@ -13,6 +13,18 @@ class Component {
         this.animationMatrix = mat4.create();
     }
 
+    clone() {
+        // For each child, gets a clone
+        let childrenClones  = []
+        for (let i = 0; i <this.children.length; i++) {
+            if (this.children[i] instanceof Component)  // if component, clones component
+                childrenClones.push(this.children[i].clone())
+            else childrenClones.push(this.children[i]); // else puts primitive 
+        }
+        // returns new component with cloned children
+        return new Component(this.scene, childrenClones, this.transformationMatrix, this.animation, this.material, this.texture)
+    }
+
     update(t) {
         if (this.animation == null)
             return;
@@ -29,18 +41,26 @@ class Component {
         this.animationStarted = false;
     }
 
+    setTexture(texture) {
+        this.texture = new ComponentTexture(texture, 1, 1);
+    }
+
     reverseAnimation() {
         if (this.animation == null)
             return console.log("Animation is null.");
         if (!this.animationStarted)
-            return console.log("Animation hasn't been started, can't reverse")            
+            return console.log("Animation hasn't been started, can't reverse") 
+        // Creates the opposite animation       
         this.animation = this.animation.reverse()
+        // Calculating the new start time (animation can still be running)
         let lastInstant = this.animation.keyframes[this.animation.keyframes.length - 1].instant;
         let now = new Date().getTime()
+        // Calculate new start time based on how long the animation had been running
         this.animationStartTime = now + Math.min(0, now - this.animationStartTime - 1000 * lastInstant);
     }
 
     setOnPick(onPick, pickID) {
+        // Setting on pick function and pick id. if pick id is undefined, change just onPick function
         this.onPick = onPick;
         if (pickID != null)
             this.pickID = pickID;
