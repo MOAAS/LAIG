@@ -30,6 +30,7 @@ class Component {
     }
 
     copyAnimationStateFrom(component) {
+        // Copies an animation from a component, keeping the current state as well
         this.animation = component.animation;
         this.animationStarted = component.animationStarted;
         this.animationStartTime = component.animationStartTime;
@@ -43,15 +44,18 @@ class Component {
             this.animationStarted = true;
             this.animationStartTime = t;
         }
+        // Calculates the matrix based on the animation start time
         this.animationMatrix = this.animation.apply(this.animationStartTime, t);
     }
 
     setAnimation(animation) {
+        // Sets new animation and stops previous one
         this.animation = animation;
         this.animationStarted = false;
     }
 
     setTexture(texture) {
+        // Sets component texture
         this.texture = new ComponentTexture(texture, 1, 1);
     }
 
@@ -86,8 +90,9 @@ class Component {
     }
     
     displayChildren(currTrans, currMaterial, currTexture) {
-        if (this.onPick != null)
+        if (this.onPick != null) {            
             this.scene.registerForPick(this.pickID, this);
+        }
 
         // Clones the current transformation to avoid changing the passed reference
         currTrans = mat4.clone(currTrans);
@@ -119,7 +124,8 @@ class Component {
             else child.displayChildren(currTrans, currMaterial, currTexture)
         }
 
-        this.scene.clearPickRegistration();
+        if (this.onPick != null)
+            this.scene.clearPickRegistration();
     }
 
     multTexCoords(primitive, sFact, tFact) {

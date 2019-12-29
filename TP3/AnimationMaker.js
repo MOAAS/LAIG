@@ -78,7 +78,7 @@ function animatePieceCapture(piece, currPosition, dest) {
     ], 1))
 }
 
-function animatePieceDrop(piece, dest, firstPiece) {
+function animatePieceDrop(piece, dest) {
     let startPos = new Translation(0, 15, 0);
     let animIni = new Translation(startPos.x - dest.x, startPos.y - dest.y, startPos.z - dest.z)
 
@@ -100,4 +100,5 @@ function animatePieceDrop(piece, dest, firstPiece) {
             new AnimScale(1,1,1)
         ),
     ], 1))
+    piece.update(new Date().getTime())
 }

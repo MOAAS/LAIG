@@ -1,3 +1,4 @@
+// Sends a request to the prolog server. receives an onSuccess and onError message
 function sendPrologRequest(requestString, onSuccess, onError, port)
 {
     var requestPort = port || 8081
@@ -13,12 +14,14 @@ function sendPrologRequest(requestString, onSuccess, onError, port)
     request.send();
 }
 
+// Asks prolog for a new board. onLoad receives array of arrays as argument
 function getNewBoard(onLoad) {
     sendPrologRequest('start', (response) => { 
         onLoad(JSON.parse(response.split('-')[0]));
     });
 }
 
+// Asks prolog for the valid moves. onLoad receives list of coordinates
 function getValidMoves(board, onLoad) {
     sendPrologRequest('validMovesPLS(' + JSON.stringify(board) +  ')', (response) => {
         response = response.replace('[', '[[');
@@ -31,6 +34,7 @@ function getValidMoves(board, onLoad) {
     });
 }
 
+// Asks if game has ended. onYes is called if game is over, with winner as argument. onNo otherwise
 function isGameOver(board, player1, player2, onYes, onNo) {
     let game = JSON.stringify(board) + '-[' + JSON.stringify(player1) + ',' + JSON.stringify(player2) + ']';
     sendPrologRequest('isGameOver(' + game +  ')', (response) => {
@@ -42,6 +46,7 @@ function isGameOver(board, player1, player2, onYes, onNo) {
     });
 }
 
+// Asks for a cpu move, depending on difficulty. onLoad gets move coordinates as argument
 function getCPUMove(board, player1, player2, playerToMove, difficulty, onLoad) {
     let game = JSON.stringify(board) + '-[' + JSON.stringify(player1) + ',' + JSON.stringify(player2) + ']';
     sendPrologRequest('movePLS(' + game +  ',' + playerToMove + ',' + difficulty + ')', (response) => {

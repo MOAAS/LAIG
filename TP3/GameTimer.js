@@ -41,7 +41,7 @@ class GameTimer extends Component {
             case 8: component.setTexture(this.graph.textures['timer8']); break;
             case 9: component.setTexture(this.graph.textures['timer9']); break;
             case 0: component.setTexture(this.graph.textures['timer0']); break;
-            default: console.log(digitValue); component.setTexture(this.graph.textures['timercolon']); break;
+            default: component.setTexture(this.graph.textures['timernone']); break;
         }
     }
     
@@ -110,10 +110,24 @@ class GameCounter extends GameTimer {
 
     addP1win() {
         super.reset(this.minutesLeft + 1, this.secondsLeft);
+
+        super.setDigitTexture(this.timerdigit1, null);     
+        super.setDigitTexture(this.timerdigit2, null);     
+        setTimeout(() => super.updateDigitTextures(), 700);
+        setTimeout(() => super.setDigitTexture(this.timerdigit1, null), 1400);     
+        setTimeout(() => super.setDigitTexture(this.timerdigit2, null), 1400);     
+        setTimeout(() => super.updateDigitTextures(), 2100);
     }
 
     addP2win() {
         super.reset(this.minutesLeft, this.secondsLeft + 1);
+
+        super.setDigitTexture(this.timerdigit3, null);     
+        super.setDigitTexture(this.timerdigit4, null);     
+        setTimeout(() => super.updateDigitTextures(), 700);
+        setTimeout(() => super.setDigitTexture(this.timerdigit3, null), 1400);     
+        setTimeout(() => super.setDigitTexture(this.timerdigit4, null), 1400);     
+        setTimeout(() => super.updateDigitTextures(), 2100);
     }
 
 
