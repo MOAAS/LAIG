@@ -106,13 +106,14 @@ class XMLscene extends CGFscene {
     }
 
         
-    setCamera(view) {
-        this.camera = view;
-        this.interface.setActiveCamera(view);
+    setCamera(cameraName, freeLook) {
+        this.selectedCamera = cameraName;
+        if (freeLook)
+            this.interface.setActiveCamera(this.graph.views[cameraName]);
     }
 
     updateCameras() {
-        this.setCamera(this.graph.views[this.selectedCamera]);
+        this.setCamera(this.selectedCamera, true);
     }
 
     /** Handler called when the graph is finally loaded. 
@@ -212,9 +213,9 @@ class XMLscene extends CGFscene {
         rtt.attachToFrameBuffer();
         this.render(this.graph.views[this.televisionCamera]);
         rtt.detachFromFrameBuffer();
+        this.graph.components['tvscreen'].texture = new ComponentTexture(rtt, 1, 1);
         this.render(this.graph.views[this.selectedCamera]);
 
-        this.graph.components['tvscreen'].texture = new ComponentTexture(rtt, 1, 1);
       //  this.setActiveShader(this.tvshader);
       //  this.setActiveShader(this.defaultShader)
 
