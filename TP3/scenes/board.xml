@@ -3,12 +3,12 @@
 
     <views default="SpectatorCamera">
         <perspective id="P1Camera" near="0.1" far="500" angle="45">
-            <from x="0" y="20" z="30" />
-            <to x="0" y="0" z="0" />
+            <from x="0" y="15" z="30" />
+            <to x="0" y="0" z="-10" />
         </perspective>
         <perspective id="P2Camera" near="0.1" far="500" angle="45">
-            <from x="0" y="20" z="-30" />
-            <to x="0" y="0" z="0" />
+            <from x="0" y="15" z="-30" />
+            <to x="0" y="0" z="10" />
         </perspective>
         <perspective id="SpectatorCamera" near="0.1" far="500" angle="45">
             <from x="45" y="30" z="0" />
@@ -66,6 +66,7 @@
         <texture id="timer0" file="scenes/images/0.png" />
         <texture id="timercolon" file="scenes/images/colon.png" />
         <texture id="black" file="scenes/images/black.png" />
+        <texture id="painting" file="scenes/images/painting.png" />
     </textures>
 
     <materials>
@@ -251,6 +252,7 @@
         <primitive id="carpet"><obj name="carpet1.obj"/></primitive>
         <primitive id="sofa"><obj name="sofa2.obj"/></primitive>
         <primitive id="desklamp"><obj name="desklamp3.obj"/></primitive>
+        <primitive id="frame"><obj name="frame.obj"/></primitive>
         <primitive id="plane1"><plane npartsU="64" npartsV="64"/></primitive>
         <primitive id="sphere1"><sphere slices="50" stacks="50" radius="0.5"/></primitive>
         <primitive id="shortCylinder"><cylinder base="0.5" top="0.5" height="0.25" slices="20" stacks="20"/></primitive>
@@ -274,6 +276,7 @@
                 <componentref id="ceilinglamp"/>
                 <componentref id="carpet"/>
                 <componentref id="sofa"/>
+                <componentref id="painting"/>
                 <!--<componentref id="desklamp"/>-->
               <!--  <componentref id="vericoolhexprism"/> -->
             </children>
@@ -591,6 +594,44 @@
             <texture id="inherit"/>
             <children> 
                 <primitiveref id="desklamp"/>
+            </children>
+        </component>
+        <component id="painting">
+            <transformation>
+                <translate x="-0" y="-5" z="88"/>
+                <scale x="2" y="2" z="2"/>
+            </transformation>
+            <material id="graydiff" />
+            <texture id="inherit"/>
+            <children> 
+                <componentref id="frame"/>
+                <componentref id="canvas"/>
+            </children>
+        </component>
+
+         <component id="frame">
+            <transformation>
+                <rotate axis="x" angle="90"/>
+                <translate x="-0" y="-0" z="-0"/>
+                <scale x="100" y="100" z="100"/>
+            </transformation>
+            <material id="inherit" />
+            <texture id="wood"/>
+            <children> 
+                <primitiveref id="frame"/>
+            </children>
+        </component>
+
+        <component id="canvas">
+            <transformation>
+                <translate x="0" y="9.7" z="-0.5"/>
+                <rotate axis="x" angle="-90"/>
+                <scale x="10" y="1" z="15"/>
+            </transformation>
+            <material id="inherit" />
+            <texture id="painting"/>
+            <children> 
+                <primitiveref id="plane1"/>
             </children>
         </component>
 
