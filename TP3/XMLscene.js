@@ -182,11 +182,19 @@ class XMLscene extends CGFscene {
             this.switchScene('board.xml')
             this.onBoard = true;
             this.ontest = false;
+            this.onpool = false;
         }
         if (this.gui.isKeyPressed("KeyT") && !this.ontest) {
             this.switchScene('testswitch.xml')
             this.ontest = true;
             this.onBoard = false;
+            this.onpool = false;
+        }
+        if (this.gui.isKeyPressed("KeyP") && !this.onpool) {
+            this.switchScene('board3.xml')
+            this.onpool = true;
+            this.onBoard = false;
+            this.ontest = false;
         }
 
     }
