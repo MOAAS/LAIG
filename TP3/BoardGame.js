@@ -35,6 +35,11 @@ class BoardGame {
         }
 
        // this.gameEnvironment = new GameEnvironment(this.scene, this.graph, this)
+        this.makeButtons();
+        this.makeTimers();
+    }
+
+    makeButtons() {
         this.replayButton = new ToggleButton(this.scene, this.graph, new Translation(8, 0, -3).getMatrix(), () => this.replay())
         this.showValidMovesButton = new SimpleButton(this.scene, this.graph, new Translation(8, 0, 0).getMatrix(), () => this.showValidMoves())
         this.undoButton = new SimpleButton(this.scene, this.graph, new Translation(8, 0, 3).getMatrix(), () => this.undoMove())
@@ -43,7 +48,9 @@ class BoardGame {
         this.mode3button = new ToggleButton(this.scene, this.graph, new TransformationGroup([new Translation(11, 0, 0.750), new Scale(0.8, 0.8, 0.8)]).getMatrix(), () => this.changeMode(3))
         this.mode4button = new ToggleButton(this.scene, this.graph, new TransformationGroup([new Translation(11, 0, 2.25), new Scale(0.8, 0.8, 0.8)]).getMatrix(), () => this.changeMode(4))
         this.modebuttons = [this.mode1button, this.mode2button, this.mode3button, this.mode4button];
+    }
 
+    makeTimers() {
         this.player1timer = new GameTimer(this.scene, this.graph, new Translation(-9, 0, 4))
         this.player2timer = new GameTimer(this.scene, this.graph, new Translation(-9, 0, -4))
         this.wincounter = new GameCounter(this.scene, this.graph, new Translation(-9, 0, 0))
@@ -78,6 +85,60 @@ class BoardGame {
         else if (this.gameState == this.gameStates.PLAYING && this.player2timer.isOver())
             this.setGameOver(1)
     }
+
+    toNewGraph(graph) {      
+        // Keeping current game state but change to the new graph
+        // Saves old states
+        let oldboard = this.board;
+        let P1PieceValues = this.toPieceValueArray(this.player1);
+        let P2PieceValues = this.toPieceValueArray(this.player2);
+
+        // Converts board to cell array of arrays
+        let cellArray = this.toCellArray();
+        // Changes graph and piece components
+        this.graph = graph;
+        this.piece1 = this.graph.components['piece1']
+        this.piece2 = this.graph.components['piece2']
+        this.piece3 = this.graph.components['piece3']
+
+        // Creates a board with the new components, materials, etc
+        this.createBoard(cellArray);
+        
+        // Copies all the animation states from the old board (pieces that were moving, etc)
+        for (let y = 0; y < this.board.length; y++) {
+            for (let x = 0; x < this.board[y].length; x++) {
+                if (this.board[y][x] == null)
+                    continue;
+                this.board[y][x].copyAnimationStateFrom(oldboard[y][x]);
+            }
+        }
+
+        // For each player piece, copies its transformation matrix and animation state to the new piece
+        let copyPlayer = (oldPlayer, pieceValues) => {
+            let newPlayer = [];
+            for (let i = 0; i < oldPlayer.length; i++) {
+                let piece = oldPlayer[i];
+                let pieceValue = pieceValues[i]
+                let newPiece = this.makePiece(pieceValue, 0, 0);
+                newPiece.transformationMatrix = piece.transformationMatrix;
+                newPiece.copyAnimationStateFrom(piece);
+                newPlayer.push(newPiece);
+                this.graph.addPickable(newPiece, () => {})
+            }
+            return newPlayer;
+        }
+
+        this.player1 = copyPlayer(this.player1, P1PieceValues);
+        this.player2 = copyPlayer(this.player2, P2PieceValues);
+
+        // setup buttons and timers... todo
+        this.graph.addComponent(this.player1timer);
+        this.graph.addComponent(this.player2timer);
+        this.graph.addComponent(this.wincounter);
+
+        this.makeButtons();
+    }
+
 
     changeMode(mode) {
         let modeButton = this.modebuttons[mode - 1];
@@ -153,7 +214,14 @@ class BoardGame {
     }
 
     createBoard(cellArray) {
+        this.board = [];
         this.initialBoard = cellArray;
+        if (cellArray.length == 0) {
+            this.boardWidth = 0;
+            this.boardHeight = 0;
+            return;
+        }
+
         this.boardWidth = cellArray[0].length;
         this.boardHeight = cellArray.length;
 
@@ -290,11 +358,13 @@ class BoardGame {
         let lastPiece;
         if (this.currentPlayer == 1) {
             lastPiece = this.player2.pop();
+            this.player1timer.pause();
             this.currentPlayer = 2;
         }
         else {
             lastPiece = this.player1.pop();
             this.currentPlayer = 1;
+            this.player2timer.pause();
         }
 
         this.board[y][x] = lastPiece;
@@ -305,6 +375,9 @@ class BoardGame {
         getValidMoves(this.toCellArray(), (moves) => {
             this.validMoves = moves;
             this.interactable = true;
+            if (this.currentPlayer == 1)
+                this.player1timer.resume();
+            else this.player2timer.resume()
             if (this.isCpuTurn())
                 this.undoMove();
         })

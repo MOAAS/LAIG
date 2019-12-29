@@ -34,8 +34,17 @@ class XMLscene extends CGFscene {
         this.setUpdatePeriod(33.33);
         this.table = new CGFOBJModel(this,"../models/woodtable.obj",false)
 
+
+        this.switchScene("board.xml")
+
         //this.tvshader = new CGFshader(this.gl, "shaders/tv.vert", "shaders/tv.frag");
        // this.tvshader.setUniformsValues({ uSampler : 1, time: 0 })
+    }
+
+    switchScene(filename) {
+        // create and load graph, and associate it to scene. 
+        // Check console for loading errors
+        new MySceneGraphParser(filename, this);
     }
 
     /**
@@ -113,10 +122,14 @@ class XMLscene extends CGFscene {
         this.graph = graph;
         this.axis = new CGFaxis(this, 5);
 
+        // -- Sets up background colors and lights -- //
         this.gl.clearColor(this.graph.background[0], this.graph.background[1], this.graph.background[2], this.graph.background[3]);
         this.setGlobalAmbientLight(this.graph.ambient[0], this.graph.ambient[1], this.graph.ambient[2], this.graph.ambient[3]);
         this.initLights();
 
+        // -- Sets up interface -- //
+        // Clears interface
+        this.interface.clear();
         // adds the lights to the interface drop down
         this.interface.addLights(this.lights, this.numLights);
 
@@ -127,13 +140,19 @@ class XMLscene extends CGFscene {
                 this.selectedCamera = key;
             cameraKeys.push(key);
         }
-
         this.televisionCamera = 'television';
 
         // Initializes camera list with the keys (IDs) of the cameras
         this.updateCameras()
         this.interface.initCamerasUI(cameraKeys);
-        this.game = new BoardGame(this, graph);
+
+        // -- Sets up game -- //
+        if (this.game == null) {
+            this.game = new BoardGame(this, graph); 
+        }
+        else {
+            this.game.toNewGraph(graph);
+        }
     }
 
     logPicking() {
@@ -158,6 +177,18 @@ class XMLscene extends CGFscene {
 
         this.graph.update(t)
         this.game.update(t);
+
+        if (this.gui.isKeyPressed("KeyB") && !this.onBoard) {
+            this.switchScene('board.xml')
+            this.onBoard = true;
+            this.ontest = false;
+        }
+        if (this.gui.isKeyPressed("KeyT") && !this.ontest) {
+            this.switchScene('testswitch.xml')
+            this.ontest = true;
+            this.onBoard = false;
+        }
+
     }
 
 

@@ -89,23 +89,23 @@
 
         <material id="shinyGreen" shininess="3">
             <emission r="0.0" g="0.0" b="0.0" a="1.0" />
-            <ambient r="0.05" g="0.15" b="0.05" a="1.0" />
-            <diffuse r="0.1" g="0.4" b="0.1" a="1.0" />
-            <specular r="0.9" g="0.9" b="0.9" a="1.0" />
+            <ambient r="0.05" g="0" b="0.15" a="1.0" />
+            <diffuse r="0.1" g="0.1" b="0.4" a="1.0" />
+            <specular r="0.66" g="0.77" b="0.99" a="1.0" />
         </material>
 
         <material id="shinyGold" shininess="20">
             <emission r="0.0" g="0.0" b="0.0" a="1.0" />
             <ambient r="0.15" g="0.15" b="0.15" a="1.0" />
-            <diffuse r="1.0" g="0.6" b="0.0" a="1.0" />
+            <diffuse r="0.6" g="1.0" b="0.2" a="1.0" />
             <specular r="0.5" g="0.3" b="0.0" a="1.0" />
         </material>
 
         <material id="shinyRed" shininess="20">
             <emission r="0.0" g="0.0" b="0.0" a="1.0" />
-            <ambient r="0.15" g="0.1" b="0.1" a="1.0" />
-            <diffuse r="0.9" g="0.25" b="0.25" a="1.0" />
-            <specular r="0.45" g="0.125" b="0.125" a="1.0" />
+            <ambient r="0.1" g="0.1" b="0.15" a="1.0" />
+            <diffuse r="0.25" g="0.9" b="0.25" a="1.0" />
+            <specular r="0.25" g="0.225" b="0.125" a="1.0" />
         </material>
 
         <material id="black" shininess="1">
@@ -135,7 +135,7 @@
     <animations>
         <animation id="jumping" maxLoops="3">
             <keyframe instant="0.25">
-                <translate x="0" y="0.75" z="0" />
+                <translate x="0" y="1.75" z="0" />
                 <rotate angle_x="0" angle_y="0" angle_z="0" />
                 <scale x="1" y="1" z="1" />  
             </keyframe>
@@ -520,7 +520,7 @@
         <component id="chairpillow">
             <transformation>
                 <translate x="0" y="12" z="0.5"/>
-                <scale x="0.94" y="0.6" z="0.88"/>
+                <scale x="0.94" y="1.6" z="0.88"/>
                 <rotate axis="y" angle="-15"/>
             </transformation>
             <material id="inherit" />

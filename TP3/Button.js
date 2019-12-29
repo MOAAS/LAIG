@@ -1,8 +1,9 @@
 class SimpleButton {
     constructor(scene, graph, transformationMatrix, onPress) {
         this.scene = scene;
-        this.graph = graph;        
-        this.component = new Component(scene, [graph.components['genericbutton']], transformationMatrix);
+        this.graph = graph;
+        this.transformationMatrix = transformationMatrix;        
+        this.component = new Component(scene, [graph.components['genericbutton']],  this.transformationMatrix);
         this.onPress = onPress;
         this.graph.addPickable(this.component, () => this.press());
 
@@ -34,7 +35,8 @@ class ToggleButton {
     constructor(scene, graph, transformationMatrix, onDown) {
         this.scene = scene;
         this.graph = graph;        
-        this.component = new Component(scene, [graph.components['genericbutton']], transformationMatrix);
+        this.transformationMatrix = transformationMatrix;        
+        this.component = new Component(scene, [graph.components['genericbutton']], this.transformationMatrix);
         this.onDown = onDown;
         this.graph.addPickable(this.component, () => this.press());
 

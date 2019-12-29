@@ -22,7 +22,17 @@ class Component {
             else childrenClones.push(this.children[i]); // else puts primitive 
         }
         // returns new component with cloned children
-        return new Component(this.scene, childrenClones, this.transformationMatrix, this.animation, this.material, this.texture)
+        let cloneComponent = new Component(this.scene, childrenClones, this.transformationMatrix, this.animation, this.material, this.texture);
+
+        // copies animation state in case animation was running
+        cloneComponent.copyAnimationStateFrom(this);
+        return cloneComponent
+    }
+
+    copyAnimationStateFrom(component) {
+        this.animation = component.animation;
+        this.animationStarted = component.animationStarted;
+        this.animationStartTime = component.animationStartTime;
     }
 
     update(t) {

@@ -23,8 +23,13 @@ class MyInterface extends CGFinterface {
 
         this.initKeys();
 
-        this.lightfolder = this.gui.addFolder('Lights');
         return true;
+    }
+
+    clear() {
+        this.gui.destroy();
+        this.gui = new dat.GUI();
+        this.lightfolder = this.gui.addFolder('Lights');
     }
 
     addLights(lights, numLights) {
