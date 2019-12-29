@@ -28,10 +28,10 @@
     <lights>
 
         <omni id="light" enabled="1">
-            <location x="300" y="1000" z="-500" w="1.0" />
+            <location x="-300" y="1000" z="500" w="1.0" />
             <ambient r="0.5" g="0.5" b="0.5" a="0.5" />
-            <diffuse r="0.7" g="0.7" b="0.7" a="0.7" />
-            <specular r="0.7" g="0.7" b="0.7" a="0.7" />
+            <diffuse r="0.5" g="0.5" b="0.5" a="0.5" />
+            <specular r="0.5" g="0.5" b="0.5" a="0.5" />
             <attenuation constant="1.0" linear="0" quadratic="0.00" />
         </omni>
 
@@ -80,7 +80,7 @@
 
     <materials>
         <material id="emissor" shininess="20">
-            <emission r="0.7" g="0.7" b="0.7" a="1.0" />
+            <emission r="0.8" g="0.8" b="0.8" a="1.0" />
             <ambient r="0" g="0" b="0" a="1.0" />
             <diffuse r="0" g="0" b="0" a="1.0" />
             <specular r="0" g="0" b="0" a="1.0" />
@@ -264,7 +264,7 @@
         <primitive id="woodenchairtable"><obj name="woodenchair.obj"/></primitive>
         <primitive id="lifeguardchair"><obj name="lifeguardchair.obj"/></primitive>
         <primitive id="wall"><obj name="wall.obj"/></primitive>
-        <primitive id="tree"><obj name="tree2.obj"/></primitive>
+        <primitive id="tree"><obj name="tree6.obj"/></primitive>
         <primitive id="plane1"><plane npartsU="64" npartsV="64"/></primitive>
         <primitive id="torus1"> <torus inner="0.20" outer="0.36" slices="8" loops="16" /></primitive>
         <primitive id="torus2"> <torus inner="0.2" outer="0.6" slices="16" loops="32" /></primitive>
@@ -585,7 +585,7 @@
             <transformation>
             </transformation>
             <material id="inherit" />
-            <texture id="rockwall" length_s="0.05" length_t="1"/>
+            <texture id="rockwall" length_s="0.2" length_t="2"/>
             <children>
                 <componentref id="wall1"/>
                 <componentref id="wall2"/>
@@ -720,11 +720,12 @@
 
         <component id="treeleaves">
             <transformation>
-                <scale x="1" y="1" z="1"/>
-                <rotate axis="y" angle="0"/>
+                <translate x="5.6" y="0.5" z="5.6"/>
+                <scale x="0.03" y="0.03" z="0.03"/>
+                <rotate axis="x" angle="-90"/>
             </transformation>
             <material id="inherit" />
-            <texture id="leaves"/>
+            <texture id="leaves" length_s="0.2" length_t="0.1"/>
             <children>
                 <primitiveref id="tree"/>
             </children>
