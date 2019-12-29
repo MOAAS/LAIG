@@ -3,15 +3,15 @@
 
     <views default="SpectatorCamera">
         <perspective id="P1Camera" near="0.1" far="500" angle="45">
-            <from x="0" y="20" z="30" />
+            <from x="0" y="20" z="20" />
             <to x="0" y="0" z="0" />
         </perspective>
         <perspective id="P2Camera" near="0.1" far="500" angle="45">
-            <from x="0" y="20" z="-30" />
+            <from x="0" y="20" z="-20" />
             <to x="0" y="0" z="0" />
         </perspective>
         <perspective id="SpectatorCamera" near="0.1" far="500" angle="45">
-            <from x="45" y="30" z="0" />
+            <from x="23" y="10" z="0" />
             <to x="0" y="0" z="0" />
         </perspective>
          <perspective id="television" near="0.1" far="500" angle="70">
@@ -26,20 +26,13 @@
     </globals>
 
     <lights>
-        <omni id="demoLight" enabled="1">
-            <location x="-100" y="10" z="0" w="1.0" />
-            <ambient r="0.2" g="0.2" b="0.2" a="0.2" />
-            <diffuse r="0.2" g="0.2" b="0.2" a="0.2" />
-            <specular r="0.2" g="0.2" b="0.2" a="0.2" />
-            <attenuation constant="1.0" linear="0" quadratic="0.00" />
-        </omni>
 
         <omni id="light" enabled="1">
-            <location x="0" y="20" z="0" w="1.0" />
-            <ambient r="0" g="0" b="0" a="0" />
-            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
-            <specular r="1.0" g="1.0" b="1.0" a="1.0" />
-            <attenuation constant="1.0" linear="0.02" quadratic="0.00" />
+            <location x="-300" y="1000" z="500" w="1.0" />
+            <ambient r="0.5" g="0.5" b="0.5" a="0.5" />
+            <diffuse r="0.5" g="0.5" b="0.5" a="0.5" />
+            <specular r="0.5" g="0.5" b="0.5" a="0.5" />
+            <attenuation constant="1.0" linear="0" quadratic="0.00" />
         </omni>
 
     </lights>
@@ -75,14 +68,23 @@
         <texture id="back" file="scenes/images/dayback.png" />
         <texture id="left" file="scenes/images/dayleft.png" />
         <texture id="right" file="scenes/images/dayright.png" />
+        <texture id="beachball" file="scenes/images/beachball.jpg" />
+        <texture id="lifebuoy" file="scenes/images/lifebuoy.png" />
+        <texture id="redbuoy" file="scenes/images/redbuoy.png" />
+        <texture id="greenbuoy" file="scenes/images/greenbuoy.png" />
+        <texture id="yellowbuoy" file="scenes/images/yellowbuoy.png" />
+        <texture id="rockwall" file="scenes/images/rockwall.jpg" />
+        <texture id="housewall" file="scenes/images/housewall.jpg" />
+        <texture id="leaves" file="scenes/images/leaves.jpg" />
+        
     </textures>
 
     <materials>
         <material id="emissor" shininess="20">
-            <emission r="0.5" g="0.5" b="0.5" a="1.0" />
+            <emission r="0.8" g="0.8" b="0.8" a="1.0" />
             <ambient r="0" g="0" b="0" a="1.0" />
-            <diffuse r="0.4" g="0.4" b="0.4" a="1.0" />
-            <specular r="0.4" g="0.4" b="0.4" a="1.0" />
+            <diffuse r="0" g="0" b="0" a="1.0" />
+            <specular r="0" g="0" b="0" a="1.0" />
         </material>
 
         <material id="graydiff" shininess="4">
@@ -118,6 +120,27 @@
             <ambient r="0.15" g="0.1" b="0.1" a="1.0" />
             <diffuse r="0.9" g="0.25" b="0.25" a="1.0" />
             <specular r="0.45" g="0.125" b="0.125" a="1.0" />
+        </material>
+
+        <material id="shinyBlue" shininess="20">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="0.1" g="0.1" b="0.15" a="1.0" />
+            <diffuse r="0.25" g="0.25" b="0.9" a="1.0" />
+            <specular r="0.125" g="0.125" b="0.45" a="1.0" />
+        </material>
+
+        <material id="shinyWhite" shininess="25">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="0.15" g="0.15" b="0.15" a="1.0" />
+            <diffuse r="0.7" g="0.7" b="0.7" a="1.0" />
+            <specular r="0.9" g="0.9" b="0.9" a="1.0" />
+        </material>
+
+        <material id="metal" shininess="20">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="0.15" g="0.15" b="0.15" a="1.0" />
+            <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
+            <specular r="0.8" g="0.8" b="0.8" a="1.0" />
         </material>
 
         <material id="black" shininess="1">
@@ -240,8 +263,12 @@
         <primitive id="poolstairs"><obj name="poolstairs1.obj"/></primitive>
         <primitive id="divingboard"><obj name="divingboard1.obj"/></primitive>
         <primitive id="woodenchairtable"><obj name="woodenchair.obj"/></primitive>
+        <primitive id="lifeguardchair"><obj name="lifeguardchair.obj"/></primitive>
+        <primitive id="wall"><obj name="wall.obj"/></primitive>
+        <primitive id="tree"><obj name="tree6.obj"/></primitive>
         <primitive id="plane1"><plane npartsU="64" npartsV="64"/></primitive>
         <primitive id="torus1"> <torus inner="0.20" outer="0.36" slices="8" loops="16" /></primitive>
+        <primitive id="torus2"> <torus inner="0.2" outer="0.6" slices="16" loops="32" /></primitive>
         <primitive id="sphere1"><sphere slices="50" stacks="50" radius="0.5"/></primitive>
         <primitive id="shortCylinder"><cylinder base="0.5" top="0.5" height="0.25" slices="20" stacks="20"/></primitive>
         <primitive id="cylinder"><cylinder base="1" top="1" height="1" slices="20" stacks="20"/></primitive>
@@ -257,8 +284,10 @@
             <children>
                 <componentref id="board"/>
                 <componentref id="pool"/>
-                <componentref id="garden"/>
-                <componentref id="acessories"/>
+                <componentref id="separators"/>
+                <componentref id="ground"/>
+                <componentref id="decorations"/>
+                <componentref id="borders"/>
                 <componentref id="skybox"/>
             </children>
         </component>
@@ -423,7 +452,7 @@
                 <translate x="-6" y="-2.7" z="-12"/>
                 <scale x="0.1" y="0.08" z="0.1"/>
             </transformation>
-             <material id="inherit" />
+             <material id="metal" />
             <texture id="inherit"/>
             <children>
                 <primitiveref id="poolstairs"/>
@@ -442,8 +471,43 @@
             </children>
         </component>
 
+        <component id="separators">
+            <transformation>
+            </transformation>
+            <material id="inherit" />
+            <texture id="inherit"/>
+            <children>
+                <componentref id="separator1"/>
+                <componentref id="separator2"/>
+            </children>
+        </component>
 
-        <component id="garden">
+         <component id="separator1">
+            <transformation>
+                <translate x="-6.5" y="-0.5" z="-7.1"/>
+                <scale x="12" y="0.1" z="0.1"/>
+                <rotate axis="y" angle="90"/>
+            </transformation>
+            <material id="shinyRed" />
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="cylinder"/>
+            </children>
+        </component>
+         <component id="separator2">
+            <transformation>
+                <translate x="-6.5" y="-0.5" z="7.3"/>
+                <scale x="12" y="0.1" z="0.1"/>
+                <rotate axis="y" angle="90"/>
+            </transformation>
+            <material id="shinyBlue" />
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="cylinder"/>
+            </children>
+        </component>
+
+        <component id="ground">
             <transformation>
                 <scale x="60" y="1" z="60"/>
                 <translate x="0" y="-0.8" z="0"/>
@@ -455,20 +519,24 @@
             </children>
         </component>
 
-        <component id="acessories">
+        <component id="decorations">
             <transformation>
             </transformation>
             <material id="inherit" />
             <texture id="inherit"/>
             <children>
                 <componentref id="woodenchairtable"/>
+                <componentref id="beachball"/>
+                <componentref id="lifeguardchair"/>
+                <componentref id="lifebuoy"/>
+                <componentref id="trees"/>
             </children>
         </component>
         
         <component id="woodenchairtable">
             <transformation>
                 <translate x="-15" y="-0.7" z="10"/>
-                <scale x="2" y="2" z="2"/>
+                <scale x="1.8" y="1.8" z="1.8"/>
             </transformation>
             <material id="inherit" />
             <texture id="lightwood"/>
@@ -476,6 +544,207 @@
                 <primitiveref id="woodenchairtable"/>
             </children>
         </component>
+        <component id="beachball">
+            <transformation>
+                <translate x="-5" y="0" z="10"/>
+                <scale x="1.5" y="1.5" z="1.5"/>
+                <rotate axis="x" angle="-30"/>
+                <rotate axis="z" angle="40"/>
+            </transformation>
+            <material id="shinyWhite" />
+            <texture id="beachball"/>
+            <children>
+                <primitiveref id="sphere1"/>
+            </children>
+        </component>
+        <component id="lifeguardchair">
+           <transformation>
+               <translate x="-12" y="-0.7" z="0"/>
+               <scale x="0.035" y="0.035" z="0.035"/>
+               <rotate axis="y" angle="-90"/>
+           </transformation>
+           <material id="inherit" />
+           <texture id="wood"/>
+           <children>
+               <primitiveref id="lifeguardchair"/>
+           </children>
+        </component>
+        <component id="lifebuoy">
+           <transformation>
+               <translate x="-11" y="1" z="0"/>
+               <scale x="1" y="1" z="1"/>
+               <rotate axis="y" angle="90"/>
+           </transformation>
+           <material id="inherit" />
+           <texture id="lifebuoy"/>
+           <children>
+               <primitiveref id="torus2"/>
+           </children>
+        </component>
+
+         <component id="borders">
+            <transformation>
+            </transformation>
+            <material id="inherit" />
+            <texture id="rockwall" length_s="0.2" length_t="2"/>
+            <children>
+                <componentref id="wall1"/>
+                <componentref id="wall2"/>
+                <componentref id="wall3"/>
+                <componentref id="housewall"/>
+            </children>
+        </component>
+
+        <component id="wall1">
+            <transformation>
+                <translate x="0" y="-0.7" z="-30"/>
+                <scale x="4.4" y="1" z="2"/>
+                <rotate axis="x" angle="0"/>
+            </transformation>
+            <material id="inherit" />
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="wall"/>
+            </children>
+        </component>
+        <component id="wall2">
+            <transformation>
+                <translate x="-30" y="-0.7" z="0"/>
+                <rotate axis="y" angle="90"/>
+                <scale x="4.4" y="1" z="2"/>
+            </transformation>
+            <material id="inherit" />
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="wall"/>
+            </children>
+        </component>
+        <component id="wall3">
+            <transformation>
+                <translate x="0" y="-0.7" z="30"/>
+                <scale x="4.4" y="1" z="2"/>
+                <rotate axis="y" angle="0"/>
+            </transformation>
+            <material id="inherit" />
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="wall"/>
+            </children>
+        </component>
+        <component id="housewall">
+            <transformation>
+                <translate x="25" y="-0.7" z="0"/>
+                <rotate axis="y" angle="90"/>
+                <scale x="4.4" y="3" z="2"/>
+            </transformation>
+            <material id="inherit" />
+            <texture id="housewall"/>
+            <children>
+                <primitiveref id="wall"/>
+            </children>
+        </component>
+
+         <component id="trees">
+            <transformation>
+            </transformation>
+            <material id="inherit" />
+            <texture id="inherit"/>
+            <children>
+                <componentref id="tree1"/>
+                <componentref id="tree2"/>
+                <componentref id="tree3"/>
+                <componentref id="tree4"/>
+                <componentref id="tree5"/>
+            </children>
+        </component>
+
+        <component id="tree1">
+            <transformation>
+                <translate x="-17" y="-0.7" z="-17"/>
+            </transformation>
+            <material id="inherit" />
+            <texture id="inherit"/>
+            <children>
+                <componentref id="treeleaves"/>
+                <componentref id="trunk"/>
+            </children>
+        </component>
+
+        <component id="tree2">
+            <transformation>
+                <translate x="-20" y="-0.7" z="-10"/>
+                <scale x="0.7" y="0.7" z="0.7"/>
+            </transformation>
+            <material id="inherit" />
+            <texture id="inherit"/>
+            <children>
+                <componentref id="treeleaves"/>
+                <componentref id="trunk"/>
+            </children>
+        </component>
+        <component id="tree3">
+            <transformation>
+                <translate x="-20" y="-0.7" z="13"/>
+                <scale x="0.7" y="0.7" z="0.7"/>
+            </transformation>
+            <material id="inherit" />
+            <texture id="inherit"/>
+            <children>
+                <componentref id="treeleaves"/>
+                <componentref id="trunk"/>
+            </children>
+        </component>
+        <component id="tree4">
+            <transformation>
+                <translate x="-17" y="-0.7" z="17"/>
+                <scale x="0.7" y="0.7" z="0.7"/>
+            </transformation>
+            <material id="inherit" />
+            <texture id="inherit"/>
+            <children>
+                <componentref id="treeleaves"/>
+                <componentref id="trunk"/>
+            </children>
+        </component>
+        <component id="tree5">
+            <transformation>
+                <translate x="-10" y="-0.7" z="18"/>
+                <scale x="0.7" y="0.7" z="0.7"/>
+            </transformation>
+            <material id="inherit" />
+            <texture id="inherit"/>
+            <children>
+                <componentref id="treeleaves"/>
+                <componentref id="trunk"/>
+            </children>
+        </component>
+
+        <component id="treeleaves">
+            <transformation>
+                <translate x="5.6" y="0.5" z="5.6"/>
+                <scale x="0.03" y="0.03" z="0.03"/>
+                <rotate axis="x" angle="-90"/>
+            </transformation>
+            <material id="inherit" />
+            <texture id="leaves" length_s="0.2" length_t="0.1"/>
+            <children>
+                <primitiveref id="tree"/>
+            </children>
+        </component>
+        <component id="trunk">
+            <transformation>
+                <translate x="0" y="7" z="0"/>
+                <scale x="0.5" y="7" z="0.5"/>
+                <rotate axis="x" angle="90"/>
+            </transformation>
+            <material id="inherit" />
+            <texture id="wood"/>
+            <children>
+                <primitiveref id="cylinder"/>
+            </children>
+        </component>
+        
+        
 
         <component id="skybox">
             <transformation>
@@ -714,8 +983,8 @@
 
         <component id="piece1">
             <transformation><translate x="0" y="-0.5" z="0"/><rotate axis="x" angle="-90"/></transformation>
-            <material id="shinyGreen"/>
-            <texture id="none"/>
+            <material id="shinyWhite"/>
+            <texture id="greenbuoy"/>
             <children> 
                 <primitiveref id="torus1"/>
             </children>
@@ -723,16 +992,16 @@
 
         <component id="piece2">
             <transformation><translate x="0" y="-0.5" z="0"/><rotate axis="x" angle="-90"/></transformation>
-            <material id="shinyGold"/>
-            <texture id="none"/>
+            <material id="shinyWhite"/>
+            <texture id="yellowbuoy"/>
             <children> 
                 <primitiveref id="torus1"/>
             </children>
         </component>
         <component id="piece3">
             <transformation><translate x="0" y="-0.5" z="0"/><rotate axis="x" angle="-90"/></transformation>
-            <material id="shinyRed"/>
-            <texture id="none"/>
+            <material id="shinyWhite"/>
+            <texture id="redbuoy"/>
             <children> 
                 <primitiveref id="torus1"/>
             </children>
