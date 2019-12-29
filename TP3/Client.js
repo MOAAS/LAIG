@@ -42,9 +42,9 @@ function isGameOver(board, player1, player2, onYes, onNo) {
     });
 }
 
-function getCPUMove(board, player1, player2, playerToMove, onLoad) {
+function getCPUMove(board, player1, player2, playerToMove, difficulty, onLoad) {
     let game = JSON.stringify(board) + '-[' + JSON.stringify(player1) + ',' + JSON.stringify(player2) + ']';
-    sendPrologRequest('movePLS(' + game +  ',' + playerToMove + ')', (response) => {
+    sendPrologRequest('movePLS(' + game +  ',' + playerToMove + ',' + difficulty + ')', (response) => {
         let move = JSON.parse('[' + response.replace('-', ',') + ']')
         onLoad([move[0]-1, move[1]-1]);
     });

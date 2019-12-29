@@ -10,7 +10,7 @@ class SimpleButton {
         this.enabledMaterial = this.graph.materials['shinyGold'];
         this.disabledMaterial = this.graph.materials['shinyRed'];
 
-        this.disable()
+        this.enable()
     }
 
     press() {
@@ -45,7 +45,7 @@ class ToggleButton {
         this.disabledMaterial = this.graph.materials['shinyRed'];        
 
         this.isDown = false;
-        this.disable()
+        this.enable()
     }
 
     press() {

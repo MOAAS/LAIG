@@ -48,6 +48,12 @@ class BoardGame {
         this.mode3button = new ToggleButton(this.scene, this.graph, new TransformationGroup([new Translation(11, 0, 0.750), new Scale(0.8, 0.8, 0.8)]).getMatrix(), () => this.changeMode(3))
         this.mode4button = new ToggleButton(this.scene, this.graph, new TransformationGroup([new Translation(11, 0, 2.25), new Scale(0.8, 0.8, 0.8)]).getMatrix(), () => this.changeMode(4))
         this.modebuttons = [this.mode1button, this.mode2button, this.mode3button, this.mode4button];
+        
+        this.easybutton = new ToggleButton(this.scene, this.graph, new Translation(11, 0, 7).getMatrix(), () => { this.difficulty = 0; this.hardbutton.toggleUp() })
+        this.hardbutton = new ToggleButton(this.scene, this.graph, new Translation(11, 0, 8.5).getMatrix(), () => { this.difficulty = 1; this.easybutton.toggleUp() })
+        this.hardbutton.press();
+
+        this.restartbutton = new SimpleButton(this.scene, this.graph, new Translation(-9, 1, 0).getMatrix(), () => this.restart()) 
     }
 
     makeTimers() {
@@ -62,9 +68,14 @@ class BoardGame {
 
     update(t) {
         // Replay button
-        if (this.gameState == this.gameStates.OVER)
+        if (this.gameState == this.gameStates.OVER) {
             this.replayButton.enable()
-        else this.replayButton.disable();        
+            this.restartbutton.enable()
+        }
+        else {
+            this.replayButton.disable();       
+            this.restartbutton.disable()
+        } 
 
         // Undo button
         if (!this.interactable || this.moveList.length == 0 || (this.moveList.length == 1 && this.mode == this.modes.CPU_HUMAN)) 
@@ -102,7 +113,7 @@ class BoardGame {
         this.piece3 = this.graph.components['piece3']
 
         // Creates a board with the new components, materials, etc
-        this.createBoard(cellArray);
+        this.createBoard(cellArray, false);
         
         // Copies all the animation states from the old board (pieces that were moving, etc)
         for (let y = 0; y < this.board.length; y++) {
@@ -141,6 +152,7 @@ class BoardGame {
 
 
     changeMode(mode) {
+        console.log("set mode " + mode)
         let modeButton = this.modebuttons[mode - 1];
         this.modebuttons.forEach(button => {
             if(button != modeButton)
@@ -148,8 +160,14 @@ class BoardGame {
         });
         modeButton.toggleDown();
         this.mode = mode;
-        console.log("set mode " + this.mode)
-        this.start();
+
+        switch (this.mode) {
+            case this.modes.CPU_CPU: this.scene.setCamera('SpectatorCamera', true); break;
+            case this.modes.CPU_HUMAN: this.scene.setCamera('P2Camera', false); break;
+            case this.modes.HUMAN_CPU:  this.scene.setCamera('P1Camera', false); break;
+            case this.modes.HUMAN_HUMAN: this.scene.setCamera('P1Camera', false); break;
+        }
+        this.start()
     }
 
     replay() {
@@ -163,7 +181,7 @@ class BoardGame {
 
         setTimeout(() => {
             this.clearBoard();
-            this.createBoard(this.initialBoard);
+            this.createBoard(this.initialBoard, false);
         }, 3000)
 
 
@@ -171,7 +189,7 @@ class BoardGame {
         for (let i = 0, turn = 1; i < this.moveList.length; i++, turn = turn % 2 + 1) {
             setTimeout(() => {
                 let x = this.moveList[i][0], y = this.moveList[i][1];
-                this.animatePieceCapture(x, y, turn);
+                this.animateCapture(x, y, turn);
 
                 if (turn == 1)
                     this.player1.push(this.pieceAt(x, y));
@@ -184,6 +202,20 @@ class BoardGame {
         }, timePerMove * this.moveList.length + 5000)
     }
 
+    restart() {
+        this.gameState = this.gameStates.IDLE;
+        this.player1.forEach(piece => setTimeout(() => piece.reverseAnimation(), Math.random() * 750));
+        this.player2.forEach(piece => setTimeout(() => piece.reverseAnimation(), Math.random() * 750));
+
+        setTimeout(() => {
+            this.clearBoard();
+            this.createBoard(this.initialBoard, false);
+            let totalDuration = animateRestart(this.board, (x, y) => this.calculateTileposition(x,y));
+            setTimeout( () => { this.start(); }, totalDuration * 1000);
+        }, 3000)
+
+    }
+
     start() {
         this.interactable = false;
         this.clearBoard();
@@ -194,11 +226,13 @@ class BoardGame {
         this.player2timer.reset(5, 0);
         
         getNewBoard((cellArray) => {
-            this.createBoard(cellArray)
-            getValidMoves(this.toCellArray(), (moves) => {
-                this.validMoves = moves;
-                this.advanceTurn();
-            })
+            this.createBoard(cellArray, true)
+            setTimeout( () => {
+                getValidMoves(this.toCellArray(), (moves) => {
+                    this.validMoves = moves;
+                    this.advanceTurn();
+                })
+            }, 2000);
         });
     }
 
@@ -213,7 +247,7 @@ class BoardGame {
         this.board = [];
     }
 
-    createBoard(cellArray) {
+    createBoard(cellArray, animate) {
         this.board = [];
         this.initialBoard = cellArray;
         if (cellArray.length == 0) {
@@ -225,16 +259,22 @@ class BoardGame {
         this.boardWidth = cellArray[0].length;
         this.boardHeight = cellArray.length;
 
+        let pieceNo = 0;
         for (let i = 0; i < cellArray.length; i++) {
             this.board.push([]);
             for (let j = 0; j < cellArray[i].length; j++) {
                 let piece = this.makePiece(cellArray[i][j], j, i);
                 this.board[i].push(piece)
-                if (piece != null)
-                    this.graph.addPickable(piece, () => this.onPickedPiece(j, i));
+                if (piece == null)
+                    continue;
+                this.graph.addPickable(piece, () => this.onPickedPiece(j, i));
+                if (animate)
+                    animatePieceDrop(piece, this.calculateTileposition(j, i), pieceNo == 0);
+                pieceNo++;
             }
         }
     }
+    
 
     toCellArray() {
         let cells = [];
@@ -384,7 +424,7 @@ class BoardGame {
     }
 
     performMove(x, y)  {
-        this.animatePieceCapture(x, y, this.currentPlayer)
+        this.animateCapture(x, y, this.currentPlayer)
 
         // Change game structure
 
@@ -415,25 +455,11 @@ class BoardGame {
         )
     }
 
-    animatePieceCapture(x, y, numPieces) {
+    animateCapture(x, y, numPieces) {
         let picked = this.pieceAt(x, y);
-
         let currPosition = this.calculateTileposition(x, y);
         let dest =  this.calculatePieceStackPosition(numPieces, this.pieceValue(picked))
-        let movement = new Translation(dest.x - currPosition.x, dest.y - currPosition.y, dest.z - currPosition.z)
-
-        picked.setAnimation(new MyAnimation([
-            new KeyFrame(1,
-                new AnimTranslation(movement.x / 2, movement.y / 2 + 8, movement.z / 2),
-                new AnimRotation(Math.PI * 6,0,0),
-                new AnimScale(1,1,1)
-            ),
-            new KeyFrame(2,
-                new AnimTranslation(movement.x, movement.y, movement.z),
-                new AnimRotation(Math.PI * 12,0,0),
-                new AnimScale(1,1,1)
-            ),
-        ], 1))
+        animatePieceCapture(picked, currPosition, dest)
     }
 
     advanceTurn() {
@@ -444,24 +470,26 @@ class BoardGame {
             default: console.log("Invalid current player: " + this.currentPlayer); return;
         }
 
-       // this.updateCamera();
+        if (this.mode == this.modes.HUMAN_HUMAN)
+            this.animateToPlayerView();
 
         if (this.currentPlayer == 1)
             this.player1timer.resume();
         else this.player2timer.resume()
 
         if (this.isCpuTurn()) {
-            getCPUMove(this.toCellArray(), this.toPieceValueArray(this.player1), this.toPieceValueArray(this.player2), this.currentPlayer, (move) => {
+            getCPUMove(this.toCellArray(), this.toPieceValueArray(this.player1), this.toPieceValueArray(this.player2), this.currentPlayer, this.difficulty, (move) => {
                 this.performMove(move[0], move[1])
             })
         }
         else this.interactable = true;
     }
 
-    updateCamera() {
-        if (this.currentPlayer == 1)
+    animateToPlayerView() {
+        if (this.currentPlayer == 1 && this.moveList.length != 0)
             this.graph.getRootComponent().setAnimation(this.graph.animations['cameraswitchtoP1'])
-        else this.graph.getRootComponent().setAnimation(this.graph.animations['cameraswitchtoP2'])
+        if (this.currentPlayer == 2)
+            this.graph.getRootComponent().setAnimation(this.graph.animations['cameraswitchtoP2'])
     }
 
     isCpuTurn() {
@@ -484,6 +512,7 @@ class BoardGame {
 
         this.gameState = this.gameStates.OVER;
         this.interactable = false;
+        this.scene.setCamera('SpectatorCamera', true);
     }
 
 }
