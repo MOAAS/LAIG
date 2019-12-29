@@ -4,7 +4,7 @@ class GameTimer extends Component {
         let timerdigit2 = graph.components['timerdigit2'].clone();
         let timerdigit3 = graph.components['timerdigit3'].clone();
         let timerdigit4 = graph.components['timerdigit4'].clone();
-        let timercolon = graph.components['timercolon'];
+        let timercolon = graph.components['timercolon'].clone();
         let timerscreenbg = graph.components['timerscreenbg'];
 
         let timerbody = graph.components['timerbody'];
@@ -23,8 +23,9 @@ class GameTimer extends Component {
         this.timerdigit2 = timerdigit2
         this.timerdigit3 = timerdigit3
         this.timerdigit4 = timerdigit4
+        this.timercolon = timercolon;
 
-        this.reset();
+        this.reset(0, 0);
         this.pause();
     }
 
@@ -40,7 +41,7 @@ class GameTimer extends Component {
             case 8: component.setTexture(this.graph.textures['timer8']); break;
             case 9: component.setTexture(this.graph.textures['timer9']); break;
             case 0: component.setTexture(this.graph.textures['timer0']); break;
-            default: component.setTexture(this.graph.textures['timercolon']); break;
+            default: console.log(digitValue); component.setTexture(this.graph.textures['timercolon']); break;
         }
     }
     
@@ -51,32 +52,37 @@ class GameTimer extends Component {
             this.lastT = t; 
             return;
         }
-
         this.msToSecondSkip -= t - this.lastT;
         while (this.msToSecondSkip < 0) {
             this.advanceSecond();
             this.msToSecondSkip += 1000
         }
         this.lastT = t;
-        
+
+        this.updateDigitTextures();        
+    }    
+
+    updateDigitTextures() {
         this.setDigitTexture(this.timerdigit1, Math.floor(this.minutesLeft / 10));
         this.setDigitTexture(this.timerdigit2, this.minutesLeft % 10);
         this.setDigitTexture(this.timerdigit3, Math.floor(this.secondsLeft / 10));
         this.setDigitTexture(this.timerdigit4, this.secondsLeft % 10);
-    }    
+    }
 
     advanceSecond() {
+        if (this.isOver()) {
+            this.pause();
+            return;
+        }
         if (this.secondsLeft == 0) {
             this.secondsLeft = 59
             this.minutesLeft--;
         }
         else this.secondsLeft--;
-
-        if (this.minutesLeft == 0 && this.secondsLeft == 0)
-            this.pause();
     }
 
     resume() {
+        this.lastT = new Date().getTime()
         this.paused = false;
     }
 
@@ -84,14 +90,31 @@ class GameTimer extends Component {
         this.paused = true;
     }
 
-    reset() {
+    reset(minutes, seconds) {
         this.msToSecondSkip = 1000;
-        this.minutesLeft = 15;
-        this.secondsLeft = 0;
+        this.minutesLeft = minutes;
+        this.secondsLeft = seconds;
+        this.updateDigitTextures();        
     }
 
-    calcTimeLeft(t) {
-      //  let differenceInMinutes = (t - this.startTime) / (1000 * 60);
-      //  return [Math.floor(differenceMinutes / 60), differenceMinutes % 60]
+    isOver() {
+        return this.minutesLeft == 0 && this.secondsLeft == 0;
     }
+}
+
+class GameCounter extends GameTimer {
+    constructor(scene, graph, transformation) {
+        super(scene, graph, transformation)
+        this.timercolon.setTexture(graph.textures['black']);
+    }
+
+    addP1win() {
+        super.reset(this.minutesLeft + 1, this.secondsLeft);
+    }
+
+    addP2win() {
+        super.reset(this.minutesLeft, this.secondsLeft + 1);
+    }
+
+
 }
