@@ -68,6 +68,12 @@
         <texture id="timercolon" file="scenes/images/colon.png" />
         <texture id="black" file="scenes/images/black.png" />
         <texture id="painting" file="scenes/images/painting.jpg" />
+        <texture id="controlboard" file="scenes/images/controlboard.png" />
+        <texture id="redmarble" file="scenes/images/redmarble.png" />
+        <texture id="greenmarble" file="scenes/images/greenmarble.png" />
+        <texture id="blackmarble" file="scenes/images/blackmarble.png" />
+        <texture id="whitemarble" file="scenes/images/whitemarble.png" />
+        <texture id="board" file="scenes/images/board.png" />
     </textures>
 
     <materials>
@@ -111,6 +117,13 @@
             <ambient r="0.15" g="0.1" b="0.1" a="1.0" />
             <diffuse r="0.9" g="0.25" b="0.25" a="1.0" />
             <specular r="0.45" g="0.125" b="0.125" a="1.0" />
+        </material>
+
+         <material id="shinyWhite" shininess="25">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="0.15" g="0.15" b="0.15" a="1.0" />
+            <diffuse r="0.7" g="0.7" b="0.7" a="1.0" />
+            <specular r="0.9" g="0.9" b="0.9" a="1.0" />
         </material>
 
         <material id="black" shininess="1">
@@ -270,6 +283,7 @@
             <children> 
                 <componentref id="skybox"/>
                 <componentref id="board"/>
+                <componentref id="controlboard"/>
                 <componentref id="tv"/>
                 <componentref id="table"/>
                 <componentref id="chairs"/>
@@ -453,9 +467,9 @@
                 <scale x="0.3" y="0.3" z="0.3"/>
             </transformation>
             <material id="inherit" />
-            <texture id="wood"/>
+            <texture id="wood" length_s="0.5" length_t="0.5"/>
             <children> 
-                <primitiveref id="woodtable"/>
+                <primitiveref id="woodtable" />
             </children>
         </component>
 
@@ -649,10 +663,49 @@
 
         <component id="board">
             <transformation>
-                <scale x="25" y="1" z="25"/>
             </transformation>
             <material id="inherit" />
-            <texture id="none"/>
+            <texture id="inherit"/>
+            <children> 
+                <componentref id="topboard"/>
+                <componentref id="bottomboard"/>
+            </children>
+        </component>
+        <component id="topboard">
+            <transformation>
+                <translate x="-0.5" y="0.2" z="0"/>
+                <rotate axis="y" angle="-90"/>
+                <scale x="19" y="1" z="15"/>
+            </transformation>
+            <material id="inherit" />
+            <texture id="board"/>
+            <children> 
+                <primitiveref id="plane1"/>
+            </children>
+        </component>
+        <component id="bottomboard">
+            <transformation>
+                <translate x="-0.5" y="-0.41" z="0"/>
+                <scale x="10.62" y="2" z="13.4"/>
+                <scale x="1" y="0.3" z="1"/>
+                <rotate axis="y" angle="45"/>
+            </transformation>
+            <material id="inherit" />
+            <texture id="lightwood"/>
+            <children> 
+                <primitiveref id="prism4"/>
+            </children>
+        </component>
+
+
+        <component id="controlboard">
+        <transformation>
+                <translate x="10.00" y="0.0" z="0"/>
+                <rotate axis="y" angle="-90"/>
+                <scale x="11" y="1" z="5.6"/>
+            </transformation>
+            <material id="inherit" />
+            <texture id="controlboard"/>
             <children> 
                 <primitiveref id="plane1"/>
             </children>
@@ -660,13 +713,13 @@
 
         <component id="genericbutton">
             <transformation>
-                <scale x="1" y="0.3" z="1"/>
-                <rotate axis="y" angle="45"/>
+                <scale x="0.7" y="0.4" z="0.7"/>
+                <rotate axis="x" angle="-90"/>
             </transformation>
             <material id="inherit" />
             <texture id="none"/>
             <children> 
-                <primitiveref id="prism4"/>
+                <primitiveref id="cylinder"/>
             </children>
         </component>
 
@@ -735,26 +788,26 @@
 
 
         <component id="piece1">
-            <transformation><rotate axis="x" angle="-90"/></transformation>
-            <material id="shinyGreen"/>
-            <texture id="none"/>
+            <transformation><translate x="0" y="0.2" z="0"/><rotate axis="x" angle="-90"/></transformation>
+            <material id="shinyWhite"/>
+            <texture id="whitemarble"/>
             <children> 
                 <primitiveref id="shortCylinder"/>
             </children>
         </component>
 
         <component id="piece2">
-            <transformation><rotate axis="x" angle="-90"/></transformation>
-            <material id="shinyGold"/>
-            <texture id="none"/>
+            <transformation><translate x="0" y="0.2" z="0"/><rotate axis="x" angle="-90"/></transformation>
+            <material id="shinyWhite"/>
+            <texture id="blackmarble"/>
             <children> 
                 <primitiveref id="shortCylinder"/>
             </children>
         </component>
         <component id="piece3">
-            <transformation><rotate axis="x" angle="-90"/></transformation>
-            <material id="shinyRed"/>
-            <texture id="none"/>
+            <transformation><translate x="0" y="0.2" z="0"/><rotate axis="x" angle="-90"/></transformation>
+            <material id="shinyWhite"/>
+            <texture id="greenmarble" length_s="2" length_t="2"/>
             <children> 
                 <primitiveref id="shortCylinder"/>
             </children>

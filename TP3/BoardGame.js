@@ -41,20 +41,20 @@ class BoardGame {
     }
 
     makeButtons() {
-        this.replayButton = new ToggleButton(this.scene, this.graph, new Translation(8, 0, -3).getMatrix(), () => this.replay())
-        this.showValidMovesButton = new SimpleButton(this.scene, this.graph, new Translation(8, 0, 0).getMatrix(), () => this.showValidMoves())
-        this.undoButton = new SimpleButton(this.scene, this.graph, new Translation(8, 0, 3).getMatrix(), () => this.undoMove())
-        this.mode1button = new ToggleButton(this.scene, this.graph, new TransformationGroup([new Translation(11, 0, -2.25), new Scale(0.8, 0.8, 0.8)]).getMatrix(), () => this.changeMode(1))
-        this.mode2button = new ToggleButton(this.scene, this.graph, new TransformationGroup([new Translation(11, 0, -0.75), new Scale(0.8, 0.8, 0.8)]).getMatrix(), () => this.changeMode(2))
-        this.mode3button = new ToggleButton(this.scene, this.graph, new TransformationGroup([new Translation(11, 0, 0.750), new Scale(0.8, 0.8, 0.8)]).getMatrix(), () => this.changeMode(3))
-        this.mode4button = new ToggleButton(this.scene, this.graph, new TransformationGroup([new Translation(11, 0, 2.25), new Scale(0.8, 0.8, 0.8)]).getMatrix(), () => this.changeMode(4))
+        this.replayButton = new ToggleButton(this.scene, this.graph, new Translation(8, 0, -4).getMatrix(), () => this.replay())
+        this.showValidMovesButton = new SimpleButton(this.scene, this.graph, new Translation(8, 0, -1.35).getMatrix(), () => this.showValidMoves())
+        this.undoButton = new SimpleButton(this.scene, this.graph, new Translation(8, 0, 1.35).getMatrix(), () => this.undoMove())
+        this.mode1button = new ToggleButton(this.scene, this.graph, new TransformationGroup([new Translation(11, 0, -4.25), new Scale(0.8, 0.8, 0.8)]).getMatrix(), () => this.changeMode(1))
+        this.mode2button = new ToggleButton(this.scene, this.graph, new TransformationGroup([new Translation(11, 0, -2.75), new Scale(0.8, 0.8, 0.8)]).getMatrix(), () => this.changeMode(2))
+        this.mode3button = new ToggleButton(this.scene, this.graph, new TransformationGroup([new Translation(11, 0, -1.250), new Scale(0.8, 0.8, 0.8)]).getMatrix(), () => this.changeMode(3))
+        this.mode4button = new ToggleButton(this.scene, this.graph, new TransformationGroup([new Translation(11, 0, 0.25), new Scale(0.8, 0.8, 0.8)]).getMatrix(), () => this.changeMode(4))
         this.modebuttons = [this.mode1button, this.mode2button, this.mode3button, this.mode4button];
         
-        this.easybutton = new ToggleButton(this.scene, this.graph, new Translation(11, 0, 7).getMatrix(), () => { this.difficulty = 0; this.easybutton.disable(); this.hardbutton.enable(); this.hardbutton.toggleUp() })
-        this.hardbutton = new ToggleButton(this.scene, this.graph, new Translation(11, 0, 8.5).getMatrix(), () => { this.difficulty = 1; this.hardbutton.disable(); this.easybutton.enable(); this.easybutton.toggleUp() })
+        this.easybutton = new ToggleButton(this.scene, this.graph, new Translation(11, 0, 3).getMatrix(), () => { this.difficulty = 0; this.easybutton.disable(); this.hardbutton.enable(); this.hardbutton.toggleUp() })
+        this.hardbutton = new ToggleButton(this.scene, this.graph, new Translation(11, 0, 4.5).getMatrix(), () => { this.difficulty = 1; this.hardbutton.disable(); this.easybutton.enable(); this.easybutton.toggleUp() })
         this.hardbutton.press();
 
-        this.restartbutton = new SimpleButton(this.scene, this.graph, new Translation(-9, 1, 0).getMatrix(), () => this.restart()) 
+        this.restartbutton = new SimpleButton(this.scene, this.graph, new Translation(8, 0, 4).getMatrix(), () => this.restart()) 
     }
 
     makeTimers() {
