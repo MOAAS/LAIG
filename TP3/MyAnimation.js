@@ -3,7 +3,7 @@ class MyAnimation {
         this.keyframes = keyframes;
         this.maxLoops = maxLoops || 1;
     }
-
+    
     reverse() {
         let reversedKeyframes = [];
         let lastInstant = this.keyframes[this.keyframes.length - 1].instant;
@@ -16,7 +16,8 @@ class MyAnimation {
                 new AnimScale(keyframe.S.x, keyframe.S.y, keyframe.S.z)
             ));
         }
-        reversedKeyframes.push(new DefaultKeyFrame(lastInstant))
+        if (this.keyframes.length == 0 || this.keyframes[0].instant != 0)
+            reversedKeyframes.push(new DefaultKeyFrame(lastInstant))
         return new MyAnimation(reversedKeyframes, this.maxLoops)
     }
 

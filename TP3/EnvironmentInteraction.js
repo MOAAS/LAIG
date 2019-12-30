@@ -32,21 +32,12 @@ class RoomInteraction {
 
         let chair1 = this.graph.components['chair1'];
         let chair2 = this.graph.components['chair2'];
-        let chair1Anim = new MyAnimation([new KeyFrame(0.75, new AnimTranslation(0, 0, -5), new AnimRotation(0, 0, 0), new AnimScale(1, 1, 1))])    
-        let chair2Anim = new MyAnimation([new KeyFrame(0.75, new AnimTranslation(0, 0, -5), new AnimRotation(0, 0, 0), new AnimScale(1, 1, 1))])    
+        let chairAnim = new MyAnimation([new KeyFrame(0.75, new AnimTranslation(0, 0, -5), new AnimRotation(0, 0, 0), new AnimScale(1, 1, 1))])    
 
-        this.chair1backed = false;
-        this.chair2backed = false;
-        this.graph.setPickable(chair1, () => {
-            if (chair1.animation == chair1Anim)
-                chair1.reverseAnimation();
-            else chair1.setAnimation(chair1Anim)
-        });
-        this.graph.setPickable(chair2, () => {
-            if (chair2.animation == chair2Anim)
-                chair2.reverseAnimation();
-            else chair2.setAnimation(chair2Anim)
-        });
+        chair1.setAnimation(chairAnim);
+        chair2.setAnimation(chairAnim);
+        this.graph.setPickable(chair1, () => chair1.reverseAnimation());
+        this.graph.setPickable(chair2, () => chair2.reverseAnimation());
     }
 }
 
@@ -70,13 +61,15 @@ class PoolInteraction {
 
             new DefaultKeyFrame(1.75)
         ])
-        let beachballAnimExplode = new MyAnimation([
+        let beachballAnimJump = new MyAnimation([
             new DefaultKeyFrame(0),
-            new KeyFrame(0.6, new AnimTranslation(6, 7.5, 3.75), new AnimRotation(0, 5, 0), new AnimScale(1, 1, 1)),
-            new KeyFrame(0.9, new AnimTranslation(8, 10, 5), new AnimRotation(0, 9, 0), new AnimScale(1, 1, 1)),
-            new KeyFrame(1, new AnimTranslation(8, 10, 5), new AnimRotation(0, 10, 0), new AnimScale(1, 1, 1)),
-            new KeyFrame(1.4, new AnimTranslation(6, 7.5, 3.75), new AnimRotation(0, 14, 0), new AnimScale(1, 1, 1)),
-            new KeyFrame(2, new AnimTranslation(0, 0, 0), new AnimRotation(0, 19, 0), new AnimScale(1, 1, 1)),
+            new KeyFrame(0.3, new AnimTranslation(3, 3.75, 2.5), new AnimRotation(0, 6, 0), new AnimScale(1, 1, 1)),
+            new KeyFrame(0.55, new AnimTranslation(4, 5, 3.33), new AnimRotation(0, 9, 0), new AnimScale(1, 1, 1)),
+            new KeyFrame(0.6, new AnimTranslation(4, 5, 3.33), new AnimRotation(0, 10, 0), new AnimScale(1, 1, 1)),
+            new KeyFrame(0.8, new AnimTranslation(3, 3.75, 2.5), new AnimRotation(0, 14, 0), new AnimScale(1, 1, 1)),
+            new KeyFrame(1.1, new AnimTranslation(0, 0, 0), new AnimRotation(0, 20, 0), new AnimScale(1, 1, 1)),
+            new KeyFrame(1.45, new AnimTranslation(-0.5, -0.25, -0.2), new AnimRotation(0, 22, 0), new AnimScale(1, 1, 1)),
+            new KeyFrame(1.7, new AnimTranslation(0, 0, 0), new AnimRotation(0, 24, 0), new AnimScale(1, 1, 1)),
         ])
         let beachball = this.graph.components['beachball'];
 
@@ -88,7 +81,7 @@ class PoolInteraction {
             else {
                 if (Math.random() > 0.2)
                     beachball.setAnimation(beachballAnim)
-                else beachball.setAnimation(beachballAnimExplode);
+                 beachball.setAnimation(beachballAnimJump);
             }
         })
 
