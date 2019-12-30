@@ -81,7 +81,7 @@ class PoolInteraction {
             else {
                 if (Math.random() > 0.2)
                     beachball.setAnimation(beachballAnim)
-                 beachball.setAnimation(beachballAnimJump);
+                else beachball.setAnimation(beachballAnimJump);
             }
         })
 
