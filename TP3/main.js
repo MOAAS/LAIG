@@ -36,7 +36,8 @@ serialInclude([
     'MyPrism.js',
     'Button.js',
     'GameTimer.js',    
-    'AnimationMaker.js',    
+    'AnimationMaker.js',   
+    'EnvironmentInteraction.js',
 
 main=function()
 {

@@ -45,6 +45,7 @@ class XMLscene extends CGFscene {
         // create and load graph, and associate it to scene. 
         // Check console for loading errors
         new MySceneGraphParser(filename, this);
+        this.scenefile = filename;
     }
 
     /**
@@ -146,6 +147,11 @@ class XMLscene extends CGFscene {
         // Initializes camera list with the keys (IDs) of the cameras
         this.updateCameras()
         this.interface.initCamerasUI(cameraKeys);
+
+        switch(this.scenefile) {
+            case 'board.xml': new RoomInteraction(this.graph, this).setup(); break;// normal
+            case 'board3.xml': new PoolInteraction(this.graph, this).setup(); break; // pool
+        }
 
         // -- Sets up game -- //
         if (this.game == null) {

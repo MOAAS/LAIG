@@ -35,7 +35,6 @@ class BoardGame {
             CPU_CPU: 4
         }
 
-       // this.gameEnvironment = new GameEnvironment(this.scene, this.graph, this)
         this.makeButtons();
         this.makeTimers();
     }
