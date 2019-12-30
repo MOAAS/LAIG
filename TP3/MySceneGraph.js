@@ -49,6 +49,11 @@ class MySceneGraph {
         this.nextPickableID++;
     }
 
+    setPickable(component, onPick) {
+        component.setOnPick(onPick, this.nextPickableID);
+        this.nextPickableID++;
+    }
+
     getRootComponent() {
         return this.components[this.idRoot]
     }

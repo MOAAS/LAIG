@@ -4,11 +4,15 @@
     <views default="SpectatorCamera">
         <perspective id="P1Camera" near="0.1" far="500" angle="45">
             <from x="0" y="15" z="30" />
-            <to x="0" y="0" z="-10" />
+            <to x="0" y="0" z="0" />
         </perspective>
         <perspective id="P2Camera" near="0.1" far="500" angle="45">
             <from x="0" y="15" z="-30" />
-            <to x="0" y="0" z="10" />
+            <to x="0" y="0" z="0" />
+        </perspective>
+        <perspective id="RotatableCamera" near="0.1" far="500" angle="45">
+            <from x="0" y="15" z="-30" />
+            <to x="0" y="0" z="0" />
         </perspective>
         <perspective id="SpectatorCamera" near="0.1" far="500" angle="45">
             <from x="45" y="30" z="0" />
@@ -74,6 +78,7 @@
         <texture id="blackmarble" file="scenes/images/blackmarble.png" />
         <texture id="whitemarble" file="scenes/images/whitemarble.png" />
         <texture id="board" file="scenes/images/board.png" />
+        <texture id="paintingedit" file="scenes/images/paintingedited.jpg" />
     </textures>
 
     <materials>
@@ -228,32 +233,6 @@
                 <scale x="1" y="1.0" z="1" />  
             </keyframe>
         </animation>
-
-        <animation id="cameraswitchtoP1" maxLoops="1">
-            <keyframe instant="0">
-                <translate x="0" y="0.0" z="0" />
-                <rotate angle_x="0" angle_y="-180" angle_z="0" />
-                <scale x="1" y="1" z="1" />  
-            </keyframe>
-            <keyframe instant="1">
-                <translate x="0" y="0.0" z="0" />
-                <rotate angle_x="0" angle_y="0" angle_z="0" />
-                <scale x="1" y="1" z="1" />  
-            </keyframe>
-        </animation>
-        <animation id="cameraswitchtoP2" maxLoops="1">
-            <keyframe instant="0">
-                <translate x="0" y="0.0" z="0" />
-                <rotate angle_x="0" angle_y="0" angle_z="0" />
-                <scale x="1" y="1" z="1" />  
-            </keyframe>
-            <keyframe instant="1">
-                <translate x="0" y="0.0" z="0" />
-                <rotate angle_x="0" angle_y="-180" angle_z="0" />
-                <scale x="1" y="1" z="1" />  
-            </keyframe>
-        </animation>
-
         
     </animations>
 

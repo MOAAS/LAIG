@@ -31,7 +31,8 @@ class XMLscene extends CGFscene {
 
         this.axis = new CGFaxis(this);
 
-        this.setUpdatePeriod(33.33);
+        this.fps = 60;
+        this.setUpdatePeriod(1000 / this.fps);
         this.table = new CGFOBJModel(this,"../models/woodtable.obj",false)
 
 
@@ -45,6 +46,7 @@ class XMLscene extends CGFscene {
         // create and load graph, and associate it to scene. 
         // Check console for loading errors
         new MySceneGraphParser(filename, this);
+        this.scenefile = filename;
     }
 
     /**
@@ -116,6 +118,15 @@ class XMLscene extends CGFscene {
         this.setCamera(this.selectedCamera, true);
     }
 
+    animateCameraOrbit(angle, axis, time) {
+        let numMoves = time * this.fps;
+        let anglePerMove = angle / numMoves;
+        let interval = time / numMoves;
+        for (let i = 0; i < numMoves; i++) {
+            setTimeout(() => this.camera.orbit(axis, anglePerMove), i * interval * 1000);
+        }
+    }
+
     /** Handler called when the graph is finally loaded. 
      * As loading is asynchronous, this may be called already after the application has started the run loop
      */
@@ -146,6 +157,11 @@ class XMLscene extends CGFscene {
         // Initializes camera list with the keys (IDs) of the cameras
         this.updateCameras()
         this.interface.initCamerasUI(cameraKeys);
+
+        switch(this.scenefile) {
+            case 'board.xml': new RoomInteraction(this.graph, this).setup(); break;// normal
+            case 'board3.xml': new PoolInteraction(this.graph, this).setup(); break; // pool
+        }
 
         // -- Sets up game -- //
         if (this.game == null) {
