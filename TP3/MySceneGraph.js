@@ -40,7 +40,6 @@ class MySceneGraph {
         if (componentIndex > -1)
             this.components.splice(componentIndex, 1);
         else return console.log("Couldn't find component")
-
     }
 
     addPickable(component, onPick) {

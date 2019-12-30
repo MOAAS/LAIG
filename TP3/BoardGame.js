@@ -218,7 +218,6 @@ class BoardGame {
 
     start() {
         this.interactable = false;
-        this.clearBoard();
         this.moveList = [];
         this.gameState = this.gameStates.PLAYING
         this.currentPlayer = 0;
@@ -228,6 +227,7 @@ class BoardGame {
         this.updateCamera();
         
         getNewBoard((cellArray) => {
+            this.clearBoard();
             this.createBoard(cellArray, true)
             setTimeout( () => {
                 getValidMoves(this.toCellArray(), (moves) => {
