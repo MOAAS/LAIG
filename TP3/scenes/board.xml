@@ -3,11 +3,11 @@
 
     <views default="SpectatorCamera">
         <perspective id="P1Camera" near="0.1" far="500" angle="45">
-            <from x="0" y="15" z="30" />
+            <from x="0" y="10" z="20" />
             <to x="0" y="0" z="0" />
         </perspective>
         <perspective id="P2Camera" near="0.1" far="500" angle="45">
-            <from x="0" y="15" z="-30" />
+            <from x="0" y="10" z="-20" />
             <to x="0" y="0" z="0" />
         </perspective>
         <perspective id="RotatableCamera" near="0.1" far="500" angle="45">
@@ -15,7 +15,7 @@
             <to x="0" y="0" z="0" />
         </perspective>
         <perspective id="SpectatorCamera" near="0.1" far="500" angle="45">
-            <from x="45" y="30" z="0" />
+            <from x="35" y="20" z="0" />
             <to x="0" y="0" z="0" />
         </perspective>
          <perspective id="television" near="0.1" far="500" angle="70">
@@ -246,6 +246,7 @@
         <primitive id="sofa"><obj name="sofa2.obj"/></primitive>
         <primitive id="desklamp"><obj name="desklamp3.obj"/></primitive>
         <primitive id="frame"><obj name="frame.obj"/></primitive>
+        <primitive id="tablet"><obj name="tablet1.obj"/></primitive>
         <primitive id="plane1"><plane npartsU="64" npartsV="64"/></primitive>
         <primitive id="sphere1"><sphere slices="50" stacks="50" radius="0.5"/></primitive>
         <primitive id="shortCylinder"><cylinder base="0.5" top="0.5" height="0.25" slices="20" stacks="20"/></primitive>
@@ -678,6 +679,16 @@
 
 
         <component id="controlboard">
+            <transformation>
+            </transformation>
+            <material id="inherit" />
+            <texture id="inherit"/>
+            <children> 
+                <componentref id="controlboardtop"/>
+                <componentref id="controlboardbot"/>
+            </children>
+        </component>
+        <component id="controlboardtop">
         <transformation>
                 <translate x="10.00" y="0.0" z="0"/>
                 <rotate axis="y" angle="-90"/>
@@ -687,6 +698,19 @@
             <texture id="controlboard"/>
             <children> 
                 <primitiveref id="plane1"/>
+            </children>
+        </component>
+        <component id="controlboardbot">
+            <transformation>
+                <translate x="10.00" y="-1.01" z="0"/>
+                 <scale x="4" y="1" z="3.9"/>
+                <scale x="1" y="1" z="2"/>
+                <rotate axis="y" angle="45"/>
+            </transformation>
+             <material id="inherit" />
+            <texture id="whitemarble"/>
+            <children>
+                <primitiveref id="prism4"/>
             </children>
         </component>
 
@@ -705,21 +729,11 @@
 
         <component id="tv">
             <transformation>
-                <translate x="-10" y="5" z="0"/>
+                <translate x="-12" y="2" z="0"/>
+                <scale x="10" y="10" z="10"/>
+                <rotate axis="z" angle="30"/>
             </transformation>
             <material id="inherit" />
-            <texture id="none"/>
-            <children> 
-                <componentref id="tvpole"/>
-                <componentref id="tvhead"/>
-            </children>
-        </component>
-
-        <component id="tvhead">
-            <transformation>
-                <scale x="0.2" y="5" z="8"/>
-            </transformation>
-            <material id="inherit"/>
             <texture id="none"/>
             <children> 
                 <componentref id="tvframe"/>
@@ -729,21 +743,24 @@
 
         <component id="tvframe">
             <transformation>
-                <scale x="1" y="1" z="0.85"/>
-                <rotate axis="y" angle="45"/>
+                <scale x="0.003" y="0.003" z="0.003"/>
+                <rotate axis="x" angle="90"/>
+                <rotate axis="z" angle="-90"/>
+                <translate x="-1" y="-7" z="0"/>
             </transformation>
-            <material id="inherit"/>
+            <material id="shinyWhite"/>
             <texture id="none"/>
             <children> 
-                <primitiveref id="prism4"/>
+                <primitiveref id="tablet"/>
             </children>
         </component>
 
         <component id="tvscreen">
             <transformation>
-                <translate x="0.75" y="0.5" z="0"/>
+                <translate x="0.0" y="0.0" z="0"/>
                 <rotate axis="x" angle="90"/>
                 <rotate axis="z" angle="-90"/>
+                <scale x="0.7" y="1" z="0.4"/>
             </transformation>
             <material id="inherit" />
             <texture id="none"/>
@@ -751,20 +768,6 @@
                 <primitiveref id="plane1"/>
             </children>
         </component>
-
-        <component id="tvpole">
-            <transformation>
-                <translate x="-0.2" y="-5.0" z="0"/>
-                <scale x="0.2" y="7.5" z="0.2"/>
-                <rotate axis="x" angle="-90"/>
-            </transformation>
-            <material id="inherit" />
-            <texture id="none"/>
-            <children> 
-                <primitiveref id="cylinder"/>
-            </children>
-        </component>
-
 
         <component id="piece1">
             <transformation><translate x="0" y="0.2" z="0"/><rotate axis="x" angle="-90"/></transformation>
