@@ -142,11 +142,13 @@ class BoardGame {
         this.player1 = copyPlayer(this.player1, P1PieceValues);
         this.player2 = copyPlayer(this.player2, P2PieceValues);
 
+        // Reposition camera
+        this.updateCamera();
+
         // setup buttons and timers... todo
         this.graph.addComponent(this.player1timer);
         this.graph.addComponent(this.player2timer);
         this.graph.addComponent(this.wincounter);
-
         this.makeButtons();
     }
 
@@ -222,14 +224,9 @@ class BoardGame {
         this.currentPlayer = 0;
         this.player1timer.reset(5, 0);
         this.player2timer.reset(5, 0);
-        
-        switch (this.mode) {
-            case this.modes.CPU_CPU: this.scene.setCamera('SpectatorCamera', true); break;
-            case this.modes.CPU_HUMAN: this.scene.setCamera('P2Camera', false); break;
-            case this.modes.HUMAN_CPU:  this.scene.setCamera('P1Camera', false); break;
-            case this.modes.HUMAN_HUMAN: this.scene.setCamera('P1Camera', false); break;
-        }
 
+        this.updateCamera();
+        
         getNewBoard((cellArray) => {
             this.createBoard(cellArray, true)
             setTimeout( () => {
@@ -412,7 +409,7 @@ class BoardGame {
             this.player2timer.pause();
         }
         if (this.mode == this.modes.HUMAN_HUMAN)
-            this.animateToPlayerView();
+            this.rotateCamera();
 
         this.board[y][x] = lastPiece;
         lastPiece.setOnPick(() => this.onPickedPiece(x, y));
@@ -478,7 +475,7 @@ class BoardGame {
         }
 
         if (this.mode == this.modes.HUMAN_HUMAN && this.moveList.length != 0)
-            this.animateToPlayerView();
+            this.rotateCamera();
 
         if (this.currentPlayer == 1)
             this.player1timer.resume();
@@ -492,11 +489,10 @@ class BoardGame {
         else this.interactable = true;
     }
 
-    animateToPlayerView() {
+    rotateCamera() {
         if (this.currentPlayer == 1)
-            this.graph.getRootComponent().setAnimation(this.graph.animations['cameraswitchtoP1'])
-        if (this.currentPlayer == 2)
-            this.graph.getRootComponent().setAnimation(this.graph.animations['cameraswitchtoP2'])
+            this.scene.animateCameraOrbit(-Math.PI, CGFcameraAxisID.Y, 1);
+        else this.scene.animateCameraOrbit(Math.PI, CGFcameraAxisID.Y, 1)
     }
 
     isCpuTurn() {
@@ -522,4 +518,18 @@ class BoardGame {
         this.scene.setCamera('SpectatorCamera', true);
     }
 
+    updateCamera() {
+        switch (this.mode) {
+            case this.modes.CPU_CPU: this.scene.setCamera('SpectatorCamera', true); break;
+            case this.modes.CPU_HUMAN: this.scene.setCamera('P2Camera', false); break;
+            case this.modes.HUMAN_CPU:  this.scene.setCamera('P1Camera', false); break;
+            case this.modes.HUMAN_HUMAN: 
+                this.scene.setCamera('RotatableCamera', false);
+                if (this.currentPlayer == 2)
+                    this.graph.views['RotatableCamera'].position = this.graph.views['P2Camera'].position
+                else this.graph.views['RotatableCamera'].position = this.graph.views['P1Camera'].position
+                break;
+        }
+
+    }
 }

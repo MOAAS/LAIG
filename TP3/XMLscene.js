@@ -31,7 +31,8 @@ class XMLscene extends CGFscene {
 
         this.axis = new CGFaxis(this);
 
-        this.setUpdatePeriod(33.33);
+        this.fps = 60;
+        this.setUpdatePeriod(1000 / this.fps);
         this.table = new CGFOBJModel(this,"../models/woodtable.obj",false)
 
 
@@ -115,6 +116,15 @@ class XMLscene extends CGFscene {
 
     updateCameras() {
         this.setCamera(this.selectedCamera, true);
+    }
+
+    animateCameraOrbit(angle, axis, time) {
+        let numMoves = time * this.fps;
+        let anglePerMove = angle / numMoves;
+        let interval = time / numMoves;
+        for (let i = 0; i < numMoves; i++) {
+            setTimeout(() => this.camera.orbit(axis, anglePerMove), i * interval * 1000);
+        }
     }
 
     /** Handler called when the graph is finally loaded. 
