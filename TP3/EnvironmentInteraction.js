@@ -68,7 +68,7 @@ class PoolInteraction {
             new KeyFrame(0.6, new AnimTranslation(4, 5, 3.33), new AnimRotation(0, 10, 0), new AnimScale(1, 1, 1)),
             new KeyFrame(0.8, new AnimTranslation(3, 3.75, 2.5), new AnimRotation(0, 14, 0), new AnimScale(1, 1, 1)),
             new KeyFrame(1.1, new AnimTranslation(0, 0, 0), new AnimRotation(0, 20, 0), new AnimScale(1, 1, 1)),
-            new KeyFrame(1.45, new AnimTranslation(-0.5, -0.25, -0.2), new AnimRotation(0, 22, 0), new AnimScale(1, 1, 1)),
+            new KeyFrame(1.45, new AnimTranslation(-0.24, -0.25, -0.2), new AnimRotation(0, 22, 0), new AnimScale(1, 1, 1)),
             new KeyFrame(1.7, new AnimTranslation(0, 0, 0), new AnimRotation(0, 24, 0), new AnimScale(1, 1, 1)),
         ])
         let beachball = this.graph.components['beachball'];
