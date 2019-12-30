@@ -51,6 +51,7 @@
         <texture id="floor" file="scenes/images/floor.png" />
         <texture id="view" file="scenes/images/view.png" />
         <texture id="carpet" file="scenes/images/carpet.jpg" />
+        <texture id="timertexture" file="scenes/images/timer.png" />
         <texture id="timer1" file="scenes/images/1.png" />
         <texture id="timer2" file="scenes/images/2.png" />
         <texture id="timer3" file="scenes/images/3.png" />
@@ -843,7 +844,7 @@
                 <rotate axis="y" angle="45"/>
             </transformation>
             <material id="inherit"/>
-            <texture id="none"/>
+            <texture id="timertexture"/>
             <children> 
                 <primitiveref id="prism4"/>
             </children>
