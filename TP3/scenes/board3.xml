@@ -67,6 +67,7 @@
         <texture id="black" file="scenes/images/black.png" />
         <texture id="tiles" file="scenes/images/pooltiles.jpg" />
         <texture id="outsidetiles" file="scenes/images/outsidetiles.jpg" />
+        <texture id="outsidetiles2" file="scenes/images/outsidetiles2.jpg" />
         <texture id="water" file="scenes/images/water.jpg" />
         <texture id="grass" file="scenes/images/grass.jpg" />
         <texture id="front" file="scenes/images/dayfront.png" />
@@ -81,6 +82,7 @@
         <texture id="rockwall" file="scenes/images/rockwall.jpg" />
         <texture id="housewall" file="scenes/images/housewall.jpg" />
         <texture id="leaves" file="scenes/images/leaves.jpg" />
+        <texture id="controlboard" file="scenes/images/controlboard2.png" />
         
     </textures>
 
@@ -269,6 +271,7 @@
                 <componentref id="decorations"/>
                 <componentref id="borders"/>
                 <componentref id="skybox"/>
+                <componentref id="controlboard"/>
             </children>
         </component>
 
@@ -721,6 +724,44 @@
             <texture id="wood"/>
             <children>
                 <primitiveref id="cylinder"/>
+            </children>
+        </component>
+
+        <component id="controlboard">
+            <transformation>
+            </transformation>
+            <material id="inherit" />
+            <texture id="inherit"/>
+            <children> 
+                <componentref id="controlboardtop"/>
+                <componentref id="controlboardbot"/>
+            </children>
+        </component>
+
+         <component id="controlboardtop">
+            <transformation>
+                <translate x="10.00" y="0.01" z="0"/>
+                <rotate axis="y" angle="-90"/>
+                <scale x="11" y="1" z="5.6"/>
+            </transformation>
+            <material id="inherit" />
+            <texture id="controlboard"/>
+            <children> 
+                <primitiveref id="plane1"/>
+            </children>
+        </component>
+
+        <component id="controlboardbot">
+            <transformation>
+                <translate x="10.00" y="-1.00" z="0"/>
+                 <scale x="4" y="1" z="3.9"/>
+                <scale x="1" y="1" z="2"/>
+                <rotate axis="y" angle="45"/>
+            </transformation>
+             <material id="inherit" />
+            <texture id="outsidetiles2"/>
+            <children>
+                <primitiveref id="prism4"/>
             </children>
         </component>
         
