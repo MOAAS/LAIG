@@ -412,6 +412,8 @@ class BoardGame {
             this.currentPlayer = 1;
             this.player2timer.pause();
         }
+        if (this.mode == this.modes.HUMAN_HUMAN)
+            this.animateToPlayerView();
 
         this.board[y][x] = lastPiece;
         lastPiece.setOnPick(() => this.onPickedPiece(x, y));
@@ -476,7 +478,7 @@ class BoardGame {
             default: console.log("Invalid current player: " + this.currentPlayer); return;
         }
 
-        if (this.mode == this.modes.HUMAN_HUMAN)
+        if (this.mode == this.modes.HUMAN_HUMAN && this.moveList.length != 0)
             this.animateToPlayerView();
 
         if (this.currentPlayer == 1)
@@ -492,11 +494,10 @@ class BoardGame {
     }
 
     animateToPlayerView() {
-        if (this.currentPlayer == 1 && this.moveList.length != 0)
+        if (this.currentPlayer == 1)
             this.graph.getRootComponent().setAnimation(this.graph.animations['cameraswitchtoP1'])
-        if (this.currentPlayer == 2) {
+        if (this.currentPlayer == 2)
             this.graph.getRootComponent().setAnimation(this.graph.animations['cameraswitchtoP2'])
-        }
     }
 
     isCpuTurn() {
