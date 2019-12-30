@@ -5,6 +5,7 @@ function animateRestart(board, tilePositionCalc) {
     let moveInterval = 0.1;
     let moveDuration = 1;
     let crushDuration = 0.8;
+    let scaleToCenterDuration = 2;
 
     let pieceNo = 0;
     for (let y = 0; y < board.length; y++) {
@@ -14,8 +15,10 @@ function animateRestart(board, tilePositionCalc) {
                 continue;
 
             let currPosition = tilePositionCalc(x, y);
-            let dest =  new Translation(Math.random() * 0.2 - 7.5, 0.26 * pieceNo, Math.random() * 0.2)
-            let movement = new Translation(dest.x - currPosition.x, dest.y - currPosition.y, dest.z - currPosition.z)
+            let dest =  new Translation(-7.5, 0.26 * pieceNo, 0)
+            let movement = new Translation(dest.x - currPosition.x, dest.y - currPosition.y, dest.z - currPosition.z) // movement -> position on  tower
+
+            let finalScale = Math.random() * 5 + 1;
     
             piece.setAnimation(new MyAnimation([
                 new DefaultKeyFrame(pieceNo * moveInterval),
@@ -34,22 +37,24 @@ function animateRestart(board, tilePositionCalc) {
                     new AnimTranslation(movement.x, movement.y, movement.z),
                     new AnimRotation(0,0,0),
                     new AnimScale(1,1,1)
-                ),                
-                new KeyFrame(moveDuration + crushDuration * 0.9 + (totalPieces * moveInterval),
-                    new AnimTranslation(movement.x, movement.y, movement.z),
-                    new AnimRotation(0,0,0),
-                    new AnimScale(0.1,1,0.1)
-                ),
+                ),               
+                // Crush 
                 new KeyFrame(moveDuration + crushDuration + (totalPieces * moveInterval),
-                    new AnimTranslation(movement.x, movement.y, movement.z),
+                    new AnimTranslation(movement.x, movement.y - 0.26 * pieceNo, movement.z),
                     new AnimRotation(0,0,0),
-                    new AnimScale(0,0,0)
+                    new AnimScale(1,1,1)
                 ),
+                // Move to top
+                new KeyFrame(scaleToCenterDuration + moveDuration + crushDuration + (totalPieces * moveInterval),
+                    new AnimTranslation(movement.x + 7.5, movement.y - 0.26 * pieceNo + 15, movement.z),
+                    new AnimRotation(0,0,0),
+                    new AnimScale(finalScale, finalScale, finalScale)
+                )
             ], 1))
             pieceNo++;    
         }
     }
-    return moveDuration + crushDuration + totalPieces * (moveInterval);
+    return moveDuration + crushDuration + scaleToCenterDuration + totalPieces * moveInterval;
 }
 
 function countTotalPieces(board) {

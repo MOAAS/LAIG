@@ -127,7 +127,7 @@
          <material id="shinyWhite" shininess="25">
             <emission r="0.0" g="0.0" b="0.0" a="1.0" />
             <ambient r="0.15" g="0.15" b="0.15" a="1.0" />
-            <diffuse r="0.7" g="0.7" b="0.7" a="1.0" />
+            <diffuse r="0.9" g="0.9" b="0.9" a="1.0" />
             <specular r="0.9" g="0.9" b="0.9" a="1.0" />
         </material>
 
@@ -173,7 +173,7 @@
             <keyframe instant="0.2">
                 <translate x="0" y="0" z="0" />
                 <rotate angle_x="0" angle_y="0" angle_z="0" />
-                <scale x="0.8" y="0.3" z="0.8" />  
+                <scale x="0.8" y="0.5" z="0.8" />  
             </keyframe>
             <keyframe instant="1">
                 <translate x="0" y="0.0" z="0" />

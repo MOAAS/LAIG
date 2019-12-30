@@ -57,7 +57,7 @@ class Component {
     isAnimationOver() {
         if (!this.animationStarted || this.animation.keyframes.length == 0)
             return true;
-        return (new Date().getTime() - this.animationStartTime) / 1000 >= this.animation.keyframes[this.animation.keyframes.length - 1].instant
+        return (new Date().getTime() - this.animationStartTime) / 1000 >= this.animation.keyframes[this.animation.keyframes.length - 1].instant * this.animation.maxLoops;
     }
 
     setTexture(texture) {
