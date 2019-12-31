@@ -202,7 +202,7 @@ class XMLscene extends CGFscene {
             this.onpool = false;
         }
         if (this.gui.isKeyPressed("KeyT") && !this.ontest) {
-            this.switchScene('testswitch.xml')
+            this.switchScene('board4.xml')
             this.ontest = true;
             this.onBoard = false;
             this.onpool = false;
