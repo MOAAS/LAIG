@@ -63,11 +63,13 @@ class XMLscene extends CGFscene {
         var i = 0;
         // Lights index.
 
+        for (let i = 0; i < 8; i++)
+            this.lights[i].disable();
+            
         // Reads the lights from the scene graph.
         for (var key in this.graph.lights) {
             if (i >= 8)
                 break;              // Only eight lights allowed by WebGL.
-
             if (this.graph.lights.hasOwnProperty(key)) {
                 var light = this.graph.lights[key];
 
