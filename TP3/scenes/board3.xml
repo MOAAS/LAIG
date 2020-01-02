@@ -239,6 +239,29 @@
                 <scale x="1" y="1.0" z="1" />  
             </keyframe>
         </animation>     
+
+        <animation id="poolshake" maxLoops="0">
+            <keyframe instant="0.0">
+                <translate x="0" y="0" z="0" />
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" />  
+            </keyframe>
+            <keyframe instant="1.0">
+                <translate x="0.01" y="0.01" z="0.005" />
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" />  
+            </keyframe>
+            <keyframe instant="3.0">
+                <translate x="-0.01" y="-0.01" z="-0.005" />
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" />  
+            </keyframe>
+            <keyframe instant="4.0">
+                <translate x="0" y="0" z="0" />
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" />  
+            </keyframe>
+        </animation>     
     </animations>
 
     <primitives>
@@ -924,6 +947,7 @@
             <children> 
                 <primitiveref id="plane1"/>
             </children>
+            <animationref id="poolshake"/>
         </component>
 
         <component id="genericbutton">
