@@ -30,7 +30,7 @@
     </globals>
 
     <lights>
-        <omni id="demoLight" enabled="0">
+        <omni id="demoLight" enabled="1">
             <location x="-100" y="10" z="0" w="1.0" />
             <ambient r="0.2" g="0.2" b="0.2" a="0.2" />
             <diffuse r="0.2" g="0.2" b="0.2" a="0.2" />

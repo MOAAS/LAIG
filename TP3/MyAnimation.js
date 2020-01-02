@@ -1,7 +1,9 @@
 class MyAnimation {
     constructor(keyframes, maxLoops) {
         this.keyframes = keyframes;
-        this.maxLoops = maxLoops || 1;
+        if(maxLoops == null)
+            this.maxLoops = 1;
+        else this.maxLoops = maxLoops;
     }
     
     reverse() {

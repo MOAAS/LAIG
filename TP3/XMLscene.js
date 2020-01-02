@@ -185,6 +185,14 @@ class XMLscene extends CGFscene {
         }
     }
 
+    updatelightpos(t) {
+        let dt = (t - this.inittime) / 1000;
+        let angle = dt * 2 * Math.PI / 70;
+        this.lights[0].setPosition(-Math.sin(angle)*300,30,-Math.cos(angle)*300,0);
+        this.lights[0].update();
+    }
+
+
     update(t) {
         //this.shader.setUniformsValues({ time: t })
 
@@ -195,6 +203,10 @@ class XMLscene extends CGFscene {
         this.graph.update(t)
         this.game.update(t);
 
+        if(this.ontest){
+            this.updatelightpos(t)
+        }
+
         if (this.gui.isKeyPressed("KeyB") && !this.onBoard) {
             this.switchScene('board.xml')
             this.onBoard = true;
@@ -202,10 +214,11 @@ class XMLscene extends CGFscene {
             this.onpool = false;
         }
         if (this.gui.isKeyPressed("KeyT") && !this.ontest) {
-            this.switchScene('board4.xml')
+            this.switchScene('board4.xml')            
             this.ontest = true;
             this.onBoard = false;
             this.onpool = false;
+            this.inittime = t;
         }
         if (this.gui.isKeyPressed("KeyP") && !this.onpool) {
             this.switchScene('board3.xml')

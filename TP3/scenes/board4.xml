@@ -30,8 +30,8 @@
     </globals>
 
     <lights>
-        <omni id="demoLight" enabled="1">
-            <location x="0" y="20" z="-200" w="1.0" />
+        <omni id="rotatingLight" enabled="1">
+            <location x="0" y="40" z="-200" w="1.0" />
             <ambient r="0.3" g="0.3" b="0.3" a="0.3" />
             <diffuse r="0.9" g="0.9" b="0.9" a="0.9" />
             <specular r="0.7" g="0.7" b="0.7" a="0.7" />
@@ -50,25 +50,31 @@
 
     <textures>
         <texture id="timertexture" file="scenes/images/timer.png" />
-        <texture id="timer1" file="scenes/images/1.png" />
-        <texture id="timer2" file="scenes/images/2.png" />
-        <texture id="timer3" file="scenes/images/3.png" />
-        <texture id="timer4" file="scenes/images/4.png" />
-        <texture id="timer5" file="scenes/images/5.png" />
-        <texture id="timer6" file="scenes/images/6.png" />
-        <texture id="timer7" file="scenes/images/7.png" />
-        <texture id="timer8" file="scenes/images/8.png" />
-        <texture id="timer9" file="scenes/images/9.png" />
-        <texture id="timer0" file="scenes/images/0.png" />
-        <texture id="timernone" file="scenes/images/none.png" />
-        <texture id="timercolon" file="scenes/images/colon.png" />
+        <texture id="timer1" file="scenes/images/11.png" />
+        <texture id="timer2" file="scenes/images/22.png" />
+        <texture id="timer3" file="scenes/images/33.png" />
+        <texture id="timer4" file="scenes/images/44.png" />
+        <texture id="timer5" file="scenes/images/55.png" />
+        <texture id="timer6" file="scenes/images/66.png" />
+        <texture id="timer7" file="scenes/images/77.png" />
+        <texture id="timer8" file="scenes/images/88.png" />
+        <texture id="timer9" file="scenes/images/99.png" />
+        <texture id="timer0" file="scenes/images/00.png" />
+        <texture id="timernone" file="scenes/images/none2.png" />
+        <texture id="timercolon" file="scenes/images/colon2.png" />
         <texture id="meteor" file="scenes/images/meteor.jpg" />
         <texture id="front" file="scenes/images/spacefront.jpg" />
         <texture id="back" file="scenes/images/spaceback.jpg" />
         <texture id="left" file="scenes/images/spaceleft.jpg" />
         <texture id="right" file="scenes/images/spaceright.jpg" />
         <texture id="sun" file="scenes/images/sun.jpg" />
-        <texture id="board" file="scenes/images/board.png" />
+        <texture id="board" file="scenes/images/board2.png" />
+        <texture id="ground" file="scenes/images/ground.jpg" />
+        <texture id="gold" file="scenes/images/gold.jpg" />
+        <texture id="bluemetal" file="scenes/images/bluemetal.jpg" />
+        <texture id="purplemetal" file="scenes/images/purplemetal.jpg" />
+        <texture id="controlboard" file="scenes/images/controlboard3.png" />
+        <texture id="laigflag" file="scenes/images/laigflag.png" />
     </textures>
 
     <materials>
@@ -82,8 +88,15 @@
         <material id="graydiff" shininess="4">
             <emission r="0.0" g="0.0" b="0.0" a="1.0" />
             <ambient r="0.25" g="0.25" b="0.25" a="1.0" />
-            <diffuse r="0.9" g="0.9" b="0.9" a="1.0" />
-            <specular r="0.5" g="0.5" b="0.5" a="1.0" />
+            <diffuse r="1" g="1" b="1" a="1.0" />
+            <specular r="0.4" g="0.4" b="0.4" a="1.0" />
+        </material>
+
+        <material id="graybalanced" shininess="6">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="0.45" g="0.45" b="0.45" a="1.0" />
+            <diffuse r="0.7" g="0.7" b="0.7" a="1.0" />
+            <specular r="0.8" g="0.8" b="0.8" a="1.0" />
         </material>
 
         <material id="browndiff" shininess="3">
@@ -229,6 +242,14 @@
                 <scale x="1" y="1.0" z="1" />  
             </keyframe>
         </animation>
+
+        <animation id="rotation" maxLoops="0">
+            <keyframe instant="70">
+                <translate x="0" y="0" z="0" />
+                <rotate angle_x="0" angle_y="360" angle_z="0" />
+                <scale x="1" y="1" z="1" />  
+            </keyframe>
+        </animation>
         
     </animations>
 
@@ -239,8 +260,28 @@
         <primitive id="sphere1"><sphere slices="50" stacks="50" radius="0.5"/></primitive>
         <primitive id="shortCylinder"><cylinder base="0.5" top="0.5" height="0.25" slices="20" stacks="20"/></primitive>
         <primitive id="cylinder"><cylinder base="1" top="1" height="1" slices="20" stacks="20"/></primitive>
-        <primitive id="hexprism"><prism parts="6"/></primitive>
+        <primitive id="cylinder2"><cylinder base="2" top="2" height="6" slices="20" stacks="20" /></primitive>
+        <primitive id="prism8"><prism parts="8"/></primitive>
+        <primitive id="prism6"><prism parts="6"/></primitive>
         <primitive id="prism4"><prism parts="4"/></primitive>
+        <primitive id="patch1">
+            <patch npointsU="3" npointsV="4" npartsU="16" npartsV="16" >
+                <controlpoint xx="-2" yy="-2" zz="1" />
+                <controlpoint xx="-2" yy="-1" zz="-2" />
+                <controlpoint xx="-2" yy="1" zz="5" />
+                <controlpoint xx="-2" yy="2" zz="-1" />
+
+                <controlpoint xx="0" yy="-2" zz="0" />
+                <controlpoint xx="0" yy="-1" zz="-1" />
+                <controlpoint xx="0" yy="1" zz="1.5" />
+                <controlpoint xx="0" yy="2" zz="0" />
+
+                <controlpoint xx="2" yy="-2" zz="-1" />
+                <controlpoint xx="2" yy="-1" zz="2" />
+                <controlpoint xx="2" yy="1" zz="-5" />
+                <controlpoint xx="2" yy="2" zz="1" />
+            </patch>
+        </primitive>
     </primitives>
 
     <components>
@@ -252,8 +293,8 @@
                 <componentref id="board"/>
                 <componentref id="controlboard"/>
                 <componentref id="meteor"/>
-                <componentref id="sun"/>
-                <componentref id="skybox"/>
+                <componentref id="background"/>
+                <componentref id="flagStructure"/>
                 <!--<componentref id="desklamp"/>-->
               <!--  <componentref id="vericoolhexprism"/> -->
             </children>
@@ -273,6 +314,17 @@
             </children>
         </component>
 
+        <component id="background">
+            <transformation>
+            </transformation>
+            <material id="inherit" />
+            <texture id="none"/>
+            <children>
+                <componentref id="sun"/>
+                <componentref id="skybox"/>
+            </children>
+            <animationref id="rotation"/>
+        </component>
         <component id="sun">
             <transformation>
                 <translate x="-2" y="0" z="-120"/>
@@ -297,6 +349,42 @@
                 <componentref id="skyboxright"/>
                 <componentref id="skyboxfront"/>
                 <componentref id="skyboxback"/>
+            </children>
+        </component>
+
+        <component id="flagStructure">
+            <transformation>
+                <translate x="7" y="0" z="16"/>
+                <rotate axis="y" angle="176"/>
+            </transformation>
+            <material id="inherit" />
+            <texture id="inherit"/>
+            <children>
+                <componentref id="flag"/>
+                <componentref id="pole"/>
+            </children>
+        </component>
+        <component id="flag">
+            <transformation>
+                <translate x="-3.5" y="3  " z="0.3"/>
+                <scale x="0.5" y="0.3" z="0.25"/>
+            </transformation>
+            <material id="inherit" />
+            <texture id="laigflag"/>
+            <children>
+                <primitiveref id="patch1"/>
+            </children>
+        </component>
+        <component id="pole">
+            <transformation>
+                <translate x="-3" y="3" z="-0.1"/>
+                <rotate axis="x" angle="90"/>
+                <scale x="0.05" y="0.05" z="0.5"/>
+            </transformation>
+            <material id="browndiff" />
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="cylinder2"/>
             </children>
         </component>
 
@@ -427,7 +515,7 @@
         <component id="board">
             <transformation>
             </transformation>
-            <material id="inherit" />
+            <material id="graybalanced" />
             <texture id="inherit"/>
             <children> 
                 <componentref id="topboard"/>
@@ -454,9 +542,9 @@
                 <rotate axis="y" angle="45"/>
             </transformation>
             <material id="inherit" />
-            <texture id="inherit"/>
+            <texture id="ground"/>
             <children> 
-                <primitiveref id="prism4"/>
+                <primitiveref id="prism4" length_s="0.8" length_t="0.8"/>
             </children>
         </component>
 
@@ -478,7 +566,7 @@
                 <scale x="11" y="1" z="5.6"/>
             </transformation>
             <material id="inherit" />
-            <texture id="inherit"/>
+            <texture id="controlboard"/>
             <children> 
                 <primitiveref id="plane1"/>
             </children>
@@ -491,7 +579,7 @@
                 <rotate axis="y" angle="45"/>
             </transformation>
              <material id="inherit" />
-            <texture id="inherit"/>
+            <texture id="ground" length_s="0.8" length_t="0.8"/>
             <children>
                 <primitiveref id="prism4"/>
             </children>
@@ -553,26 +641,26 @@
         </component>
 
         <component id="piece1">
-            <transformation><translate x="0" y="0" z="0"/><rotate axis="x" angle="-90"/></transformation>
+            <transformation><scale x="0.5" y="0.3" z="0.5"/></transformation>
             <material id="shinyWhite"/>
-            <texture id="inherit"/>
+            <texture id="gold"/>
             <children> 
-                <primitiveref id="shortCylinder"/>
+                <primitiveref id="prism4"/>
             </children>
         </component>
 
         <component id="piece2">
-            <transformation><translate x="0" y="0" z="0"/><rotate axis="x" angle="-90"/></transformation>
+            <transformation><scale x="0.5" y="0.3" z="0.5"/></transformation>
             <material id="shinyWhite"/>
-            <texture id="inherit"/>
+            <texture id="bluemetal"/>
             <children> 
-                <primitiveref id="shortCylinder"/>
+                <primitiveref id="prism6"/>
             </children>
         </component>
         <component id="piece3">
-            <transformation><translate x="0" y="0" z="0"/><rotate axis="x" angle="-90"/></transformation>
+            <transformation><rotate axis="x" angle="-90"/></transformation>
             <material id="shinyWhite"/>
-            <texture id="inherit" length_s="1" length_t="1"/>
+            <texture id="purplemetal" length_s="1" length_t="1"/>
             <children> 
                 <primitiveref id="shortCylinder"/>
             </children>
