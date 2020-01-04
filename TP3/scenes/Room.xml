@@ -80,6 +80,7 @@
         <texture id="whitemarble" file="scenes/images/whitemarble.png" />
         <texture id="board" file="scenes/images/board.png" />
         <texture id="paintingedit" file="scenes/images/paintingedited.jpg" />
+        <texture id="mirrorball" file="scenes/images/mirrorball.png" />
     </textures>
 
     <materials>
@@ -151,6 +152,20 @@
             <ambient r="0.4" g="0.4" b="0.4" a="1.0" />
             <diffuse r="0.9" g="0.9" b="0.9" a="1.0" />
             <specular r="0.3" g="0.3" b="0.3" a="1.0" />
+        </material>
+
+        <material id="emissorOn" shininess="1">
+            <emission r="1.0" g="1.0" b="1.0" a="1.0" />
+            <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
+            <diffuse r="0.0" g="0.0" b="0.0" a="0.0" />
+            <specular r="0.0" g="0.0" b="0.0" a="0.0" />
+        </material>
+
+        <material id="emissorOff" shininess="1">
+            <emission r="0" g="0" b="0" a="1.0" />
+            <ambient r="0.4" g="0.4" b="0.4" a="1.0" />
+            <diffuse r="0.2" g="0.2" b="0.2" a="0.0" />
+            <specular r="0.0" g="0.0" b="0.0" a="0.0" />
         </material>
     </materials>
 
@@ -286,8 +301,6 @@
                 <componentref id="sofa"/>
                 <componentref id="painting"/>
                 <componentref id="lightswitch"/>
-                <!--<componentref id="desklamp"/>-->
-              <!--  <componentref id="vericoolhexprism"/> -->
             </children>
         </component>
 
@@ -567,9 +580,23 @@
             <material id="inherit" />
             <texture id="blackmarble"/>
             <children> 
+                <componentref id="lightbulb"/>
                 <primitiveref id="ceilinglamp"/>
             </children>
         </component>
+        
+        <component id="lightbulb">
+            <transformation>
+                <translate x="0" y="1" z="0"/>
+                <scale x="12" y="10" z="12"/>
+            </transformation>
+            <material id="emissorOn" />
+            <texture id="mirrorball"/>
+            <children> 
+                <primitiveref id="sphere1"/>
+            </children>
+        </component>
+        
          <component id="carpet">
             <transformation>
                 <translate x="-6" y="-23" z="0"/>
