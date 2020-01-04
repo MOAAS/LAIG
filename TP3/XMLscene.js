@@ -33,20 +33,14 @@ class XMLscene extends CGFscene {
 
         this.fps = 60;
         this.setUpdatePeriod(1000 / this.fps);
-        this.table = new CGFOBJModel(this,"../models/woodtable.obj",false)
 
-
-        this.switchScene("board.xml")
-
-        //this.tvshader = new CGFshader(this.gl, "shaders/tv.vert", "shaders/tv.frag");
-       // this.tvshader.setUniformsValues({ uSampler : 1, time: 0 })
+        this.selectedScene = 'Room';
+        this.sceneNames = ['Room', 'Pool', 'Space']
+        this.onSwitchScene()
     }
 
-    switchScene(filename) {
-        // create and load graph, and associate it to scene. 
-        // Check console for loading errors
-        new MySceneGraphParser(filename, this);
-        this.scenefile = filename;
+    onSwitchScene() {
+        new MySceneGraphParser(this.selectedScene + '.xml', this);
     }
 
     /**
@@ -56,6 +50,7 @@ class XMLscene extends CGFscene {
         this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(15, 15, 15), vec3.fromValues(0, 0, 0));
         this.televisionCamera = new CGFcamera(1, 0.1, 500, vec3.fromValues(0, 0, 0), vec3.fromValues(-15, 2, 0));
     }
+
     /**
      * Initializes the scene lights with the values read from the XML file.
      */
@@ -160,18 +155,18 @@ class XMLscene extends CGFscene {
         this.updateCameras()
         this.interface.initCamerasUI(cameraKeys);
 
-        switch(this.scenefile) {
-            case 'board.xml': new RoomInteraction(this.graph, this).setup(); break;// normal
-            case 'board3.xml': new PoolInteraction(this.graph, this).setup(); break; // pool
+        // Interactable environment setup
+        switch(this.selectedScene) {
+            case 'Room': this.environmentInteraction = new RoomInteraction(this.graph, this); break; // normal
+            case 'Pool': this.environmentInteraction = new PoolInteraction(this.graph, this); break; // pool
+            case 'Space': this.environmentInteraction = new SpaceInteraction(this.graph, this); break; // space
         }
+        this.environmentInteraction.setup();
 
         // -- Sets up game -- //
-        if (this.game == null) {
+        if (this.game == null)
             this.game = new BoardGame(this, graph); 
-        }
-        else {
-            this.game.toNewGraph(graph);
-        }
+        else this.game.toNewGraph(graph);
     }
 
     logPicking() {
@@ -187,48 +182,14 @@ class XMLscene extends CGFscene {
         }
     }
 
-    updateLightPos(t) {
-        let dt = (t - this.initTime) / 1000;
-        let angle = dt * 2 * Math.PI / 70;
-        this.lights[0].setPosition(-Math.sin(angle)*300,70,-Math.cos(angle)*300,0);
-        this.lights[0].update();
-    }
-
-
     update(t) {
-        //this.shader.setUniformsValues({ time: t })
-
         // In case it's not loaded
         if (this.graph == null)
             return;
 
         this.graph.update(t)
         this.game.update(t);
-
-        if(this.onSpace){
-            this.updateLightPos(t)
-        }
-
-        if (this.gui.isKeyPressed("KeyB") && !this.onBoard) {
-            this.switchScene('board.xml')
-            this.onBoard = true;
-            this.onSpace = false;
-            this.onPool = false;
-        }
-        if (this.gui.isKeyPressed("KeyT") && !this.onSpace) {
-            this.switchScene('board4.xml')            
-            this.onSpace = true;
-            this.onBoard = false;
-            this.onPool = false;
-            this.initTime = t;
-        }
-        if (this.gui.isKeyPressed("KeyP") && !this.onPool) {
-            this.switchScene('board3.xml')
-            this.onPool = true;
-            this.onBoard = false;
-            this.onSpace = false;
-        }
-
+        this.environmentInteraction.update(t)
     }
 
 
@@ -246,11 +207,8 @@ class XMLscene extends CGFscene {
         rtt.detachFromFrameBuffer();
         this.graph.components['tvscreen'].texture = new ComponentTexture(rtt, 1, 1);
         this.render(this.graph.views[this.selectedCamera]);
-
-      //  this.setActiveShader(this.tvshader);
-      //  this.setActiveShader(this.defaultShader)
-
     }
+
     /**
      * Displays the scene.
      */
@@ -272,17 +230,12 @@ class XMLscene extends CGFscene {
 
         // Draw axis
         this.axis.display();
-        // ---- END Background, camera and axis setup
 
+        // ---- END Background, camera and axis setup
         for (let i = 0; i < this.lights.length; i++) {
-           // this.lights[i].setVisible(this.lights[i].enabled);
             this.lights[i].update();
         }
 
         this.graph.display();
-
-
-        //this.scale(10,10,10);
-        //this.table.display();
     }
 }
