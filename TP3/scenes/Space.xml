@@ -246,7 +246,8 @@
 
     <primitives>
         <primitive id="tablet"><obj name="tablet1.obj"/></primitive>
-        <primitive id="meteor"><obj name="meteor2.obj"/></primitive>
+        <primitive id="meteor"><obj name="meteor2.obj"/></primitive> 
+        <primitive id="spaceship"><obj name="spaceship2.obj"/></primitive>
         <primitive id="plane1"><plane npartsU="64" npartsV="64"/></primitive>
         <primitive id="sphere1"><sphere slices="50" stacks="50" radius="0.5"/></primitive>
         <primitive id="shortCylinder"><cylinder base="0.5" top="0.5" height="0.25" slices="20" stacks="20"/></primitive>
@@ -286,6 +287,7 @@
                 <componentref id="meteor"/>
                 <componentref id="background"/>
                 <componentref id="flagStructure"/>
+                <componentref id="spaceship"/>
                 <!--<componentref id="desklamp"/>-->
               <!--  <componentref id="vericoolhexprism"/> -->
             </children>
@@ -376,6 +378,30 @@
             <texture id="inherit"/>
             <children>
                 <primitiveref id="cylinder2"/>
+            </children>
+        </component>
+
+        <component id="spaceship">
+            <transformation>
+                <scale x="1" y="1" z="1"/>
+            </transformation>
+            <material id="inherit" />
+            <texture id="inherit"/>
+            <children>
+                <componentref id="spaceship1"/>
+            </children>
+            <!--<animationref id="rotation"/>-->
+        </component>
+        <component id="spaceship1">
+            <transformation>
+                <translate x="-30" y="4" z="0"/>
+                <rotate axis="x" angle="0"/>
+                <scale x="3" y="3" z="3"/>
+            </transformation>
+            <material id="inherit" />
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="spaceship"/>
             </children>
         </component>
 
@@ -515,9 +541,9 @@
         </component>
         <component id="topboard">
             <transformation>
-                <translate x="-0.5" y="0.0" z="0"/>
+                <translate x="-0.29" y="0.0" z="0"/>
                 <rotate axis="y" angle="-90"/>
-                <scale x="19" y="4" z="15"/>
+                <scale x="19" y="4" z="14.5"/>
             </transformation>
             <material id="inherit" />
             <texture id="board"/>
