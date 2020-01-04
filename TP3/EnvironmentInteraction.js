@@ -30,6 +30,7 @@ class RoomInteraction {
         })
 
 
+
         let chair1 = this.graph.components['chair1'];
         let chair2 = this.graph.components['chair2'];
         let chairAnim = new MyAnimation([new KeyFrame(0.75, new AnimTranslation(0, 0, -5), new AnimRotation(0, 0, 0), new AnimScale(1, 1, 1))])    
@@ -38,6 +39,18 @@ class RoomInteraction {
         chair2.setAnimation(chairAnim);
         this.graph.setPickable(chair1, () => chair1.reverseAnimation());
         this.graph.setPickable(chair2, () => chair2.reverseAnimation());
+         
+        let switchAnim = new MyAnimation([new KeyFrame(0.2, new AnimTranslation(0, 0, 0), new AnimRotation(Math.PI/2, 0, 0), new AnimScale(1, 1, 1))])  
+        let lightswitch = this.graph.components['switch'];
+        this.isLighton = true; 
+        lightswitch.setAnimation(switchAnim);
+        this.graph.setPickable(lightswitch, () => {
+            lightswitch.reverseAnimation();
+            if (this.isLighton)
+                this.scene.lights[1].disable();
+            else this.scene.lights[1].enable();
+            this.isLighton = !this.isLighton;
+        }) 
     }
 }
 

@@ -31,10 +31,10 @@
 
     <lights>
         <omni id="demoLight" enabled="1">
-            <location x="-100" y="10" z="0" w="1.0" />
-            <ambient r="0.2" g="0.2" b="0.2" a="0.2" />
-            <diffuse r="0.2" g="0.2" b="0.2" a="0.2" />
-            <specular r="0.2" g="0.2" b="0.2" a="0.2" />
+            <location x="-100" y="100" z="0" w="1.0" />
+            <ambient r="0.6" g="0.6" b="0.6" a="0.6" />
+            <diffuse r="0.7" g="0.7" b="0.7" a="0.7" />
+            <specular r="0.4" g="0.4" b="0.4" a="0.4" />
             <attenuation constant="1.0" linear="0" quadratic="0.00" />
         </omni>
 
@@ -43,7 +43,7 @@
             <ambient r="0" g="0" b="0" a="0" />
             <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
             <specular r="1.0" g="1.0" b="1.0" a="1.0" />
-            <attenuation constant="1.0" linear="0.02" quadratic="0.00" />
+            <attenuation constant="1.0" linear="0.05" quadratic="0.00" />
         </omni>
 
     </lights>
@@ -84,10 +84,10 @@
 
     <materials>
         <material id="emissor" shininess="20">
-            <emission r="0.5" g="0.5" b="0.5" a="1.0" />
+            <emission r="0.8" g="0.8" b="0.8" a="1.0" />
             <ambient r="0" g="0" b="0" a="1.0" />
-            <diffuse r="0.4" g="0.4" b="0.4" a="1.0" />
-            <specular r="0.4" g="0.4" b="0.4" a="1.0" />
+            <diffuse r="0" g="0" b="0" a="1.0" />
+            <specular r="0" g="0" b="0" a="1.0" />
         </material>
 
         <material id="graydiff" shininess="4">
@@ -250,8 +250,10 @@
         <primitive id="tablet"><obj name="tablet1.obj"/></primitive>
         <primitive id="plane1"><plane npartsU="64" npartsV="64"/></primitive>
         <primitive id="sphere1"><sphere slices="50" stacks="50" radius="0.5"/></primitive>
+        <primitive id="sphere2"><sphere slices="20" stacks="20" radius="0.5"/></primitive>
         <primitive id="shortCylinder"><cylinder base="0.5" top="0.5" height="0.25" slices="20" stacks="20"/></primitive>
         <primitive id="cylinder"><cylinder base="1" top="1" height="1" slices="20" stacks="20"/></primitive>
+        <primitive id="cylinder2"><cylinder base="0.2" top="0.2" height="1" slices="10" stacks="10"/></primitive>
         <primitive id="hexprism"><prism parts="6"/></primitive>
         <primitive id="prism4"><prism parts="4"/></primitive>
     </primitives>
@@ -273,6 +275,7 @@
                 <componentref id="carpet"/>
                 <componentref id="sofa"/>
                 <componentref id="painting"/>
+                <componentref id="lightswitch"/>
                 <!--<componentref id="desklamp"/>-->
               <!--  <componentref id="vericoolhexprism"/> -->
             </children>
@@ -631,6 +634,73 @@
             </children>
         </component>
 
+        <component id="lightswitch">
+            <transformation>
+                <translate x="9" y="-0.1" z="8"/>
+                <rotate axis="x" angle="-0"/>
+                <scale x="1" y="1" z="1"/>
+            </transformation>
+            <material id="inherit" />
+            <texture id="inherit"/>
+            <children> 
+                <componentref id="switch"/>
+                <componentref id="switchbase"/>
+            </children>
+        </component>
+
+        <component id="switch">
+            <transformation>
+                <translate x="0" y="0" z="0"/>
+                <rotate axis="y" angle="0"/>
+                <scale x="1" y="1" z="1"/>
+            </transformation>
+            <material id="inherit" />
+            <texture id="inherit"/>
+            <children> 
+                <componentref id="switchcylinder"/>
+                <componentref id="switchsphere"/>
+            </children>
+        </component>
+
+        <component id="switchcylinder">
+            <transformation>
+                <rotate axis="x" angle="225"/>
+            </transformation>
+            <material id="shinyWhite" />
+            <texture id="inherit"/>
+            <children> 
+                <primitiveref id="cylinder2"/>
+            </children>
+        </component>
+
+        <component id="switchsphere">
+            <transformation>
+                <translate x="0" y="0.8" z="-0.8"/>
+                <rotate axis="x" angle="0"/>
+                <scale x="0.8" y="0.8" z="0.8"/>
+            </transformation>
+            <material id="shinyRed" />
+            <texture id="inherit"/>
+            <children> 
+                <primitiveref id="sphere1"/>
+            </children>
+        </component>
+
+        <component id="switchbase">
+            <transformation>
+                <translate x="0" y="-0.35" z="0"/>
+                <scale x="0.8" y="0.5" z="0.8"/>
+                <scale x="1" y="1" z="2"/>
+                <rotate axis="y" angle="45"/>
+            </transformation>
+            <material id="inherit" />
+            <texture id="black"/>
+            <children> 
+                <primitiveref id="prism4"/>
+            </children>
+        </component>
+
+
         <component id="vericoolhexprism">
             <transformation>
                 <scale x="3" y="3" z="3"/>
@@ -771,28 +841,28 @@
         </component>
 
         <component id="piece1">
-            <transformation><translate x="0" y="0.2" z="0"/><rotate axis="x" angle="-90"/></transformation>
+            <transformation><scale x="1" y="0.35" z="1"/><translate x="0" y="1" z="0"/><rotate axis="x" angle="-90"/></transformation>
             <material id="shinyWhite"/>
             <texture id="whitemarble"/>
             <children> 
-                <primitiveref id="shortCylinder"/>
+                <primitiveref id="sphere2"/>
             </children>
         </component>
 
         <component id="piece2">
-            <transformation><translate x="0" y="0.2" z="0"/><rotate axis="x" angle="-90"/></transformation>
+            <transformation><scale x="1" y="0.35" z="1"/><translate x="0" y="1" z="0"/><rotate axis="x" angle="-90"/></transformation>
             <material id="shinyWhite"/>
             <texture id="blackmarble"/>
             <children> 
-                <primitiveref id="shortCylinder"/>
+                <primitiveref id="sphere2"/>
             </children>
         </component>
         <component id="piece3">
-            <transformation><translate x="0" y="0.2" z="0"/><rotate axis="x" angle="-90"/></transformation>
+            <transformation><scale x="1" y="0.35" z="1"/><translate x="0" y="1" z="0"/><rotate axis="x" angle="-90"/></transformation>
             <material id="shinyWhite"/>
             <texture id="greenmarble" length_s="2" length_t="2"/>
             <children> 
-                <primitiveref id="shortCylinder"/>
+                <primitiveref id="sphere2"/>
             </children>
         </component>
     </components>
