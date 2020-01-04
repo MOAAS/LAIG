@@ -293,8 +293,9 @@
 
         <component id="timerbody">
             <transformation>
-                <scale x="1" y="0" z="2"/>
+                <scale x="1" y="1.5" z="2"/>
                 <rotate axis="y" angle="45"/>
+                <translate x="0" y="-0.25" z="0"/>
             </transformation>
             <material id="inherit"/>
             <texture id="timertexture"/>

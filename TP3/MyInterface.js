@@ -42,7 +42,6 @@ class MyInterface extends CGFinterface {
         }
     }
     initCamerasUI(views) {
-        console.log(views)
         this.gui.add(this.scene, 'selectedCamera', views).name('Active camera').onChange(this.scene.updateCameras.bind(this.scene));
         this.gui.add(this.scene, 'televisionCamera', views).name('Television camera').onChange(this.scene.updateCameras.bind(this.scene));
     }
