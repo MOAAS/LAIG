@@ -30,6 +30,7 @@ class MyInterface extends CGFinterface {
         this.gui.destroy();
         this.gui = new dat.GUI();
         this.lightfolder = this.gui.addFolder('Lights');
+        this.gui.add(this.scene, 'selectedScene', this.scene.sceneNames).name("Selected scene").onChange(this.scene.onSwitchScene.bind(this.scene));
     }
 
     addLights(lights, numLights) {
@@ -40,8 +41,8 @@ class MyInterface extends CGFinterface {
             this.lightfolder.add(lights[i], 'enabled').name("Light #" + i + ": " + lightpos);
         }
     }
-
     initCamerasUI(views) {
+        console.log(views)
         this.gui.add(this.scene, 'selectedCamera', views).name('Active camera').onChange(this.scene.updateCameras.bind(this.scene));
         this.gui.add(this.scene, 'televisionCamera', views).name('Television camera').onChange(this.scene.updateCameras.bind(this.scene));
     }

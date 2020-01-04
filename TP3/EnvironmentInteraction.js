@@ -52,11 +52,17 @@ class RoomInteraction {
             this.isLighton = !this.isLighton;
         }) 
     }
+
+    update(t) {
+        
+    }
+
 }
 
 class PoolInteraction {
-    constructor(graph) {
+    constructor(graph, scene) {
         this.graph = graph;
+        this.scene = scene;
     }
 
     setup() {
@@ -113,5 +119,28 @@ class PoolInteraction {
             lifebuoy.setAnimation(lifebuoyAnimation);
             lifebuoy.setOnPick(() => {});
         });
+    }
+
+    update(t) {
+        
+    }
+
+}
+
+class SpaceInteraction {
+    constructor(graph, scene) {
+        this.graph = graph;
+        this.scene = scene;
+    }
+
+    setup() {
+        this.initTime = new Date().getTime();
+    }
+
+    update(t) {
+        let dt = (t - this.initTime) / 1000;
+        let angle = dt * 2 * Math.PI / 70;
+        this.scene.lights[0].setPosition(-Math.sin(angle)*300,30,-Math.cos(angle)*300,0);
+        this.scene.lights[0].update();
     }
 }
