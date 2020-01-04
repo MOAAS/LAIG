@@ -140,7 +140,7 @@ class SpaceInteraction {
     update(t) {
         let dt = (t - this.initTime) / 1000;
         let angle = dt * 2 * Math.PI / 70;
-        this.scene.lights[0].setPosition(-Math.sin(angle)*300,30,-Math.cos(angle)*300,0);
+        this.scene.lights[0].setPosition(-Math.sin(angle)*300,70,-Math.cos(angle)*300,0);
         this.scene.lights[0].update();
     }
 }
