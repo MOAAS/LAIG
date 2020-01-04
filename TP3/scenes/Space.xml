@@ -241,6 +241,20 @@
                 <scale x="1" y="1" z="1" />  
             </keyframe>
         </animation>
+        <animation id="rotation2" maxLoops="0">
+            <keyframe instant="10">
+                <translate x="0" y="0" z="0" />
+                <rotate angle_x="-360" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" />  
+            </keyframe>
+        </animation>
+        <animation id="rotation3" maxLoops="0">
+            <keyframe instant="10">
+                <translate x="0" y="0" z="0" />
+                <rotate angle_x="0" angle_y="360" angle_z="0" />
+                <scale x="1" y="1" z="1" />  
+            </keyframe>
+        </animation>
         
     </animations>
 
@@ -383,6 +397,7 @@
 
         <component id="spaceship">
             <transformation>
+                <translate x="0" y="-30" z="0"/>
                 <scale x="1" y="1" z="1"/>
             </transformation>
             <material id="inherit" />
@@ -390,16 +405,27 @@
             <children>
                 <componentref id="spaceship1"/>
             </children>
-            <!--<animationref id="rotation"/>-->
+            <animationref id="rotation3"/>
         </component>
         <component id="spaceship1">
             <transformation>
-                <translate x="-30" y="4" z="0"/>
-                <rotate axis="x" angle="0"/>
-                <scale x="3" y="3" z="3"/>
+                <scale x="1" y="1" z="1"/>
             </transformation>
             <material id="inherit" />
             <texture id="inherit"/>
+            <children>
+                <componentref id="spaceship2"/>
+            </children>
+            <animationref id="rotation2"/>
+        </component>
+        <component id="spaceship2">
+            <transformation>
+                <translate x="0" y="4" z="80"/>
+                <rotate axis="y" angle="180"/>
+                <scale x="3" y="3" z="3"/>
+            </transformation>
+            <material id="shinyWhite" />
+            <texture id="ground"/>
             <children>
                 <primitiveref id="spaceship"/>
             </children>
