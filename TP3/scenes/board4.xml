@@ -579,12 +579,11 @@
         <component id="genericbutton">
             <transformation>
                 <scale x="0.7" y="0.4" z="0.7"/>
-                <rotate axis="x" angle="-90"/>
             </transformation>
             <material id="inherit" />
             <texture id="none"/>
             <children> 
-                <primitiveref id="cylinder"/>
+                <primitiveref id="prism6"/>
             </children>
         </component>
 

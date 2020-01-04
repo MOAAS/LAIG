@@ -240,6 +240,7 @@ class BoardGame {
         getNewBoard((cellArray) => {
             this.clearBoard();
             this.createBoard(cellArray, true)
+            this.initialBoard = cellArray;
             setTimeout( () => {
                 getValidMoves(this.toCellArray(), (moves) => {
                     this.validMoves = moves;
@@ -262,10 +263,9 @@ class BoardGame {
 
     createBoard(cellArray, animate) {
         this.board = [];
-        this.initialBoard = cellArray;
         if (cellArray.length == 0) {
             this.boardWidth = 0;
-            this.boardHeipght = 0;
+            this.boardHeight = 0;
             return;
         }
 
