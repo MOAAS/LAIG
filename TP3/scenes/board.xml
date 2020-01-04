@@ -113,7 +113,7 @@
 
         <material id="shinyGold" shininess="20">
             <emission r="0.0" g="0.0" b="0.0" a="1.0" />
-            <ambient r="0.15" g="0.15" b="0.15" a="1.0" />
+            <ambient r="0.167" g="0.1" b="0.0" a="1.0" />
             <diffuse r="1.0" g="0.6" b="0.0" a="1.0" />
             <specular r="0.5" g="0.3" b="0.0" a="1.0" />
         </material>
