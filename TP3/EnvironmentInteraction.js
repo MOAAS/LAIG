@@ -135,6 +135,37 @@ class SpaceInteraction {
 
     setup() {
         this.initTime = new Date().getTime();
+
+        let flag = this.graph.components['flagStructure'];
+        this.flagHeight = 0;
+        this.graph.setPickable(flag, () => {
+            if (!flag.isAnimationOver())
+                return;
+            if (this.flagHeight <= -1.5) {
+                flag.setAnimation(new MyAnimation([
+                    new KeyFrame(0.0, new AnimTranslation(0, -1.5, 0), new AnimRotation(0, 0, 0), new AnimScale(1, 1, 1)),
+                    new KeyFrame(1.0, new AnimTranslation(0, 0, 0), new AnimRotation(0, 0, 0), new AnimScale(1, 1, 1)),
+                    new KeyFrame(1.5, new AnimTranslation(0, 10, 0), new AnimRotation(0.20, 0.20, 0.20), new AnimScale(1, 1, 1)),
+                    new KeyFrame(2.0, new AnimTranslation(0, 15, 0), new AnimRotation(0.30, 0.30, 0.30), new AnimScale(1, 1, 1)),
+                    new KeyFrame(2.5, new AnimTranslation(0, 17.5, 0),new AnimRotation(0.34, 0.34, 0.34), new AnimScale(1, 1, 1)),
+                    new KeyFrame(3.0, new AnimTranslation(0, 18, 0), new AnimRotation(0.38, 0.38, 0.38), new AnimScale(1, 1, 1)),
+                    new KeyFrame(3.5, new AnimTranslation(0, 18, 0), new AnimRotation(0.42, 0.42, 0.42), new AnimScale(1, 1, 1)),
+                    new KeyFrame(4.0, new AnimTranslation(0, 17.5, 0),new AnimRotation(0.42, 0.42, 0.42), new AnimScale(1, 1, 1)),
+                    new KeyFrame(4.5, new AnimTranslation(0, 15, 0), new AnimRotation(0.38, 0.38, 0.38), new AnimScale(1, 1, 1)),
+                    new KeyFrame(5.0, new AnimTranslation(0, 10, 0), new AnimRotation(0.20, 0.20, 0.20), new AnimScale(1, 1, 1)),
+                    new KeyFrame(5.5, new AnimTranslation(0, 0, 0), new AnimRotation(0, 0, 0), new AnimScale(1, 1, 1)),
+                ])); 
+                this.flagHeight = 0;           
+            }
+            else {
+                this.flagHeight -= 0.5;
+                flag.setAnimation(new MyAnimation([
+                    new KeyFrame(0, new AnimTranslation(0, this.flagHeight + 0.5, 0), new AnimRotation(0, 0, 0), new AnimScale(1, 1, 1)),
+                    new KeyFrame(Math.abs(this.flagHeight) / 2, new AnimTranslation(0, this.flagHeight, 0), new AnimRotation(0, 0, 0), new AnimScale(1, 1, 1)),
+                ])); 
+
+            }           
+        });
     }
 
     update(t) {
