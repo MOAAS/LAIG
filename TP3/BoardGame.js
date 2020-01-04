@@ -52,6 +52,7 @@ class BoardGame {
         this.easybutton = new ToggleButton(this.scene, this.graph, new Translation(11, 0, 3), () => { this.difficulty = 0; this.easybutton.disable(); this.hardbutton.enable(); this.hardbutton.toggleUp() })
         this.hardbutton = new ToggleButton(this.scene, this.graph, new Translation(11, 0, 4.5), () => { this.difficulty = 1; this.hardbutton.disable(); this.easybutton.enable(); this.easybutton.toggleUp() })
         this.hardbutton.press();
+        this.hardbutton.disable();
 
         this.restartbutton = new SimpleButton(this.scene, this.graph, new Translation(8, 0, 4), () => this.restart()) 
     }

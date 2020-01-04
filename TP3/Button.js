@@ -114,6 +114,8 @@ class ToggleButton {
 
     disable() {
         this.enabled = false;
-        this.component.material = this.disabledMaterial;
+        if (this.isDown)
+            this.component.material = this.downMaterial;
+        else this.component.material = this.disabledMaterial;
     }
 }
