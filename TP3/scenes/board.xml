@@ -283,7 +283,7 @@
 
         <component id="timerbody">
             <transformation>
-                <scale x="1" y="1" z="2"/>
+                <scale x="1" y="0" z="2"/>
                 <rotate axis="y" angle="45"/>
             </transformation>
             <material id="inherit"/>
@@ -724,9 +724,9 @@
         </component>
         <component id="topboard">
             <transformation>
-                <translate x="-0.5" y="0.2" z="0"/>
+                <translate x="-0.29" y="0.2" z="0"/>
                 <rotate axis="y" angle="-90"/>
-                <scale x="19" y="1" z="15"/>
+                <scale x="19" y="1" z="14.5"/>
             </transformation>
             <material id="inherit" />
             <texture id="board"/>
@@ -736,8 +736,8 @@
         </component>
         <component id="bottomboard">
             <transformation>
-                <translate x="-0.5" y="-0.41" z="0"/>
-                <scale x="10.62" y="2" z="13.4"/>
+                <translate x="-0.3" y="-0.41" z="0"/>
+                <scale x="10.25" y="2" z="13.4"/>
                 <scale x="1" y="0.3" z="1"/>
                 <rotate axis="y" angle="45"/>
             </transformation>
