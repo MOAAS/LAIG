@@ -80,7 +80,7 @@
         <texture id="whitemarble" file="scenes/images/whitemarble.png" />
         <texture id="board" file="scenes/images/board.png" />
         <texture id="paintingedit" file="scenes/images/paintingedited.jpg" />
-        <texture id="mirrorball" file="scenes/images/mirrorball.png" />
+        <texture id="lightbulb" file="scenes/images/lightbulb.png" />
     </textures>
 
     <materials>
@@ -591,7 +591,7 @@
                 <scale x="12" y="10" z="12"/>
             </transformation>
             <material id="emissorOn" />
-            <texture id="mirrorball"/>
+            <texture id="lightbulb"/>
             <children> 
                 <primitiveref id="sphere1"/>
             </children>
