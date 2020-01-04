@@ -974,7 +974,7 @@
 
         <component id="board">
             <transformation>
-                <scale x="17" y="1" z="24"/>
+                <scale x="17" y="1" z="25"/>
                 <translate x="0" y="-0.5" z="0"/>
             </transformation>
             <material id="inherit" />
