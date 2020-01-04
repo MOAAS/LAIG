@@ -29,6 +29,20 @@ class GameTimer extends Component {
         this.pause();
     }
 
+    toNewGraph(graph) {
+        this.graph = graph;
+        let timer = new GameTimer(this.scene, this.graph, new Translation(0, 0, 0));
+        
+        this.children = timer.children;
+        this.timerdigit1 = timer.timerdigit1
+        this.timerdigit2 = timer.timerdigit2
+        this.timerdigit3 = timer.timerdigit3
+        this.timerdigit4 = timer.timerdigit4
+        this.timercolon = timer.timercolon;
+
+        this.graph.addComponent(this);
+    }
+
     setDigitTexture(component, digitValue) {
         switch (digitValue) {
             case 1: component.setTexture(this.graph.textures['timer1']); break;

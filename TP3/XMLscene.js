@@ -187,8 +187,8 @@ class XMLscene extends CGFscene {
         }
     }
 
-    updatelightpos(t) {
-        let dt = (t - this.inittime) / 1000;
+    updateLightPos(t) {
+        let dt = (t - this.initTime) / 1000;
         let angle = dt * 2 * Math.PI / 70;
         this.lights[0].setPosition(-Math.sin(angle)*300,30,-Math.cos(angle)*300,0);
         this.lights[0].update();
@@ -205,28 +205,28 @@ class XMLscene extends CGFscene {
         this.graph.update(t)
         this.game.update(t);
 
-        if(this.ontest){
-            this.updatelightpos(t)
+        if(this.onSpace){
+            this.updateLightPos(t)
         }
 
         if (this.gui.isKeyPressed("KeyB") && !this.onBoard) {
             this.switchScene('board.xml')
             this.onBoard = true;
-            this.ontest = false;
-            this.onpool = false;
+            this.onSpace = false;
+            this.onPool = false;
         }
-        if (this.gui.isKeyPressed("KeyT") && !this.ontest) {
+        if (this.gui.isKeyPressed("KeyT") && !this.onSpace) {
             this.switchScene('board4.xml')            
-            this.ontest = true;
+            this.onSpace = true;
             this.onBoard = false;
-            this.onpool = false;
-            this.inittime = t;
+            this.onPool = false;
+            this.initTime = t;
         }
-        if (this.gui.isKeyPressed("KeyP") && !this.onpool) {
+        if (this.gui.isKeyPressed("KeyP") && !this.onPool) {
             this.switchScene('board3.xml')
-            this.onpool = true;
+            this.onPool = true;
             this.onBoard = false;
-            this.ontest = false;
+            this.onSpace = false;
         }
 
     }

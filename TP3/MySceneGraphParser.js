@@ -1212,12 +1212,10 @@ class MySceneGraphParser {
     
         
         if (length_s == null || isNaN(length_s)) {
-            this.onXMLMinorError("Couldn't parse length_s for component texture, defaulting to 1 (texture ID = " + ID + ")");
             length_s = 1;
         }
         
         if (length_t == null || isNaN(length_t)) {
-            this.onXMLMinorError("Couldn't parse length_t for component texture, defaulting to 1 (texture ID = " + ID + ")");
             length_t = 1;
         }
 

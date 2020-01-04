@@ -1,9 +1,9 @@
 class SimpleButton {
-    constructor(scene, graph, transformationMatrix, onPress) {
+    constructor(scene, graph, transformation, onPress) {
         this.scene = scene;
-        this.graph = graph;
-        this.transformationMatrix = transformationMatrix;        
-        this.component = new Component(scene, [graph.components['genericbutton']],  this.transformationMatrix);
+        this.graph = graph;       
+        this.transformation = transformation;
+        this.component = new Component(this.scene, [graph.components['genericbutton']], this.transformation.getMatrix());
         this.onPress = onPress;
         this.graph.addPickable(this.component, () => this.press());
 
@@ -11,6 +11,20 @@ class SimpleButton {
         this.disabledMaterial = this.graph.materials['shinyRed'];
 
         this.enable()
+    }
+
+    toNewGraph(graph) {
+        this.graph = graph;
+        this.component = new Component(this.scene, [graph.components['genericbutton']], this.transformation.getMatrix());
+
+        this.enabledMaterial = this.graph.materials['shinyGold'];
+        this.disabledMaterial = this.graph.materials['shinyRed'];
+
+        this.graph.addPickable(this.component, () => this.press());
+        
+        if (this.enabled)
+            this.enable()
+        else this.disable()
     }
 
     press() {
@@ -32,11 +46,11 @@ class SimpleButton {
 }
 
 class ToggleButton {
-    constructor(scene, graph, transformationMatrix, onDown) {
+    constructor(scene, graph, transformation, onDown) {
         this.scene = scene;
-        this.graph = graph;        
-        this.transformationMatrix = transformationMatrix;        
-        this.component = new Component(scene, [graph.components['genericbutton']], this.transformationMatrix);
+        this.graph = graph;           
+        this.transformation = transformation;
+        this.component = new Component(this.scene, [graph.components['genericbutton']], this.transformation.getMatrix());
         this.onDown = onDown;
         this.graph.addPickable(this.component, () => this.press());
 
@@ -46,6 +60,22 @@ class ToggleButton {
 
         this.isDown = false;
         this.enable()
+    }
+
+    toNewGraph(graph) {
+        this.graph = graph;
+        this.component = new Component(this.scene, [graph.components['genericbutton']], this.transformation.getMatrix());
+        this.upMaterial = this.graph.materials['shinyGold'];
+        this.downMaterial = this.graph.materials['shinyGreen'];
+        this.disabledMaterial = this.graph.materials['shinyRed'];        
+
+        this.graph.addPickable(this.component, () => this.press());
+
+        if (this.isDown)
+            this.component.setAnimation(this.graph.animations['buttonToggleDown'])
+        if (this.enabled)
+            this.enable()
+        else this.disable()
     }
 
     press() {
