@@ -32,7 +32,6 @@ class GameTimer extends Component {
     toNewGraph(graph) {
         this.graph = graph;
         let timer = new GameTimer(this.scene, this.graph, new Translation(0, 0, 0));
-        
         this.children = timer.children;
         this.timerdigit1 = timer.timerdigit1
         this.timerdigit2 = timer.timerdigit2
@@ -41,6 +40,7 @@ class GameTimer extends Component {
         this.timercolon = timer.timercolon;
 
         this.graph.addComponent(this);
+        this.updateDigitTextures();        
     }
 
     setDigitTexture(component, digitValue) {

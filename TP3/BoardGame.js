@@ -52,6 +52,7 @@ class BoardGame {
         this.easybutton = new ToggleButton(this.scene, this.graph, new Translation(11, 0, 3), () => { this.difficulty = 0; this.easybutton.disable(); this.hardbutton.enable(); this.hardbutton.toggleUp() })
         this.hardbutton = new ToggleButton(this.scene, this.graph, new Translation(11, 0, 4.5), () => { this.difficulty = 1; this.hardbutton.disable(); this.easybutton.enable(); this.easybutton.toggleUp() })
         this.hardbutton.press();
+        this.hardbutton.disable();
 
         this.restartbutton = new SimpleButton(this.scene, this.graph, new Translation(8, 0, 4), () => this.restart()) 
     }
@@ -239,6 +240,7 @@ class BoardGame {
         getNewBoard((cellArray) => {
             this.clearBoard();
             this.createBoard(cellArray, true)
+            this.initialBoard = cellArray;
             setTimeout( () => {
                 getValidMoves(this.toCellArray(), (moves) => {
                     this.validMoves = moves;
@@ -261,10 +263,9 @@ class BoardGame {
 
     createBoard(cellArray, animate) {
         this.board = [];
-        this.initialBoard = cellArray;
         if (cellArray.length == 0) {
             this.boardWidth = 0;
-            this.boardHeipght = 0;
+            this.boardHeight = 0;
             return;
         }
 

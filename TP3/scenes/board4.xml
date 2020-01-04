@@ -173,7 +173,7 @@
             <keyframe instant="0.2">
                 <translate x="0" y="0" z="0" />
                 <rotate angle_x="0" angle_y="0" angle_z="0" />
-                <scale x="0.8" y="0.5" z="0.8" />  
+                <scale x="0.1" y="0.5" z="0.1" />  
             </keyframe>
             <keyframe instant="1">
                 <translate x="0" y="0.0" z="0" />
@@ -605,12 +605,11 @@
         <component id="genericbutton">
             <transformation>
                 <scale x="0.7" y="0.4" z="0.7"/>
-                <rotate axis="x" angle="-90"/>
             </transformation>
             <material id="inherit" />
             <texture id="none"/>
             <children> 
-                <primitiveref id="cylinder"/>
+                <primitiveref id="prism6"/>
             </children>
         </component>
 
