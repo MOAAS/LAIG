@@ -679,10 +679,6 @@ class BoardGame {
         // Changes state and interactable flag so user does not mess anything up
         this.gameState = this.gameStates.OVER;
         this.interactable = false;
-
-        // Reset camera position if in human V human game mode
-        if (this.mode == this.modes.HUMAN_HUMAN && this.currentPlayer == 2)
-            this.graph.views['RotatableCamera'].orbit(CGFcameraAxisID.Y, Math.PI);
             
         // Changes camera back to free look
         this.scene.setCamera('SpectatorCamera', true);
@@ -700,8 +696,8 @@ class BoardGame {
             case this.modes.HUMAN_HUMAN: 
                 this.scene.setCamera('RotatableCamera', false);
                 if (this.currentPlayer == 2)
-                    this.graph.views['RotatableCamera'].position = this.graph.views['P2Camera'].position
-                else this.graph.views['RotatableCamera'].position = this.graph.views['P1Camera'].position
+                    this.graph.views['RotatableCamera'].position = this.graph.views['P2Camera'].position.slice()
+                else this.graph.views['RotatableCamera'].position = this.graph.views['P1Camera'].position.slice()
                 break;
         }
 
