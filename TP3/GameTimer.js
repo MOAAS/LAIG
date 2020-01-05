@@ -111,6 +111,11 @@ class GameTimer extends Component {
         this.setDigitTexture(this.timerdigit4, this.secondsLeft % 10);
     }
 
+    advanceSeconds(numSeconds) {
+        // Simply advances specified number of seconds
+        for (let i = 0; i < numSeconds; i++)
+            this.advanceSecond()        
+    }
     advanceSecond() {
         // If timer is up, no need to advance a second
         if (this.isOver()) {
@@ -124,6 +129,7 @@ class GameTimer extends Component {
             this.minutesLeft--;
         }
         else this.secondsLeft--;
+        this.updateDigitTextures()
     }
 
     resume() {
@@ -155,6 +161,13 @@ class GameCounter extends GameTimer {
         super(scene, graph, transformation)
         // A game counter is just a timer used differently
         // The colon can be hidden so the texture is removed
+        this.timercolon.setTexture(graph.textures['black']);
+    }
+
+    toNewGraph(graph) {
+        super.toNewGraph(graph);
+
+        // Just needs to remove the colon's texture
         this.timercolon.setTexture(graph.textures['black']);
     }
 

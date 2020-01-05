@@ -421,6 +421,11 @@ class BoardGame {
         if (!this.interactable)
             return console.log("Not a human's turn!")
 
+        // Add 5 second penalty to whichever player pressed the button
+        if (this.currentPlayer == 1)
+            this.player1timer.advanceSeconds(5);
+        else this.player2timer.advanceSeconds(5);
+
         // Sets an animation for each piece in the valid move list
         // Random delay is used (0-0.5s) so it feels more natural
         this.validMoves.forEach((move) => {
@@ -675,6 +680,10 @@ class BoardGame {
         this.gameState = this.gameStates.OVER;
         this.interactable = false;
 
+        // Reset camera position if in human V human game mode
+        if (this.mode == this.modes.HUMAN_HUMAN && this.currentPlayer == 2)
+            this.graph.views['RotatableCamera'].orbit(CGFcameraAxisID.Y, Math.PI);
+            
         // Changes camera back to free look
         this.scene.setCamera('SpectatorCamera', true);
     }
