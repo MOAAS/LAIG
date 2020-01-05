@@ -29,8 +29,6 @@ class XMLscene extends CGFscene {
         this.gl.enable(this.gl.CULL_FACE);
         this.gl.depthFunc(this.gl.LEQUAL);
 
-        this.axis = new CGFaxis(this);
-
         this.fps = 60;
         this.setUpdatePeriod(1000 / this.fps);
 
@@ -129,7 +127,6 @@ class XMLscene extends CGFscene {
      */
     onGraphLoaded(graph) {
         this.graph = graph;
-        this.axis = new CGFaxis(this, 5);
 
         // -- Sets up background colors and lights -- //
         this.gl.clearColor(this.graph.background[0], this.graph.background[1], this.graph.background[2], this.graph.background[3]);
@@ -228,8 +225,6 @@ class XMLscene extends CGFscene {
         // Apply transformations corresponding to the camera position relative to the origin
         this.applyViewMatrix();
 
-        // Draw axis
-        this.axis.display();
 
         // ---- END Background, camera and axis setup
         for (let i = 0; i < this.lights.length; i++) {
