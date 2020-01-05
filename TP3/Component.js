@@ -14,6 +14,7 @@ class Component {
     }
 
     clone() {
+        // Performs a deep copy of the component
         // For each child, gets a clone
         let childrenClones  = []
         for (let i = 0; i <this.children.length; i++) {
@@ -30,7 +31,8 @@ class Component {
     }
 
     copyAnimationStateFrom(component) {
-        // Copies an animation from a component, keeping the current state as well
+        // Copies an animation from a component
+        // Keeps the current state as well
         this.animation = component.animation;
         this.animationStarted = component.animationStarted;
         this.animationStartTime = component.animationStartTime;
@@ -55,13 +57,16 @@ class Component {
     }
 
     isAnimationOver() {
+        // Checks if animation is over
+        // If it hasn't started or no keyframes in the animation, it can be considered as over
         if (!this.animationStarted || this.animation.keyframes.length == 0)
             return true;
+        // Compares current time, start time, the animation's last keyframe instant and the number of loops of the animation
+        // return currentTime - startTime >= lastInstant * numLoops
         return (new Date().getTime() - this.animationStartTime) / 1000 >= this.animation.keyframes[this.animation.keyframes.length - 1].instant * this.animation.maxLoops;
     }
 
     setTexture(texture) {
-        // Sets component texture
         this.texture = new ComponentTexture(texture, 1, 1);
     }
 

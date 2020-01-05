@@ -5,22 +5,28 @@ class RoomInteraction {
     }
 
     setup() {
-       // console.log("room")
+        // Painting interaction
         let painting = this.graph.components['canvas'];
 
         let paintingTextureNormal = this.graph.textures['painting'];
         let paintingTextureEdited = this.graph.textures['paintingedit'];
 
+        // This simply flips the painting's texture 
+        // When clicked on, switches between paintingNormal and paintingEdited
         this.isPaintingEdited = false;
         this.graph.setPickable(painting, () => {
             if (this.isPaintingEdited)
                 painting.setTexture(paintingTextureNormal);
             else painting.setTexture(paintingTextureEdited);
             this.isPaintingEdited = !this.isPaintingEdited
-        });        
+        });  
+        
+        // TV interaction
 
         let tvscreen = this.graph.components['tvscreen'];
         
+        // When clicked on, TV switches between on and off
+        // This is done by simply changing the off material to black
         this.isTVon = true;        
         this.graph.setPickable(tvscreen, () => {
             if (this.isTVon)
@@ -30,22 +36,31 @@ class RoomInteraction {
         })
 
 
+        // Chair interaction
 
         let chair1 = this.graph.components['chair1'];
         let chair2 = this.graph.components['chair2'];
+
+        // Animation that will pull the chair back
         let chairAnim = new MyAnimation([new KeyFrame(0.75, new AnimTranslation(0, 0, -5), new AnimRotation(0, 0, 0), new AnimScale(1, 1, 1))])    
 
+        // Clicking on the chairs will make them move back and forth
+        // This is done by reversing the animation
         chair1.setAnimation(chairAnim);
         chair2.setAnimation(chairAnim);
         this.graph.setPickable(chair1, () => chair1.reverseAnimation());
         this.graph.setPickable(chair2, () => chair2.reverseAnimation());
          
+        // Light switch interation
         let lightswitch = this.graph.components['switch'];
         let lightbulb = this.graph.components['lightbulb'];
 
-        let switchAnim = new MyAnimation([new KeyFrame(0.2, new AnimTranslation(0, 0, 0), new AnimRotation(Math.PI/2, 0, 0), new AnimScale(1, 1, 1))])         
-        this.isLighton = true; 
+        // Make switch animation with the rotation
+        let switchAnim = new MyAnimation([new KeyFrame(0.2, new AnimTranslation(0, 0, 0), new AnimRotation(Math.PI/2, 0, 0), new AnimScale(1, 1, 1))]) 
 
+        // When clicked the switchAnimation will run/reverse
+        // the lightbulb will change its material from emissor to non-emissor
+        this.isLighton = true; 
         lightswitch.setAnimation(switchAnim);
         this.graph.setPickable(lightswitch, () => {
             lightswitch.reverseAnimation();
@@ -74,13 +89,17 @@ class PoolInteraction {
     }
 
     setup() {
-       // console.log("pool")
+        
+        // Beachball interaction
 
+        // Beachball animation that will make it jump from player 1's side to player 2's side
         let beachballAnim = new MyAnimation([
             new KeyFrame(0.75, new AnimTranslation(4.5, 2, -6), new AnimRotation(14, 0, 0), new AnimScale(1, 1, 1)),
             new KeyFrame(1.5, new AnimTranslation(9, 1, -12), new AnimRotation(28, 0, 0), new AnimScale(1, 1, 1)),
             new KeyFrame(1.75, new AnimTranslation(9, 1.5, -12), new AnimRotation(28, 0, 0), new AnimScale(1, 1, 1)),
         ])
+
+        // Beachball animation that will make it jump from player 2's side to player 1's side
         let beachballAnimReverse = new MyAnimation([
             new KeyFrame(0, new AnimTranslation(9, 1.5, -12), new AnimRotation(28, 0, 0), new AnimScale(1, 1, 1)),
             new KeyFrame(0.75, new AnimTranslation(4.5, 2, -6), new AnimRotation(14, 0, 0), new AnimScale(1, 1, 1)),
@@ -88,6 +107,8 @@ class PoolInteraction {
 
             new DefaultKeyFrame(1.75)
         ])
+
+        // Beachball animation that will make it jump up and down
         let beachballAnimJump = new MyAnimation([
             new DefaultKeyFrame(0),
             new KeyFrame(0.3, new AnimTranslation(3, 3.75, 2.5), new AnimRotation(0, 6, 0), new AnimScale(1, 1, 1)),
@@ -100,6 +121,8 @@ class PoolInteraction {
         ])
         let beachball = this.graph.components['beachball'];
 
+        // Clicking on the beach ball will make it jump to the other side
+        // There is a small change that it will play the jump animation though
         this.graph.setPickable(beachball, () => {
             if (!beachball.isAnimationOver())
                 return;
@@ -112,9 +135,11 @@ class PoolInteraction {
             }
         })
 
+        // Life buoy interaction
 
         let lifebuoy = this.graph.components['lifebuoy'];
-
+        
+        // This animation makes it move and fall of the chair, continuing for a bit until it falls on the ground
         let lifebuoyAnimation = new MyAnimation([
             new KeyFrame(0.75, new AnimTranslation(1.5, 0, 0), new AnimRotation(0, 0, -2), new AnimScale(1, 1, 1)),
             new KeyFrame(0.9, new AnimTranslation(1.75, -1, 0), new AnimRotation(0, 0, -4), new AnimScale(1, 1, 1)),
@@ -123,6 +148,8 @@ class PoolInteraction {
             new KeyFrame(4.1, new AnimTranslation(20, -1.65, 0.8), new AnimRotation(Math.PI / 2, 0, -20), new AnimScale(1, 1, 1))
         ])
 
+        // Clicking on the component will make it play the animation 
+        // The component will no longer be pickable
         this.graph.setPickable(lifebuoy, () => {
             lifebuoy.setAnimation(lifebuoyAnimation);
             lifebuoy.setOnPick(() => {});
@@ -142,13 +169,20 @@ class SpaceInteraction {
     }
 
     setup() {
+        // Saves initial time for the movement of the light/sun
         this.initTime = new Date().getTime();
 
+        // Flag interaction
         let flag = this.graph.components['flagStructure'];
+
+        // Keeps flag height
         this.flagHeight = 0;
         this.graph.setPickable(flag, () => {
             if (!flag.isAnimationOver())
                 return;
+            // When the flag reaches its minimum height it will jump up
+            // and slowly reduce its speed until it comes back down
+            // Goes back at the original position and "click-cycle" is reset
             if (this.flagHeight <= -1.5) {
                 flag.setAnimation(new MyAnimation([
                     new KeyFrame(0.0, new AnimTranslation(0, -1.5, 0), new AnimRotation(0, 0, 0), new AnimScale(1, 1, 1)),
@@ -165,6 +199,8 @@ class SpaceInteraction {
                 ])); 
                 this.flagHeight = 0;           
             }
+            // When flag is clicked on it will go down more and more
+            // Also moves more slowly as it's deeper
             else {
                 this.flagHeight -= 0.5;
                 flag.setAnimation(new MyAnimation([
@@ -177,6 +213,8 @@ class SpaceInteraction {
     }
 
     update(t) {
+        // Updates the sun/light position based on the current time and start time
+        // Takes into account the angle of the movement
         let dt = (t - this.initTime) / 1000;
         let angle = dt * 2 * Math.PI / 70;
         this.scene.lights[0].setPosition(-Math.sin(angle)*300,70,-Math.cos(angle)*300,0);

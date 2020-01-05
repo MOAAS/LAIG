@@ -12,6 +12,8 @@ class MySceneGraph {
         this.animations = animations;
 
         this.nextPickableID = 1;
+
+        this.i = 0;
     }
 
     update(t) {
@@ -30,16 +32,17 @@ class MySceneGraph {
     }
 
     removeComponentFromRoot(component) {
+        console.log("Component " + this.i++);
         let rootChildren = this.getRootComponent().children;
         let componentIndex = rootChildren.indexOf(component);
         if (componentIndex > -1)
             rootChildren.splice(componentIndex, 1);
-        else return console.log("Couldn't find component");
+        else console.log("Couldn't find component 1")
 
         componentIndex = this.components.indexOf(component);
         if (componentIndex > -1)
             this.components.splice(componentIndex, 1);
-        else return console.log("Couldn't find component")
+        else console.log("Couldn't find component 2")
     }
 
     addPickable(component, onPick) {

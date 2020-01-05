@@ -2,11 +2,15 @@
 function animateRestart(board, tilePositionCalc) {
     let totalPieces = countTotalPieces(board);
 
+    // Animates a game restart
+    // -> Move: All pieces stacks up in the edge of the board, one at a time
+    // -> Crush: All the pieces are crushed down into one
+    // -> Scale: The piece grows larger and goes to the center of the board, at Y = 15
     let moveInterval = 0.1;
     let moveDuration = 1;
     let crushDuration = 0.8;
     let scaleToCenterDuration = 2;
-
+    
     let pieceNo = 0;
     for (let y = 0; y < board.length; y++) {
         for (let x = 0; x < board[y].length; x++) {
@@ -14,9 +18,13 @@ function animateRestart(board, tilePositionCalc) {
             if (piece == null)
                 continue;
 
+            // Receives the tilePosCalculator function so that 
+            // it knows where the piece at X,Y previously was
             let currPosition = tilePositionCalc(x, y);
             let dest =  new Translation(-7.5, 0.26 * pieceNo, 0)
-            let movement = new Translation(dest.x - currPosition.x, dest.y - currPosition.y, dest.z - currPosition.z) // movement -> position on  tower
+
+            // calculate its position on the tower
+            let movement = new Translation(dest.x - currPosition.x, dest.y - currPosition.y, dest.z - currPosition.z) 
 
             let finalScale = Math.random() * 5 + 1;
     
@@ -44,7 +52,7 @@ function animateRestart(board, tilePositionCalc) {
                     new AnimRotation(0,0,0),
                     new AnimScale(1,1,1)
                 ),
-                // Move to top
+                // Scale
                 new KeyFrame(scaleToCenterDuration + moveDuration + crushDuration + (totalPieces * moveInterval),
                     new AnimTranslation(movement.x + 7.5, movement.y - 0.26 * pieceNo + 15, movement.z),
                     new AnimRotation(0,0,0),
@@ -58,6 +66,8 @@ function animateRestart(board, tilePositionCalc) {
 }
 
 function countTotalPieces(board) {
+    // Counts the number of pieces on board
+    // that is, Every element that's not null
     let count = 0;
     for (let y = 0; y < board.length; y++)
         for (let x = 0; x < board[y].length; x++)
@@ -67,8 +77,13 @@ function countTotalPieces(board) {
 }
 
 function animatePieceCapture(piece, currPosition, dest) {
+    // Animates a piece capture
+    // Receives a piece, current position and destination, as transformation
+    // Calculates movement
     let movement = new Translation(dest.x - currPosition.x, dest.y - currPosition.y, dest.z - currPosition.z)
 
+    // Animation will be an arc animation, with a spin rotation at the same time
+    // After 1 second it will be at the top, halfway, and another second to drop to the destination
     piece.setAnimation(new MyAnimation([
         new KeyFrame(1,
             new AnimTranslation(movement.x / 2, movement.y / 2 + 8, movement.z / 2),
@@ -84,9 +99,13 @@ function animatePieceCapture(piece, currPosition, dest) {
 }
 
 function animatePieceDrop(piece, dest) {
+    // Drops a piece to it's destination
     let startPos = new Translation(0, 15, 0);
     let animIni = new Translation(startPos.x - dest.x, startPos.y - dest.y, startPos.z - dest.z)
-
+    
+    // Starts at (0,15,0), with a random scale from 1 to 5
+    // Drops to the floor after 0.6s
+    // Scales down in 0.2s and moves to the correct position in the board in the same timeframe
     let scale = Math.random() * 5 + 1
     piece.setAnimation(new MyAnimation([
         new KeyFrame(0,

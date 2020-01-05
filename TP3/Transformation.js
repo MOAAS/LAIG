@@ -47,6 +47,8 @@ class Scale extends Transformation {
 }
 
 class TransformationGroup extends Transformation {
+    // Transformation Group is an array of transformations
+    // Can be used as a single transformation
     constructor(transformations) {
         super()
         this.transformations = transformations;
