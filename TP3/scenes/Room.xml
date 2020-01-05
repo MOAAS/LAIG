@@ -732,7 +732,7 @@
                 <rotate axis="y" angle="45"/>
             </transformation>
             <material id="inherit" />
-            <texture id="black"/>
+            <texture id="blackfabric"/>
             <children> 
                 <primitiveref id="prism4"/>
             </children>

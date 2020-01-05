@@ -107,6 +107,7 @@ class XMLscene extends CGFscene {
         this.selectedCamera = cameraName;
         if (freeLook)
             this.interface.setActiveCamera(this.graph.views[cameraName]);
+        else this.interface.setActiveCamera(null)
     }
 
     updateCameras() {
