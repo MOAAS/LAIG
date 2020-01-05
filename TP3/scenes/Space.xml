@@ -66,6 +66,7 @@
         <texture id="purplemetal" file="scenes/images/purplemetal.jpg" />
         <texture id="controlboard" file="scenes/images/controlboard3.png" />
         <texture id="laigflag" file="scenes/images/laigflag.png" />
+        <texture id="black" file="scenes/images/black.png" />
     </textures>
 
     <materials>
